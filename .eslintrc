@@ -1,7 +1,7 @@
 {
   "extends": [
-    "eslint:all",
-     "plugin:react/all"
+    "eslint:recommended",
+    "plugin:react/recommended"
   ],
   "plugins": [
     "react"
