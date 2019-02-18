@@ -6,6 +6,7 @@
   "plugins": [
     "react"
   ],
+  "parser": "babel-eslint",
   "settings": {
     "react": {
       "createClass": "createReactClass",
