@@ -26,7 +26,7 @@ const switchNavigator = createSwitchNavigator(
     Auth: AuthNavigator
   },
   {
-    initialRouteName: "Auth"
+    initialRouteName: "AuthLoading"
   }
 );
 
