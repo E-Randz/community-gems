@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,  } from 'react-native';
 import { Input } from '../Input';
+import { Button } from '../Button'
 
 class LogInScreen extends Component {
   state = {
@@ -29,6 +30,10 @@ class LogInScreen extends Component {
           onChangeText={(password) => this.setState({password})}
           value={this.state.password}
         />
+        <Button onPress={() => this.LogInUser(this.state.email, this.state.password)}> Log In </Button>
+        <Button onPress={() => this.props.navigation.navigate('SignUp')}>Sign Up</Button>
+
+        <Button onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password </Button>
       </View>
     );
   }
@@ -39,9 +44,12 @@ class LogInScreen extends Component {
   //     [name]: value,
   //   })
   // }
+  LogInUser = () => {
+    console.log('log in')
+    this.props.navigation.navigate('App');
+  }
+
 }
-
-
 export default LogInScreen;
 
 const styles = StyleSheet.create({
