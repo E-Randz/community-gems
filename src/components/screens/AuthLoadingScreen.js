@@ -5,7 +5,8 @@ export default class CreateEventScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Community Gems</Text>
+        <Text>Community Gems - Check Logged in User</Text>
+      
         <ActivityIndicator size='large' style={styles.indicator}/>
       </View>
     );
