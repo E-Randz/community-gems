@@ -25,13 +25,16 @@ componentDidMount() {
 
   render() {
     const { users } = this.state 
+    console.log('users:', users)
     return (
       <View style={styles.container}>
         <Text>Home Screen</Text>
         { users[0] &&
-        <Text>{this.state.users[0].username}</Text>}
-        
-        
+        <View>
+          <Text>Username: {this.state.users[0].username} </Text>
+          <Text>Gems: {this.state.users[0].gems}</Text>
+        </View>
+        }
       </View>
     );
   }
