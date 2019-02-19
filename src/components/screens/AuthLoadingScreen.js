@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   indicator: {
-    backgroundColor: 'red'
+    color: 'red'
   }
 })
