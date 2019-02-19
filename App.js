@@ -1,20 +1,27 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { createBottomTabNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
-import TabNavigator from './src/navigation/TabNavigator';
-import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen';
-import AuthNavigator from './src/navigation/AuthNavigator';
+import React from "react";
+import { Text, View } from "react-native";
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createSwitchNavigator
+} from "react-navigation";
+import TabNavigator from "./src/navigation/TabNavigator";
+import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
+import AuthNavigator from "./src/navigation/AuthNavigator";
+import * as firebase from "firebase";
+import firebaseConfig from "./config";
 
-const switchNavigator = createSwitchNavigator({
-  AuthLoading: AuthLoadingScreen,
-  App: TabNavigator,
-  Auth: AuthNavigator
-},
-{
-  initialRouteName: 'Auth'
-}
-)
+firebase.initializeApp(firebaseConfig);
 
-
+const switchNavigator = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: TabNavigator,
+    Auth: AuthNavigator
+  },
+  {
+    initialRouteName: "AuthLoading"
+  }
+);
 
 export default createAppContainer(switchNavigator);
