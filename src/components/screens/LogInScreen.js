@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Input } from "../Input";
 import { Button } from "../Button";
-import { auth, signInWithEmailAndPassword } from "firebase";
+import * as firebase from "firebase";
 
 class LogInScreen extends Component {
   state = {
@@ -11,16 +11,35 @@ class LogInScreen extends Component {
   };
 
   LogInUser = (email, password) => {
+    const { navigate } = this.props.navigation;
     try {
-      auth()
+      firebase
+        .auth()
         .signInWithEmailAndPassword(email, password)
         .then(function(user) {
           console.log(user);
+          navigate("App");
         });
     } catch (err) {
       console.log(err.toString());
     }
   };
+
+  navigateToApp = () => {
+    this.props.navigation.navigate("App");
+  };
+
+  componentWillMount() {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTwnYvoGCJCQdAr2IxTueg8stqnAJBIwo",
+      authDomain: "fir-auth-16628.firebaseapp.com",
+      databaseURL: "https://fir-auth-16628.firebaseio.com",
+      projectId: "fir-auth-16628",
+      storageBucket: "fir-auth-16628.appspot.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  }
 
   render() {
     return (
@@ -65,10 +84,6 @@ class LogInScreen extends Component {
   //     [name]: value,
   //   })
   // }
-  LogInUser = () => {
-    console.log("log in");
-    this.props.navigation.navigate("App");
-  };
 }
 export default LogInScreen;
 
