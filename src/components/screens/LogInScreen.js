@@ -25,16 +25,6 @@ class LogInScreen extends Component {
     }
   };
 
-  componentDidMount() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyDTwnYvoGCJCQdAr2IxTueg8stqnAJBIwo",
-      authDomain: "fir-auth-16628.firebaseapp.com",
-      databaseURL: "https://fir-auth-16628.firebaseio.com",
-      projectId: "fir-auth-16628",
-      storageBucket: "fir-auth-16628.appspot.com"
-    };
-  }
-
   render() {
     return (
       <View style={styles.container}>

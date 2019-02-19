@@ -13,16 +13,6 @@ class SignUpScreen extends Component {
     postcode: ""
   };
 
-  componentDidMount() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyBKQA51q2geGB13b9S7pllwZTZRK8AWNkU",
-      authDomain: "community-gems.firebaseapp.com",
-      databaseURL: "https://community-gems.firebaseio.com",
-      projectId: "community-gems",
-      storageBucket: "community-gems.appspot.com"
-    };
-  }
-
   signUpUser = () => {
     const { email, password } = this.state;
     const { navigate } = this.props.navigation;
