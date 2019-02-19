@@ -13,7 +13,7 @@ class SignUpScreen extends Component {
     postcode: ""
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const firebaseConfig = {
       apiKey: "AIzaSyBKQA51q2geGB13b9S7pllwZTZRK8AWNkU",
       authDomain: "community-gems.firebaseapp.com",
@@ -21,8 +21,6 @@ class SignUpScreen extends Component {
       projectId: "community-gems",
       storageBucket: "community-gems.appspot.com"
     };
-
-    firebase.initializeApp(firebaseConfig);
   }
 
   signUpUser = () => {

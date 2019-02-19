@@ -25,11 +25,7 @@ class LogInScreen extends Component {
     }
   };
 
-  navigateToApp = () => {
-    this.props.navigation.navigate("App");
-  };
-
-  componentWillMount() {
+  componentDidMount() {
     const firebaseConfig = {
       apiKey: "AIzaSyDTwnYvoGCJCQdAr2IxTueg8stqnAJBIwo",
       authDomain: "fir-auth-16628.firebaseapp.com",
@@ -37,8 +33,6 @@ class LogInScreen extends Component {
       projectId: "fir-auth-16628",
       storageBucket: "fir-auth-16628.appspot.com"
     };
-
-    firebase.initializeApp(firebaseConfig);
   }
 
   render() {
