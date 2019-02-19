@@ -7,7 +7,8 @@ const Input = ({
   value,
   onChangeText,
   placeholder,
-  secureTextEntry
+  secureTextEntry,
+  name,
 }) => {
   return (
     <View style={styles.container}>
@@ -20,6 +21,7 @@ const Input = ({
         secureTextEntry={secureTextEntry}
         value={value}
         autoCapitalize="none"
+        name={name}
       />
     </View>
   );
@@ -58,5 +60,6 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChangeText: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  secureTextEntry: PropTypes.func,
+  secureTextEntry: PropTypes.bool,
+  name: PropTypes.string.isRequired,
 }
