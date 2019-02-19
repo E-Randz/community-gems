@@ -61,5 +61,5 @@ Input.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   secureTextEntry: PropTypes.bool,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string
 };
