@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import HomeScreen from '../components/screens/HomeScreen';
 import MessageScreen from '../components/screens/MessageScreen';
