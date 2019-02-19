@@ -32,7 +32,6 @@ class LogInScreen extends Component {
         />
         <Button onPress={() => this.LogInUser(this.state.email, this.state.password)}> Log In </Button>
         <Button onPress={() => this.props.navigation.navigate('SignUp')}>Sign Up</Button>
-
         <Button onPress={() => this.props.navigation.navigate('ForgotPassword')}> Forgot Password </Button>
       </View>
     );
