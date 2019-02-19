@@ -25,12 +25,18 @@ class SignUpScreen extends Component {
 
   signUpUser = () => {
     const { email, password } = this.state;
+    const { navigate } = this.props.navigation;
     try {
       if (this.state.password.length < 6) {
         alert("Please enter atleast 6 characters");
         return;
       }
-      firebase.auth().createUserWithEmailAndPassword(email, password);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          navigate("App");
+        });
     } catch (err) {
       console.log(err.toString());
     }
