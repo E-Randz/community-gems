@@ -59,7 +59,7 @@ class CreateEventScreen extends Component {
 
   render() {
     return (
-      <View>
+      <ScrollView>
         <Text>Home Screen1</Text>
         <Input
           placeholder="please insert event_name"
@@ -152,7 +152,7 @@ class CreateEventScreen extends Component {
         >
           Add Event
         </Button>
-      </View>
+      </ScrollView>
     );
   }
 }
