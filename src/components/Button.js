@@ -32,4 +32,3 @@ Button.propTypes = {
   onPress: PropTypes.func.isRequired,
   children: PropTypes.array.isRequired
 };
-

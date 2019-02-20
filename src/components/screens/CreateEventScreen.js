@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, ScrollView, Text, StyleSheet } from "react-native";
-import { Input } from "../input";
+import { Input } from "../Input";
 import { Button } from "../Button";
-import firebase from "/home/mohamed/community-gems/src/Mohamed Config/firebase";
+import firebase from "firebase";
 
 class CreateEventScreen extends Component {
   state = {
@@ -57,11 +57,9 @@ class CreateEventScreen extends Component {
     }
   };
 
-  componentWillMount() {}
-
   render() {
     return (
-      <View>
+      <ScrollView>
         <Text>Home Screen1</Text>
         <Input
           placeholder="please insert event_name"
@@ -107,7 +105,7 @@ class CreateEventScreen extends Component {
           onChangeText={event_postDate => this.setState({ event_postDate })}
           value={this.state.event_postDate}
         />
-        {/* <Input
+        <Input
           placeholder="please insert event_numOfVolunteers"
           label="event_numOfVolunteers"
           onChangeText={event_numOfVolunteers =>
@@ -126,15 +124,15 @@ class CreateEventScreen extends Component {
           label="event_creator"
           onChangeText={event_creator => this.setState({ event_creator })}
           value={this.state.event_creator}
-        /> */}
-        {/* <Input
+        />
+        <Input
           placeholder="please insert event_participants"
           label="event_participants"
           onChangeText={event_participants =>
             this.setState({ event_participants })
           }
           value={this.state.event_participants}
-        /> */}
+        />
         <Button
           onPress={() =>
             this.addEvent(
@@ -154,7 +152,7 @@ class CreateEventScreen extends Component {
         >
           Add Event
         </Button>
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -1,53 +1,51 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import firebase from "firebase";
+// import { db } from "../../config/db";
+// const db = firebase.database();
 
-import { db } from '../../config/db';
-
-let userRef = db.ref('/Users')
-
+// let userRef = db.ref("/Users");
 
 class HomeScreen extends Component {
-
   state = {
-    users : []
-  }
+    users: []
+  };
 
-componentDidMount() {
-  userRef.on('value',(snapshot) => {
-    let data = snapshot.val();
-    let users = Object.values(data)
-    this.setState({
-      users
-    })
-    
-  });
-}
+  componentDidMount() {
+    // userRef.on("value", snapshot => {
+    //   let data = snapshot.val();
+    //   let users = Object.values(data);
+    //   this.setState({
+    //     users
+    //   });
+    // });
+  }
 
   render() {
-    const { users } = this.state 
-    console.log('users:', users)
-    return (
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
-        { users[0] &&
-        <View>
-          <Text>Username: {this.state.users[0].username} </Text>
-          <Text>Gems: {this.state.users[0].gems}</Text>
-        </View>
-        }
-      </View>
-    );
+    return null;
+    // const { users } = this.state;
+    // console.log("users:", users);
+    // return (
+    //   <View style={styles.container}>
+    //     <Text>Home Screen</Text>
+    //     {users[0] && (
+    //       <View>
+    //         <Text>Username: {this.state.users[0].username} </Text>
+    //         <Text>Gems: {this.state.users[0].gems}</Text>
+    //       </View>
+    //     )}
+    //   </View>
+    // );
   }
 }
-
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
