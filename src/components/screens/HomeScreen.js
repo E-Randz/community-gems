@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
-import { db } from '../../config/db';
+import firebase from 'firebase';
+// import { db } from '../../config/db';
+const db = firebase.database();
 
 let userRef = db.ref('/Users')
 
@@ -12,30 +13,31 @@ class HomeScreen extends Component {
     users : []
   }
 
-componentDidMount() {
-  userRef.on('value',(snapshot) => {
-    let data = snapshot.val();
-    let users = Object.values(data)
-    this.setState({
-      users
-    })
+// componentDidMount() {
+//   userRef.on('value',(snapshot) => {
+//     let data = snapshot.val();
+//     let users = Object.values(data)
+//     this.setState({
+//       users
+//     })
     
-  });
-}
+//   });
+// }
 
   render() {
     const { users } = this.state 
     console.log('users:', users)
     return (
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
-        { users[0] &&
-        <View>
-          <Text>Username: {this.state.users[0].username} </Text>
-          <Text>Gems: {this.state.users[0].gems}</Text>
-        </View>
-        }
-      </View>
+      <Text>Hello</Text>
+      // <View style={styles.container}>
+      //   <Text>Home Screen</Text>
+      //   { users[0] &&
+      //   <View>
+      //     <Text>Username: {this.state.users[0].username} </Text>
+      //     <Text>Gems: {this.state.users[0].gems}</Text>
+      //   </View>
+      //   }
+      // </View>
     );
   }
 }

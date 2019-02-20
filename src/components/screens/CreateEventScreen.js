@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, ScrollView, Text, StyleSheet } from "react-native";
-import { Input } from "../input";
+import { Input } from "../Input";
 import { Button } from "../Button";
-import firebase from "/home/mohamed/community-gems/src/Mohamed Config/firebase";
+import firebase from "firebase";
 
 class CreateEventScreen extends Component {
   state = {
@@ -19,50 +19,51 @@ class CreateEventScreen extends Component {
     event_participants: []
   };
 
-  addEvent = (
-    event_name,
-    event_adress,
-    event_type,
-    event_description,
-    event_postcode,
-    event_date,
-    event_postDate,
-    event_numOfVolunteers,
-    event_timeScale,
-    event_creator,
-    event_participants
-  ) => {
-    console.log("got to function");
-    const db = firebase.database();
-    const event = {
-      event_name,
-      event_adress,
-      event_type,
-      event_description,
-      event_postcode,
-      event_date,
-      event_postDate,
-      event_numOfVolunteers,
-      event_timeScale,
-      event_creator,
-      event_participants
-    };
-    console.log(event);
-    try {
-      db.ref("Events")
-        .push(event)
-        .then(event => console.log(event));
-    } catch (err) {
-      console.log(err.toString());
-    }
-  };
+  // addEvent = (
+  //   event_name,
+  //   event_adress,
+  //   event_type,
+  //   event_description,
+  //   event_postcode,
+  //   event_date,
+  //   event_postDate,
+  //   event_numOfVolunteers,
+  //   event_timeScale,
+  //   event_creator,
+  //   event_participants
+  // ) => {
+  //   console.log("got to function");
+  //   const db = firebase.database();
+  //   const event = {
+  //     event_name,
+  //     event_adress,
+  //     event_type,
+  //     event_description,
+  //     event_postcode,
+  //     event_date,
+  //     event_postDate,
+  //     event_numOfVolunteers,
+  //     event_timeScale,
+  //     event_creator,
+  //     event_participants
+  //   };
+  //   console.log(event);
+  //   try {
+  //     db.ref("Events")
+  //       .push(event)
+  //       .then(event => console.log(event));
+  //   } catch (err) {
+  //     console.log(err.toString());
+  //   }
+  // };
 
   componentWillMount() {}
 
   render() {
     return (
       <View>
-        <Text>Home Screen1</Text>
+        <Text>Hello</Text>
+        {/* <Text>Home Screen1</Text>
         <Input
           placeholder="please insert event_name"
           label="event_name"
@@ -135,7 +136,7 @@ class CreateEventScreen extends Component {
           }
           value={this.state.event_participants}
         /> */}
-        <Button
+        {/* <Button
           onPress={() =>
             this.addEvent(
               this.state.event_name,
@@ -153,7 +154,7 @@ class CreateEventScreen extends Component {
           }
         >
           Add Event
-        </Button>
+        </Button> */} */}
       </View>
     );
   }

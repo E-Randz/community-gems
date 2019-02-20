@@ -1,12 +1,14 @@
 import React from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
+import PropTypes from "prop-types";
 
 const Input = ({
   label,
   value,
   onChangeText,
   placeholder,
-  secureTextEntry
+  secureTextEntry,
+  name
 }) => {
   return (
     <View style={styles.container}>
@@ -18,8 +20,8 @@ const Input = ({
         style={styles.input}
         secureTextEntry={secureTextEntry}
         value={value}
-        autoCorrect={false}
         autoCapitalize="none"
+        name={name}
       />
     </View>
   );
@@ -27,14 +29,14 @@ const Input = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 25,
+    marginTop: 30,
     width: "100%",
     borderColor: "#eee",
     borderBottomWidth: 2
   },
   label: {
-    fontSize: 12,
-    padding: 10,
+    fontSize: 17,
+    padding: 15,
     paddingBottom: 5,
     color: "#333",
     fontWeight: "700",
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   input: {
     paddingRight: 5,
     paddingLeft: 5,
-    paddingBottom: 2,
+    paddingBottom: 1,
     color: "#333",
     fontSize: 18,
     fontWeight: "700",
@@ -52,3 +54,12 @@ const styles = StyleSheet.create({
 });
 
 export { Input };
+
+Input.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  secureTextEntry: PropTypes.bool,
+  name: PropTypes.string
+};
