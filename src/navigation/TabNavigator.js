@@ -6,7 +6,7 @@ import messageNav from "../navigation/MessageNav";
 import profileScreen from "../components/screens/ProfileScreen";
 
 const TabNavigator = createBottomTabNavigator({
-  Home: profileScreen,
+  Home: HomeScreen,
   "New Event": CreateEventScreen,
   Messages: messageNav
 });
