@@ -11,23 +11,23 @@ export default class Profile extends Component {
           source={{ uri: "https://bootdey.com/img/Content/avatar/avatar6.png" }}
         />
         <View style={styles.body}>
-          <View style={styles.bodyContent}>
-            <Text style={styles.name}>John Doe</Text>
-            <Text style={styles.info}>UX Designer / Mobile developer</Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum
-              electram expetendis, omittam deseruisse consequuntur ius an,
-            </Text>
+          {/* <View style={styles.bodyContent}> */}
 
-            <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Opcion 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Opcion 2</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.name}>John Doe</Text>
+          <Text style={styles.info}>Gems: 5💎</Text>
+          <Text style={styles.description}>
+            I am a hardworking volunteer for my community... (edit profile to
+            change info)
+          </Text>
+        </View>
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.buttonContainer}>
+            <Text> Edit Info</Text>
+          </TouchableOpacity>
         </View>
       </View>
+      //   </View>
+
     );
   }
 }
@@ -37,6 +37,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#00BFFF",
     height: 200
   },
+
+  buttonBox: {
+    flex: 1,
+    alignItems: "center"
+  },
+
   avatar: {
     width: 130,
     height: 130,
@@ -50,41 +56,46 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 22,
-    color: "#FFFFFF",
+
+    color: "black",
     fontWeight: "600"
   },
   body: {
-    marginTop: 40
+    marginTop: 70,
+    alignItems: "center"
+    // borderColor: "#00BFFF",
+    // borderWidth: 2,
+    // borderRadius: 13
   },
-  bodyContent: {
-    flex: 1,
-    alignItems: "center",
-    padding: 30
-  },
+
   name: {
-    fontSize: 28,
-    color: "#696969",
+    fontSize: 30,
+    color: "black",
     fontWeight: "600"
   },
   info: {
-    fontSize: 16,
+    fontSize: 20,
+
     color: "#00BFFF",
     marginTop: 10
   },
   description: {
     fontSize: 16,
-    color: "#696969",
+    color: "black",
+
     marginTop: 10,
     textAlign: "center"
   },
   buttonContainer: {
     marginTop: 10,
-    height: 45,
+    height: 25,
+
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    width: 250,
+    width: 120,
+
     borderRadius: 30,
     backgroundColor: "#00BFFF"
   }
