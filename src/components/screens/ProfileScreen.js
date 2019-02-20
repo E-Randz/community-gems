@@ -1,15 +1,45 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import Modal from "react-native-modal";
+import { Input } from "../Input";
 
 export default class Profile extends Component {
   state = {
-    visibleModal: null
+    visibleModal: null,
+    img: ""
   };
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>Hello!</Text>
+      <Text>Profile Form</Text>
+      <TouchableOpacity onPress={() => this.setState({ img: null })}>
+        <View style={styles.button2}>
+          <Text>Change profile image</Text>
+        </View>
+      </TouchableOpacity>
+      <Text>Change address</Text>
+      <Input
+        placeholder="Address"
+        onChangeText={event_adress => this.setState({ event_adress })}
+        value={""}
+      />
+      <Input
+        placeholder="Postcode"
+        onChangeText={event_adress => this.setState({ event_adress })}
+        value={""}
+      />
+      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <View style={styles.button}>
+          <Text>Submit address</Text>
+        </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
         <View style={styles.button}>
           <Text>Close</Text>
@@ -40,7 +70,7 @@ export default class Profile extends Component {
             onPress={() => this.setState({ visibleModal: 1 })}
             style={styles.buttonContainer}
           >
-            <Text> Edit Info</Text>
+            <Text>Edit Info</Text>
           </TouchableOpacity>
         </View>
         <Modal isVisible={this.state.visibleModal === 1}>
@@ -130,6 +160,16 @@ const styles = StyleSheet.create({
     backgroundColor: "lightblue",
     padding: 12,
     margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button2: {
+    backgroundColor: "#00BFFF",
+    padding: 33,
+    // fontSize: 50,
+    margin: 5,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
