@@ -19,51 +19,48 @@ class CreateEventScreen extends Component {
     event_participants: []
   };
 
-  // addEvent = (
-  //   event_name,
-  //   event_adress,
-  //   event_type,
-  //   event_description,
-  //   event_postcode,
-  //   event_date,
-  //   event_postDate,
-  //   event_numOfVolunteers,
-  //   event_timeScale,
-  //   event_creator,
-  //   event_participants
-  // ) => {
-  //   console.log("got to function");
-  //   const db = firebase.database();
-  //   const event = {
-  //     event_name,
-  //     event_adress,
-  //     event_type,
-  //     event_description,
-  //     event_postcode,
-  //     event_date,
-  //     event_postDate,
-  //     event_numOfVolunteers,
-  //     event_timeScale,
-  //     event_creator,
-  //     event_participants
-  //   };
-  //   console.log(event);
-  //   try {
-  //     db.ref("Events")
-  //       .push(event)
-  //       .then(event => console.log(event));
-  //   } catch (err) {
-  //     console.log(err.toString());
-  //   }
-  // };
-
-  componentWillMount() {}
+  addEvent = (
+    event_name,
+    event_adress,
+    event_type,
+    event_description,
+    event_postcode,
+    event_date,
+    event_postDate,
+    event_numOfVolunteers,
+    event_timeScale,
+    event_creator,
+    event_participants
+  ) => {
+    console.log("got to function");
+    const db = firebase.database();
+    const event = {
+      event_name,
+      event_adress,
+      event_type,
+      event_description,
+      event_postcode,
+      event_date,
+      event_postDate,
+      event_numOfVolunteers,
+      event_timeScale,
+      event_creator,
+      event_participants
+    };
+    console.log(event);
+    try {
+      db.ref("Events")
+        .push(event)
+        .then(event => console.log(event));
+    } catch (err) {
+      console.log(err.toString());
+    }
+  };
 
   render() {
     return (
       <View>
-        <Text>Hello</Text>
-        {/* <Text>Home Screen1</Text>
+        <Text>Home Screen1</Text>
         <Input
           placeholder="please insert event_name"
           label="event_name"
@@ -108,7 +105,7 @@ class CreateEventScreen extends Component {
           onChangeText={event_postDate => this.setState({ event_postDate })}
           value={this.state.event_postDate}
         />
-        {/* <Input
+        <Input
           placeholder="please insert event_numOfVolunteers"
           label="event_numOfVolunteers"
           onChangeText={event_numOfVolunteers =>
@@ -127,16 +124,16 @@ class CreateEventScreen extends Component {
           label="event_creator"
           onChangeText={event_creator => this.setState({ event_creator })}
           value={this.state.event_creator}
-        /> */}
-        {/* <Input
+        />
+        <Input
           placeholder="please insert event_participants"
           label="event_participants"
           onChangeText={event_participants =>
             this.setState({ event_participants })
           }
           value={this.state.event_participants}
-        /> */}
-        {/* <Button
+        />
+        <Button
           onPress={() =>
             this.addEvent(
               this.state.event_name,
@@ -154,7 +151,7 @@ class CreateEventScreen extends Component {
           }
         >
           Add Event
-        </Button> */} */}
+        </Button>
       </View>
     );
   }
