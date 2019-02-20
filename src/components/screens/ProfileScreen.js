@@ -1,7 +1,24 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import Modal from "react-native-modal";
 
 export default class Profile extends Component {
+  state = {
+    visibleModal: null
+  };
+
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text>Hello!</Text>
+      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <View style={styles.button}>
+          <Text>Close</Text>
+        </View>
+      </TouchableOpacity>
+      {/* {this._renderButton("Close", () => this.setState({ visibleModal: null }))} */}
+    </View>
+  );
+
   render() {
     return (
       <View style={styles.container}>
@@ -11,8 +28,6 @@ export default class Profile extends Component {
           source={{ uri: "https://bootdey.com/img/Content/avatar/avatar6.png" }}
         />
         <View style={styles.body}>
-          {/* <View style={styles.bodyContent}> */}
-
           <Text style={styles.name}>John Doe</Text>
           <Text style={styles.info}>Gems: 5💎</Text>
           <Text style={styles.description}>
@@ -21,13 +36,17 @@ export default class Profile extends Component {
           </Text>
         </View>
         <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => this.setState({ visibleModal: 1 })}
+            style={styles.buttonContainer}
+          >
             <Text> Edit Info</Text>
           </TouchableOpacity>
         </View>
+        <Modal isVisible={this.state.visibleModal === 1}>
+          {this._renderModalContent()}
+        </Modal>
       </View>
-      //   </View>
-
     );
   }
 }
@@ -98,5 +117,22 @@ const styles = StyleSheet.create({
 
     borderRadius: 30,
     backgroundColor: "#00BFFF"
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button: {
+    backgroundColor: "lightblue",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
   }
 });
