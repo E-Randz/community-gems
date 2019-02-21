@@ -1,9 +1,11 @@
 import firebase from 'firebase'
 
 export const postNewUser = (uid, username, firstName, surname, email, houseNo, street, postcode, long, lat) => {
+  const description = `Hi I am ${username}!`
   firebase.database().ref(`/Users/${uid}`)
     .set(
       {
+        description,
         username,
         firstName,
         surname,
