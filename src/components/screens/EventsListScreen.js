@@ -5,13 +5,18 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Picker
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
+import { Constants } from "expo";
+import { Dropdown } from "react-native-material-dropdown";
 
 export default class EventsList extends Component {
   state = {
+    sort_by: null,
     selectedIndex: 0,
+    sort_by: "",
     events: [
       {
         title: "event1",
@@ -69,7 +74,19 @@ export default class EventsList extends Component {
   };
 
   render() {
-    const { events } = this.state;
+    const data = [
+      {
+        value: "Date"
+      },
+      {
+        value: "Distance"
+      },
+      {
+        value: "Type"
+      }
+    ];
+    const { events, sort_by } = this.state;
+    console.log(sort_by);
     const buttons = ["List", "Map"];
     const { selectedIndex } = this.state;
     return (
@@ -77,13 +94,32 @@ export default class EventsList extends Component {
         <View style={styles.header}>
           <Text style={styles.pageTitle}>Events</Text>
         </View>
+        <Dropdown
+          valueExtractor={({ value }) => value}
+          label="Sort By"
+          data={data}
+          onChangeText={value => this.setState({ sort_by: value })}
+        />
+
+        {/* <View style={styles.container2}>
+          <Picker
+            selectedValue={this.state.sort_by}
+            style={{ width: 200, height: 44 }}
+            itemStyle={{ height: 44 }}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({ sort_by: itemValue })
+            }
+          >
+            <Picker.Item label="Date" value="date" />
+            <Picker.Item label="Type" value="type" />
+          </Picker>
+        </View> */}
         <ButtonGroup
           onPress={this.updateIndex}
           selectedIndex={selectedIndex}
           buttons={buttons}
           containerStyle={{ height: 50 }}
         />
-        {/* <View style={styles.body}> */}
         <View style={styles.reviewHolder}>
           {events.map((event, i) => (
             <ListItem
@@ -109,7 +145,7 @@ export default class EventsList extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#00BFFF",
-    height: 200
+    height: 100
   },
 
   buttonBox: {
@@ -139,7 +175,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     alignSelf: "center",
     position: "absolute",
-    marginTop: 130
+    marginTop: 50
   },
   reviewBox: {
     fontSize: 6,
@@ -256,5 +292,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
     marginTop: 80
+  },
+  container2: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#ecf0f1",
+    margin: 25,
+    borderColor: "black",
+    borderWidth: 2
   }
 });
