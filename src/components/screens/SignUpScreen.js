@@ -16,14 +16,14 @@ class SignUpScreen extends Component {
     password: "",
     house_number: "",
     streetName: "",
+    town: "",
     postcode: ""
   };
 
   signUpUser = () => {
-    const { email, password, username, firstName, surname, house_number, streetName, postcode } = this.state;
+    const { email, password, username, firstName, surname, house_number, streetName, town, postcode } = this.state;
     const { navigate } = this.props.navigation;
-    const address = `${house_number}+${streetName}+${postcode}`
-    const result = {}
+    const address = `${house_number}+${streetName}+${town}+${postcode}`;
     
     try {
       if (this.state.password.length < 6) {
@@ -40,7 +40,7 @@ class SignUpScreen extends Component {
           const lat = res.data.results[0].geometry.location.lat
           const long = res.data.results[0].geometry.location.lng
           const user = firebase.auth().currentUser;
-          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, postcode, long, lat);
+          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, town, postcode, long, lat);
         })
         .then(() => {
           navigate("App");
@@ -95,6 +95,12 @@ class SignUpScreen extends Component {
           label="street name"
           onChangeText={streetName => this.setState({ streetName })}
           value={this.state.streetName}
+        />
+        <Input
+          placeholder="please enter town"
+          label="town"
+          onChangeText={town => this.setState({ town })}
+          value={this.state.town}
         />
         <Input
           placeholder="please insert postcode"
