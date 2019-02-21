@@ -10,6 +10,7 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
+// import postUserbyID from './src/db/users'
 import { getUserByID } from './src/db/users'
 
 firebase.initializeApp(firebaseConfig);
