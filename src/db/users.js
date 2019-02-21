@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 
-export const postNewUser = (uid, username, firstName, surname, email, houseNo, street, postcode, long, lat) => {
+export const postNewUser = (uid, username, firstName, surname, email, houseNo, street, town, postcode, long, lat) => {
   const description = `Hi I am ${username}!`
   firebase.database().ref(`/Users/${uid}`)
     .set(
@@ -12,6 +12,7 @@ export const postNewUser = (uid, username, firstName, surname, email, houseNo, s
         email,
         houseNo,
         street,
+        town,
         postcode,
         long,
         lat,
