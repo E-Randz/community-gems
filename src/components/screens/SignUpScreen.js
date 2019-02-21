@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Input } from "../Input";
 import * as firebase from "firebase";
 import { Button } from "../Button";
-import postNewUser from '../../db/users'
+import { postNewUser } from '../../db/users'
 import getCoords from '../../utils'
 
 

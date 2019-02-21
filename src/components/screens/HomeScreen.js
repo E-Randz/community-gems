@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity
-} from 'react-native'
+} from "react-native";
 
-import firebase from 'firebase'
+import firebase from "firebase";
 
 // import { db } from "../../config/db";
 // const db = firebase.database();
@@ -52,62 +52,61 @@ class HomeScreen extends Component {
   state = {
     events: [
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'tom'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "tom"
       },
       {
-        title: 'event2',
-        start: '2010-01-09T18:30:00',
-        location: 'salford',
-        eventOrganizer: 'peter'
+        title: "event2",
+        start: "2010-01-09T18:30:00",
+        location: "salford",
+        eventOrganizer: "peter"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       },
       {
-        title: 'event1',
-        start: '2010-01-09T12:30:00',
-        location: 'manchester',
-        eventOrganizer: 'user'
+        title: "event1",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
       }
     ]
-  }
+  };
 
-  render () {
-    const { events } = this.state
+  render() {
+    const { events } = this.state;
 
     return (
       <ScrollView>
-
         <View style={styles.container}>
           <View style={styles.userInfoBox}>
             <Text style={styles.userInfoName}>Tymmy123</Text>
@@ -115,7 +114,8 @@ class HomeScreen extends Component {
             <View style={styles.userData}>
               <Image
                 style={styles.userIamge}
-                source={require('../../../assets/heart.jpg')}
+                source={require("../../../assets/heart.jpg")}
+
               />
               <View style={styles.userText}>
                 <Text style={styles.userText_content}>
@@ -127,13 +127,20 @@ class HomeScreen extends Component {
             </View>
 
             <View style={styles.buttonsBox}>
-              <TouchableOpacity style={styles.userInfoBox_buttons}>
+              <TouchableOpacity
+                style={styles.userInfoBox_buttons}
+                onPress={() => this.props.navigation.navigate("Leaderboard")}
+              >
                 <Text>View Leaderboard</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userInfoBox_buttons}>
+              <TouchableOpacity
+                style={styles.userInfoBox_buttons}
+                onPress={() => this.props.navigation.navigate("Profile")}
+              >
                 <Text>View Profile</Text>
               </TouchableOpacity>
             </View>
+
           </View>
 
           <View style={styles.buttonsBox}>
@@ -161,40 +168,40 @@ class HomeScreen extends Component {
 
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "pink",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
 
-    backgroundColor: 'pink',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
     marginTop: 80
   },
 
   userInfoBox: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignItems: 'flex-start'
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "flex-start"
   },
 
   userInfoName: {
-    flexDirection: 'row',
+    flexDirection: "row",
     fontSize: 35,
     marginLeft: 40,
-    color: 'grey',
-    fontWeight: 'bold'
+    color: "grey",
+    fontWeight: "bold"
 
   },
 
   userData: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
 
   userIamge: {
@@ -212,63 +219,64 @@ const styles = StyleSheet.create({
   },
 
   userText_content: {
-    justifyContent: 'space-evenly',
-    color: 'grey'
+    justifyContent: "space-evenly",
+    color: "grey"
   },
 
   buttonsBox: {
-    flexDirection: 'row',
-    alignSelf: 'center',
+    flexDirection: "row",
+    alignSelf: "center",
     borderRadius: 16,
-    justifyContent: 'space-evenly'
+    justifyContent: "space-evenly"
   },
 
   userInfoBox_buttons: {
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
     padding: 12,
     margin: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-    width: '40%'
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    width: "40%"
   },
 
   eventButtons: {
-    flexDirection: 'row',
-    backgroundColor: 'lightblue',
+    flexDirection: "row",
+    backgroundColor: "lightblue",
     padding: 12,
     // margin: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     // borderColor: 'rgba(0, 0, 0, 0.1)',
-    width: '48.5%',
+    width: "48.5%",
     borderWidth: 2,
-    borderColor: 'blue'
+    borderColor: "blue"
   },
 
   eventsList: {
-    width: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightpink'
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "lightpink"
   },
 
   eventParent: {
-    width: '90%',
+    width: "90%",
+
     marginBottom: 15,
     borderBottomWidth: 2
   },
   eventTitle: {
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   eventDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    flexDirection: "row",
+    justifyContent: "space-evenly"
 
   }
-})
+});
 
 // events: [
 // {

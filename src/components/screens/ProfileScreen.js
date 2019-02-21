@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
+import Modal from "react-native-modal";
 import { ListItem } from "react-native-elements";
+import { Input } from "../Input";
 
 const reviews = [
   {
@@ -48,6 +50,44 @@ const reviews = [
 ];
 
 export default class Profile extends Component {
+  state = {
+    visibleModal: null,
+    img: ""
+  };
+
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text>Profile Form</Text>
+      <TouchableOpacity onPress={() => this.setState({ img: null })}>
+        <View style={styles.button2}>
+          <Text>Change profile image</Text>
+        </View>
+      </TouchableOpacity>
+      <Text>Change address</Text>
+      <Input
+        placeholder="Address"
+        onChangeText={event_adress => this.setState({ event_adress })}
+        value={""}
+      />
+      <Input
+        placeholder="Postcode"
+        onChangeText={event_adress => this.setState({ event_adress })}
+        value={""}
+      />
+      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <View style={styles.button}>
+          <Text>Submit address</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <View style={styles.button}>
+          <Text>Close</Text>
+        </View>
+      </TouchableOpacity>
+      {/* {this._renderButton("Close", () => this.setState({ visibleModal: null }))} */}
+    </View>
+  );
+
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -65,10 +105,16 @@ export default class Profile extends Component {
           </Text>
         </View>
         <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => this.setState({ visibleModal: 1 })}
+          >
             <Text> Edit Info</Text>
           </TouchableOpacity>
         </View>
+        <Modal isVisible={this.state.visibleModal === 1}>
+          {this._renderModalContent()}
+        </Modal>
         <View style={styles.reviewHolder}>
           {reviews.map((list, i) => (
             <ListItem
@@ -172,5 +218,32 @@ const styles = StyleSheet.create({
 
     borderRadius: 30,
     backgroundColor: "#00BFFF"
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button: {
+    backgroundColor: "#00BFFF",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button2: {
+    backgroundColor: "#00BFFF",
+    padding: 33,
+    // fontSize: 50,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
   }
 });
