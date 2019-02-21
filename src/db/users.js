@@ -1,10 +1,9 @@
 import firebase from 'firebase'
 
-const postNewUser = (uid, username, firstName, surname, email, houseNo, street, postcode, long, lat) => {
-  firebase.database().ref('/Users')
-    .push(
+export const postNewUser = (uid, username, firstName, surname, email, houseNo, street, postcode, long, lat) => {
+  firebase.database().ref(`/Users/${uid}`)
+    .set(
       {
-        uid,
         username,
         firstName,
         surname,
@@ -17,7 +16,12 @@ const postNewUser = (uid, username, firstName, surname, email, houseNo, street, 
         gems : 0,
       }
     )
-
 }
 
-export default postNewUser;
+export const getUserByID = (userID) => {
+  firebase.database().ref(`/Users/${userID}`)
+    .once('value')
+    .then((snapshot) => {
+      return snapshot.val();
+    })
+}
