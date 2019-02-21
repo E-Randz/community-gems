@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, ButtonGroup } from "react-native-elements";
 
 export default class EventsList extends Component {
   state = {
+    selectedIndex: 0,
     events: [
       {
         title: "event1",
@@ -62,14 +63,26 @@ export default class EventsList extends Component {
       }
     ]
   };
+
+  updateIndex = selectedIndex => {
+    this.setState({ selectedIndex });
+  };
+
   render() {
     const { events } = this.state;
-
+    const buttons = ["List", "Map"];
+    const { selectedIndex } = this.state;
     return (
       <ScrollView>
         <View style={styles.header}>
           <Text style={styles.pageTitle}>Events</Text>
         </View>
+        <ButtonGroup
+          onPress={this.updateIndex}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{ height: 50 }}
+        />
         {/* <View style={styles.body}> */}
         <View style={styles.reviewHolder}>
           {events.map((event, i) => (
@@ -88,7 +101,6 @@ export default class EventsList extends Component {
             />
           ))}
         </View>
-        {/* </View> */}
       </ScrollView>
     );
   }
@@ -185,5 +197,64 @@ const styles = StyleSheet.create({
 
     borderRadius: 30,
     backgroundColor: "#00BFFF"
+  },
+  button: {
+    backgroundColor: "lightblue",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button2: {
+    backgroundColor: "#00BFFF",
+    padding: 33,
+    // fontSize: 50,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  button3: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "lightblue",
+    padding: 12,
+    // margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: "48.5%",
+    borderWidth: 2,
+    borderColor: "blue"
+  },
+  button4: {
+    flex: 2,
+    flexDirection: "row",
+    backgroundColor: "lightblue",
+    padding: 12,
+    // margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: "48.5%",
+    borderWidth: 2,
+    borderColor: "blue"
+  },
+  buttonsBox: {
+    flexDirection: "row",
+    alignSelf: "center",
+    borderRadius: 16,
+    justifyContent: "space-evenly"
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    marginTop: 80
   }
 });
