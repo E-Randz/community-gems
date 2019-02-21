@@ -10,8 +10,6 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
-import { getUserByID, editUser } from './src/db/users'
-
 
 firebase.initializeApp(firebaseConfig);
 
@@ -22,12 +20,11 @@ const switchNavigator = createSwitchNavigator(
     Auth: AuthNavigator
   },
   {
-    initialRouteName: "Auth"
+    initialRouteName: "App"
   }
 );
 
 class App extends Component {
-
   state = {};
   render() {
     const AppContainer = createAppContainer(switchNavigator);
