@@ -115,6 +115,7 @@ class HomeScreen extends Component {
               <Image
                 style={styles.userIamge}
                 source={require("../../../assets/heart.jpg")}
+
               />
               <View style={styles.userText}>
                 <Text style={styles.userText_content}>
@@ -139,6 +140,7 @@ class HomeScreen extends Component {
                 <Text>View Profile</Text>
               </TouchableOpacity>
             </View>
+
           </View>
 
           <View style={styles.buttonsBox}>
@@ -163,6 +165,7 @@ class HomeScreen extends Component {
               </View>
             ))}
           </View>
+
         </View>
       </ScrollView>
     );
@@ -177,6 +180,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+
     marginTop: 80
   },
 
@@ -193,6 +197,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: "grey",
     fontWeight: "bold"
+
   },
 
   userData: {
@@ -205,6 +210,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 16
   },
+
 
   userText: {
     width: 220,
@@ -258,6 +264,7 @@ const styles = StyleSheet.create({
 
   eventParent: {
     width: "90%",
+
     marginBottom: 15,
     borderBottomWidth: 2
   },
@@ -267,6 +274,7 @@ const styles = StyleSheet.create({
   eventDetails: {
     flexDirection: "row",
     justifyContent: "space-evenly"
+
   }
 });
 

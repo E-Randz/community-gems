@@ -12,6 +12,7 @@ import firebase from "firebase";
 import { firebaseConfig } from "./config";
 // import postUserbyID from './src/db/users'
 
+
 firebase.initializeApp(firebaseConfig);
 
 const switchNavigator = createSwitchNavigator(
@@ -21,11 +22,12 @@ const switchNavigator = createSwitchNavigator(
     Auth: AuthNavigator
   },
   {
-    initialRouteName: "AuthLoading"
+    initialRouteName: "Auth"
   }
 );
 
 class App extends Component {
+
   // componentDidMount() {
   //   postUserbyID('johnboy', 'john', 'boy', 'tester@tester.com', 23,'johnboy street', 'JB5 7JB', 50 , -10)
 
