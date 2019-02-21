@@ -28,11 +28,6 @@ const switchNavigator = createSwitchNavigator(
 
 class App extends Component {
 
-  componentDidMount() {
-    console.log('hi there :)!vshshs!!')
-    editUser('yE8JCq8A73cSsfDuRCMTyT0NVXX2', 'hello', '3', 'abbey close', 'alcester', 'b49 5QW')
-  }
-
   state = {};
   render() {
     const AppContainer = createAppContainer(switchNavigator);

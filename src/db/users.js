@@ -45,10 +45,8 @@ export const editUser = (userID, description, houseNo, street, town, postcode) =
       lat,
       long
     }
-
-    const updates = {};
-    updates[`/Users/${userID}`] = postData
-    firebase.database().ref().update(updates);
+    
+    firebase.database().ref(`/Users/${userID}`).update(postData);
   })
   .catch(console.log);
   
