@@ -4,6 +4,8 @@ import { Input } from "../Input";
 import * as firebase from "firebase";
 import { Button } from "../Button";
 import postNewUser from '../../db/users'
+import getCoords from '../../utils'
+
 
 class SignUpScreen extends Component {
   state = {
@@ -20,6 +22,9 @@ class SignUpScreen extends Component {
   signUpUser = () => {
     const { email, password, username, firstName, surname, house_number, streetName, postcode } = this.state;
     const { navigate } = this.props.navigation;
+    const address = `${house_number}+${streetName}+${postcode}`
+    const result = {}
+    
     try {
       if (this.state.password.length < 6) {
         alert("Please enter atleast 6 characters");
@@ -29,8 +34,13 @@ class SignUpScreen extends Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
+          return getCoords(address)
+        })
+        .then((res) => {
+          const lat = res.data.results[0].geometry.location.lat
+          const long = res.data.results[0].geometry.location.lng
           const user = firebase.auth().currentUser;
-          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, postcode, 90, 2);
+          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, postcode, lat, long);
         })
         .then(() => {
           navigate("App");
@@ -41,7 +51,6 @@ class SignUpScreen extends Component {
   };
 
   render() {
-    console.log('hi');
     return (
       <ScrollView style={styles.container}>
         <Text>Sign Up Screen </Text>

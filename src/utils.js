@@ -1,13 +1,12 @@
-const opencage = require('opencage-api-client')
+import axios from 'axios'
 
-const getCords = (address) => {
-  opencage.geocode(address) 
-  .then(data => {
-        coords = data.results.geometry
-        return coords
-        }
-    )
-    .catch(error => { console.log('error', error.message)})
-}
+const api = 'AIzaSyBoKaEHpAaSVqM3mHggf0nlerwLKWutg7A'
 
-export default getCords
+ function getCoords(address) {
+
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}+CA&key=${api}`);
+
+} 
+
+export default getCoords
+
