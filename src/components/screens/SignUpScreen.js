@@ -40,7 +40,7 @@ class SignUpScreen extends Component {
           const lat = res.data.results[0].geometry.location.lat
           const long = res.data.results[0].geometry.location.lng
           const user = firebase.auth().currentUser;
-          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, postcode, lat, long);
+          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, postcode, long, lat);
         })
         .then(() => {
           navigate("App");
