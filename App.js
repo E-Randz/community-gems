@@ -9,7 +9,8 @@ import TabNavigator from "./src/navigation/TabNavigator";
 import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
-import firebaseConfig from "./config";
+import { firebaseConfig } from "./config";
+// import postUserbyID from './src/db/users'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -25,6 +26,11 @@ const switchNavigator = createSwitchNavigator(
 );
 
 class App extends Component {
+  // componentDidMount() {
+  //   postUserbyID('johnboy', 'john', 'boy', 'tester@tester.com', 23,'johnboy street', 'JB5 7JB', 50 , -10)
+
+  // }
+
   state = {};
   render() {
     const AppContainer = createAppContainer(switchNavigator);

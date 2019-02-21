@@ -5,7 +5,7 @@ class MessageScreen extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text>Messages</Text>
+        <Text>Messages here</Text>
       </View>
     )
   }
