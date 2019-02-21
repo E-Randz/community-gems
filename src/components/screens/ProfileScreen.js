@@ -5,11 +5,14 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import Modal from "react-native-modal";
 import { ListItem } from "react-native-elements";
 import { Input } from "../Input";
+import { ImagePicker, Permissions } from "expo";
+import firebase from "firebase";
 
 const reviews = [
   {
@@ -55,10 +58,48 @@ export default class Profile extends Component {
     img: ""
   };
 
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  };
+
+  onChangeImagePress = async () => {
+    await this.askPermissionsAsync();
+    let result = await ImagePicker.launchCameraAsync();
+    // let result = await ImagePicker.launchImageLibraryAsync();
+
+    if (!result.cancelled) {
+      this.uploadImage(result.uri, "test-image")
+        .then(() => {
+          Alert.alert("image caught");
+        })
+        .catch(error => Alert.alert(error));
+    }
+  };
+
+  test = () => {
+    let ref = firebase
+      .storage()
+      .ref()
+      .child("images/test-image");
+    ref.getDownloadURL().then(url => console.log(url));
+  };
+
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    let ref = firebase
+      .storage()
+      .ref()
+      .child("images/" + imageName);
+    ref.getDownloadURL().then(url => console.log(url));
+    return ref.put(blob);
+  };
+
   _renderModalContent = () => (
     <View style={styles.modalContent}>
       <Text>Profile Form</Text>
-      <TouchableOpacity onPress={() => this.setState({ img: null })}>
+      <TouchableOpacity onPress={this.onChangeImagePress}>
         <View style={styles.button2}>
           <Text>Change profile image</Text>
         </View>
@@ -74,7 +115,7 @@ export default class Profile extends Component {
         onChangeText={event_adress => this.setState({ event_adress })}
         value={""}
       />
-      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+      <TouchableOpacity onPress={() => this.test}>
         <View style={styles.button}>
           <Text>Submit address</Text>
         </View>
