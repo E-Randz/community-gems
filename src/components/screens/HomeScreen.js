@@ -107,47 +107,58 @@ class HomeScreen extends Component {
 
     return (
       <ScrollView>
-        <View style={styles.userInfoBox}>
-          <Text style={styles.userInfoName}>Tymmy123</Text>
-        </View>
-        <View style={styles.userData}>
-          <Image
-            style={styles.userIamge}
-            source={require('../../../assets/heart.jpg')}
-          />
-          <Text style={styles.userText}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s.
-          </Text>
-        </View>
 
-        <View style={styles.buttonsBox}>
-          <TouchableOpacity style={styles.userInfoBox_buttons}>
-            <Text>View Leaderboard</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.userInfoBox_buttons}>
-            <Text>View Profile</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.eventButtons}>
-          <TouchableOpacity style={styles.userInfoBox}>
-            <Text>Upcoming</Text>
-          </TouchableOpacity>
+        <View style={styles.container}>
+          <View style={styles.userInfoBox}>
+            <Text style={styles.userInfoName}>Tymmy123</Text>
 
-          <TouchableOpacity style={styles.userInfoBox}>
-            <Text>Attended</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.eventsList}>
-          {events.map((event, i) => (
-            <View key={i}>
-              <Text>title {event.title}</Text>
-              <Text>{event.start}</Text>
-              <Text>{event.location}</Text>
-              <Text>{event.eventOrganizer}</Text>
+            <View style={styles.userData}>
+              <Image
+                style={styles.userIamge}
+                source={require('../../../assets/heart.jpg')}
+              />
+              <View style={styles.userText}>
+                <Text style={styles.userText_content}>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s.
+                </Text>
+              </View>
             </View>
-          ))}
+
+            <View style={styles.buttonsBox}>
+              <TouchableOpacity style={styles.userInfoBox_buttons}>
+                <Text>View Leaderboard</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.userInfoBox_buttons}>
+                <Text>View Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.buttonsBox}>
+            <TouchableOpacity style={styles.eventButtons}>
+              <Text>Upcoming</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.eventButtons}>
+              <Text>Attended</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.eventsList}>
+            {events.map((event, i) => (
+              <View style={styles.eventParent} key={i}>
+                <Text style={styles.eventTitle}>title: {event.title}</Text>
+                <View style={styles.eventDetails}>
+                  <Text>{event.start}</Text>
+                  <Text>{event.location}</Text>
+                  <Text>By: {event.eventOrganizer}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
         </View>
       </ScrollView>
     )
@@ -158,29 +169,28 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+
+    backgroundColor: 'pink',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    margin: 30
+    marginTop: 80
   },
 
   userInfoBox: {
-    display: 'flex',
-    width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'flex-start'
   },
 
   userInfoName: {
-    display: 'flex',
     flexDirection: 'row',
+    fontSize: 35,
+    marginLeft: 40,
     color: 'grey',
-    fontSize: 30
+    fontWeight: 'bold'
 
-    // alignItems: 'flex - start'
   },
 
   userData: {
@@ -190,34 +200,73 @@ const styles = StyleSheet.create({
   userIamge: {
     width: 150,
     height: 120,
-    margin: 10
+    margin: 10,
+    borderRadius: 16
   },
+
+
   userText: {
     width: 220,
     height: 120,
     margin: 10
   },
 
+  userText_content: {
+    justifyContent: 'space-evenly',
+    color: 'grey'
+  },
+
   buttonsBox: {
     flexDirection: 'row',
-    backgroundColor: 'red',
-    borderRadius: 16
+    alignSelf: 'center',
+    borderRadius: 16,
+    justifyContent: 'space-evenly'
   },
 
   userInfoBox_buttons: {
-    color: 'red',
-    margin: 20,
-    backgroundColor: 'red'
-  },
-  eventButtons: {
-    flexDirection: 'row'
-    // justifyContent: 'center'
-  },
-  eventsList: {
-    display: 'flex',
-    flex: 1,
+    backgroundColor: 'lightblue',
+    padding: 12,
+    margin: 16,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: '40%'
+  },
+
+  eventButtons: {
+    flexDirection: 'row',
+    backgroundColor: 'lightblue',
+    padding: 12,
+    // margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    // borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: '48.5%',
+    borderWidth: 2,
+    borderColor: 'blue'
+  },
+
+  eventsList: {
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'lightpink'
+  },
+
+  eventParent: {
+    width: '90%',
+    marginBottom: 15,
+    borderBottomWidth: 2
+  },
+  eventTitle: {
+    fontWeight: 'bold'
+  },
+  eventDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+
   }
 })
 
