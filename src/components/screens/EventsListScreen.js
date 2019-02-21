@@ -66,10 +66,11 @@ export default class EventsList extends Component {
     const { events } = this.state;
 
     return (
-      <View style={styles.header}>
-        <View style={styles.body}>
-          <Text style={styles.name}>Events</Text>
+      <ScrollView>
+        <View style={styles.header}>
+          <Text style={styles.pageTitle}>Events</Text>
         </View>
+        {/* <View style={styles.body}> */}
         <View style={styles.reviewHolder}>
           {events.map((event, i) => (
             <ListItem
@@ -87,7 +88,8 @@ export default class EventsList extends Component {
             />
           ))}
         </View>
-      </View>
+        {/* </View> */}
+      </ScrollView>
     );
   }
 }
@@ -118,6 +120,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "black",
     fontWeight: "600"
+  },
+  pageTitle: {
+    fontSize: 22,
+    color: "black",
+    fontWeight: "600",
+    alignSelf: "center",
+    position: "absolute",
+    marginTop: 130
   },
   reviewBox: {
     fontSize: 6,
