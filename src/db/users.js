@@ -30,21 +30,26 @@ export const getUserByID = (userID) => {
     })
 }
 
-export const editUser = (userID, description, house_number, streetName, town, postcode) => {
-  const address = `${house_number}+${streetName}+${town}+${postcode}`;
+export const editUser = (userID, description, houseNo, street, town, postcode) => {
+  const address = `${houseNo}+${street}+${town}+${postcode}`;
   getCoords(address)
   .then((res) => {
+    const lat = res.data.results[0].geometry.location.lat
+    const long = res.data.results[0].geometry.location.lng
+
     const postData = {
-      house_number,
-      streetName,
+      houseNo,
+      street,
       town,
       postcode,
       lat,
       long
     }
-    const lat = res.data.results[0].geometry.location.lat
-    const long = res.data.results[0].geometry.location.lng
-    firebase.database().ref(`/Users/${userID}`).update(postData);
+
+    const updates = {};
+    updates[`/Users/${userID}`] = postData
+    firebase.database().ref().update(updates);
   })
+  .catch(console.log);
   
 }

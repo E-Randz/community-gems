@@ -10,7 +10,7 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
-import { getUserByID } from './src/db/users'
+import { getUserByID, editUser } from './src/db/users'
 
 
 firebase.initializeApp(firebaseConfig);
@@ -28,10 +28,10 @@ const switchNavigator = createSwitchNavigator(
 
 class App extends Component {
 
-  // componentDidMount() {
-  //   postUserbyID('johnboy', 'john', 'boy', 'tester@tester.com', 23,'johnboy street', 'JB5 7JB', 50 , -10)
-
-  // }
+  componentDidMount() {
+    console.log('hi there :)!vshshs!!')
+    editUser('yE8JCq8A73cSsfDuRCMTyT0NVXX2', 'hello', '3', 'abbey close', 'alcester', 'b49 5QW')
+  }
 
   state = {};
   render() {
