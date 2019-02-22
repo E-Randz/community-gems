@@ -13,6 +13,7 @@ import { ListItem } from "react-native-elements";
 import { Input } from "../Input";
 import { ImagePicker, Permissions } from "expo";
 import firebase from "firebase";
+import uuid from "uuid";
 
 const reviews = [
   {
@@ -55,7 +56,8 @@ const reviews = [
 export default class Profile extends Component {
   state = {
     visibleModal: null,
-    img: ""
+    img: "emphty",
+    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
   };
 
   askPermissionsAsync = async () => {
@@ -63,12 +65,20 @@ export default class Profile extends Component {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
   };
 
-  onChangeImagePress = async () => {
+  onChangeImagePress = async type => {
     await this.askPermissionsAsync();
-    let result = await ImagePicker.launchCameraAsync();
-    // let result = await ImagePicker.launchImageLibraryAsync();
+
+    /* if (type = 'take') {*/ let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    }); /*} else {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    }); }*/
 
     if (!result.cancelled) {
+      console.log(result.uri);
       this.uploadImage(result.uri, "test-image")
         .then(() => {
           Alert.alert("image caught");
@@ -77,23 +87,32 @@ export default class Profile extends Component {
     }
   };
 
-  test = () => {
-    let ref = firebase
-      .storage()
-      .ref()
-      .child("images/test-image");
-    ref.getDownloadURL().then(url => console.log(url));
-  };
-
   uploadImage = async (uri, imageName) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    let ref = firebase
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function(e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+    const ref = firebase
       .storage()
       .ref()
-      .child("images/" + imageName);
-    ref.getDownloadURL().then(url => console.log(url));
-    return ref.put(blob);
+      .child(uuid.v4());
+
+    const snapshot = await ref.put(blob);
+    blob.close();
+    const remoteURI = await snapshot.ref.getDownloadURL();
+    console.log("remote URI ======", remoteURI);
+    this.setState({ img: remoteURI });
   };
 
   _renderModalContent = () => (
@@ -125,18 +144,15 @@ export default class Profile extends Component {
           <Text>Close</Text>
         </View>
       </TouchableOpacity>
-      {/* {this._renderButton("Close", () => this.setState({ visibleModal: null }))} */}
     </View>
   );
 
   render() {
+    console.log("state img ============", this.state.img);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={{ uri: "https://bootdey.com/img/Content/avatar/avatar6.png" }}
-        />
+        <Image style={styles.avatar} source={{ uri: this.state.img }} />
         <View style={styles.body}>
           <Text style={styles.name}>John Doe</Text>
           <Text style={styles.info}>Gems: 5💎</Text>
