@@ -1,20 +1,20 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { styleSheet, Text, View } from 'react-native'
-import { MapViewAnimated } from 'react-native-maps';
+import { MapView } from 'expo';
 
 const Marker = MapView.Marker
 
 export default class Map extends Component {
 
   state = {
-    places: { name: streetclean }
+    places: { name: 'streetclean' }
   }
 
-  renderMarkers() {
-    return this.state.places.map((place, i) => (
-      <Marker key={i} title={place.name} coordinate={place.coords} />
-    ))
-  }
+  // renderMarkers() {
+  //   return this.state.places.map((place, i) => (
+  //     <Marker key={i} title={place.name} coordinate={place.coords} />
+  //   ))
+  // }
 
   render() {
     const { region } = this.state;
@@ -27,18 +27,18 @@ export default class Map extends Component {
         ShowsMyLocationButton
         >
 
-        {this.renderMarkers()}
+        {/* {this.renderMarkers()} */}
       </MapView>
     )
-
-    const styles = {
-      container: {
-        width: '100%',
-        height: '80%'
-
-      }
-    }
 
   }
 
 }
+
+  const styles = {
+    container: {
+      width: '100%',
+      height: '80%'
+
+    }
+  }
