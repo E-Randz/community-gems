@@ -10,6 +10,7 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
+import { postNewEvent } from './src/db/events'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -25,6 +26,7 @@ const switchNavigator = createSwitchNavigator(
 );
 
 class App extends Component {
+  state = {};
   render() {
     const AppContainer = createAppContainer(switchNavigator);
     return <AppContainer />;

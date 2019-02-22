@@ -1,11 +1,15 @@
+
 import React, { Component } from 'react';
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import CreateEventScreen from "../components/screens/CreateEventScreen";
 import messageNav from "../navigation/MessageNav";
-import eventsList from "../components/screens/EventsListScreen";
 import HomeNavigator from "./HomeNavigator";
+
 import { getUserByID } from '../db/users';
 import firebase from 'firebase';
+
+
+import EventsNavigator from "./EventsNavigator";
 
 
 class TabNavigator extends Component {
@@ -27,8 +31,7 @@ class TabNavigator extends Component {
   render() { 
     const TabNavigation = createBottomTabNavigator({
       Home: HomeNavigator,
-      Events: eventsList,
-      "New Event": CreateEventScreen,
+      Events: EventsNavigator,
       Messages: messageNav
     });
     const TabContainer = createAppContainer(TabNavigation);

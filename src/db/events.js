@@ -1,7 +1,9 @@
 import firebase from 'firebase'
 import getCoords from '../utils'
 
+
 export const postNewEvent = (name, firstLineOfAddress, town, postcode, type, description, dateTime, createdDate, noOfVolunteers, timeScale, creatorUsername, creatorUid) => {
+
   const address = `${firstLineOfAddress}+${town}+${postcode}`
   getCoords(address)
   .then((res) => {
@@ -52,4 +54,5 @@ export const editEvent =  (eventID, name, firstLineOfAddress, town, postcode, ty
     firebase.database().ref(`/Events/${eventID}`).update(updatedData)
   })
   .catch(console.log);
+
 }
