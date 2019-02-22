@@ -135,9 +135,9 @@ export default class EventsList extends Component {
                 }
               }}
               title={event.title}
-              subtitle={`${event.start}\n${event.location}\nOrganizer :${
-                event.eventOrganizer
-              }`}
+              subtitle={`${event.start.slice(0, 10)}\n${
+                event.location
+              }\nOrganizer :${event.eventOrganizer}`}
               style={styles.reviewBox}
             />
           ))}
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00BFFF",
     fontWeight: "600",
     borderBottomColor: "#00BFFF",
-    borderBottomWidth: 1
+    borderBottomWidth: 2
   },
   body: {
     marginTop: 70,
