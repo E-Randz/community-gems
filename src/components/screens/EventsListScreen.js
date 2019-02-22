@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   plus: {
     fontSize: 30,
     marginLeft: "85%",
+    marginTop: "-10%",
     color: "white",
     backgroundColor: "#318CE7",
     width: 80,
