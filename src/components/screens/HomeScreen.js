@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -10,106 +10,61 @@ import {
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
 
-import firebase from "firebase";
 
-// import { db } from "../../config/db";
-// const db = firebase.database();
+import firebase from 'firebase'
 
-// let userRef = db.ref("/Users");
-
-// class HomeScreen extends Component {
-//   state = {
-//     users: []
-//   }
-
-//   componentDidMount () {
-//     // userRef.on("value", snapshot => {
-//     //   let data = snapshot.val();
-//     //   let users = Object.values(data);
-//     //   this.setState({
-//     //     users
-//     //   });
-//     // });
-//   }
-
-//   render () {
-//     return
-//       <Text>Hello</Text>
-//   }
-// }
-
-// export default HomeScreen
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   }
-// })
 
 class HomeScreen extends Component {
   state = {
-    events: [
+    upcoming: [
       {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "tom"
+        title: 'event1',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
       },
       {
-        title: "event2",
-        start: "2010-01-09T18:30:00",
-        location: "salford",
-        eventOrganizer: "peter"
+        title: 'event1',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
       },
       {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
+        title: 'event1',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
       }
     ],
-    selectedIndex: 0
+    attended: [
+      {
+        title: 'attendedOne',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
+      },
+      {
+        title: 'attendedTwo',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
+      },
+      {
+        title: 'attendedThree',
+        start: '2010-01-09T12:30:00',
+        location: 'manchester',
+        eventOrganizer: 'user'
+      }
+    ],
+    selectedIndex: 0,
+    pastEvent: false
   };
 
-  updateIndex = selectedIndex => {
-    this.setState({ selectedIndex });
-  };
 
-  render() {
-    const { events } = this.state;
+  
+
+  render () {
+    const { upcoming, attended, pastEvent, events } = this.state
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
 
@@ -126,6 +81,7 @@ class HomeScreen extends Component {
         <View style={styles.container}>
           <View style={styles.userInfoBox}>
             <View style={styles.userData}>
+
               <View style={styles.userText}>
                 <Text style={styles.homeText}>Welcome back user!</Text>
                 <Text style={styles.homeText}>You have 100 gems 💎</Text>
@@ -136,13 +92,13 @@ class HomeScreen extends Component {
             <View style={styles.buttonsBox}>
               <TouchableOpacity
                 style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Leaderboard")}
+                onPress={() => this.props.navigation.navigate('Leaderboard')}
               >
                 <Text>Leaderboard</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Profile")}
+                onPress={() => this.props.navigation.navigate('Profile')}
               >
                 <Text>Profile</Text>
               </TouchableOpacity>
@@ -157,7 +113,21 @@ class HomeScreen extends Component {
           />
 
           <View>
-            {events.map((event, i) => (
+            {selectedIndex ? upcoming.map((event, i) => (
+              <ListItem
+                key={i}
+                leftAvatar={{
+                  source: {
+                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                  }
+                }}
+                title={event.title}
+                subtitle={`${event.start.slice(0, 10)}\n${
+                  event.location
+                }\nOrganizer :${event.eventOrganizer}`}
+                style={styles.reviewBox}
+              />
+            )) : attended.map((event, i) => (
               <ListItem
                 key={i}
                 leftAvatar={{
@@ -172,33 +142,44 @@ class HomeScreen extends Component {
                 style={styles.reviewBox}
               />
             ))}
+
           </View>
         </View>
       </ScrollView>
-    );
+    )
+  }
+  handleUpcoming = () => {
+    this.setState({
+      pastEvent: true
+    })
+  }
+  handleAttended = () => {
+    this.setState({
+      pastEvent: false
+    })
   }
 }
 
-export default HomeScreen;
+export default HomeScreen
 
 const styles = StyleSheet.create({
+
   userInfoBox: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    alignItems: "flex-start"
+    flexDirection: 'column',
+    alignItems: 'flex-start'
   },
 
   userInfoName: {
-    flexDirection: "row",
+    flexDirection: 'row',
     fontSize: 35,
     marginLeft: 40,
     color: "grey",
     fontWeight: "bold"
+
   },
 
   userData: {
-    flexDirection: "row"
+    flexDirection: 'row'
   },
 
   reviewBox: {
@@ -227,13 +208,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#00BFFF",
     marginRight: 10
+
   },
 
   buttonsBox: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     borderRadius: 16,
-    justifyContent: "space-evenly"
+    justifyContent: 'space-evenly'
   },
 
   userInfoBox_buttons: {
@@ -256,9 +238,10 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
+
     borderRadius: 4,
     // borderColor: 'rgba(0, 0, 0, 0.1)',
-    width: "48.5%",
+    width: '48.5%',
     borderWidth: 2,
     borderColor: "black"
   },
@@ -269,16 +252,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#00BFFF",
     marginTop: 20
+
   },
 
   eventParent: {
-    width: "90%",
+    width: '90%',
 
     marginBottom: 15,
     borderBottomWidth: 2
   },
   eventTitle: {
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   title: {
     fontSize: 30,
@@ -296,3 +280,4 @@ const styles = StyleSheet.create({
     backgroundColor: "blue"
   }
 });
+

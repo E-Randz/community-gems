@@ -1,7 +1,7 @@
-import { createStackNavigator } from "react-navigation";
-import HomeScreen from "../components/screens/HomeScreen";
-import ProfileScreen from "../components/screens/ProfileScreen";
-import LeaderboardScreen from "../components/screens/LeaderboardScreen";
+import { createStackNavigator } from 'react-navigation'
+import HomeScreen from '../components/screens/HomeScreen'
+import ProfileScreen from '../components/screens/ProfileScreen'
+import LeaderboardScreen from '../components/screens/LeaderboardScreen'
 
 const HomeNavigator = createStackNavigator(
   {
@@ -10,8 +10,8 @@ const HomeNavigator = createStackNavigator(
     Leaderboard: LeaderboardScreen
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: 'Home'
   }
-);
+)
 
-export default HomeNavigator;
+export default HomeNavigator
