@@ -1,11 +1,12 @@
-import { createBottomTabNavigator } from 'react-navigation'
-import CreateEventScreen from '../components/screens/CreateEventScreen'
-import messageNav from '../navigation/MessageNav'
-import HomeNavigator from './HomeNavigator'
+
+import { createBottomTabNavigator } from "react-navigation";
+import messageNav from "../navigation/MessageNav";
+import HomeNavigator from "./HomeNavigator";
+import EventsNavigator from "./EventsNavigator";
 
 const TabNavigator = createBottomTabNavigator({
   Home: HomeNavigator,
-  'New Event': CreateEventScreen,
+  Events: EventsNavigator,
   Messages: messageNav
 })
 

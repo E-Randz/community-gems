@@ -4,15 +4,16 @@ import {
   createBottomTabNavigator,
   createAppContainer,
   createSwitchNavigator
-} from 'react-navigation'
-import TabNavigator from './src/navigation/TabNavigator'
-import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen'
-import AuthNavigator from './src/navigation/AuthNavigator'
-import firebase from 'firebase'
-import { firebaseConfig } from './config'
-// import postUserbyID from './src/db/users'
 
-firebase.initializeApp(firebaseConfig)
+} from "react-navigation";
+import TabNavigator from "./src/navigation/TabNavigator";
+import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
+import AuthNavigator from "./src/navigation/AuthNavigator";
+import firebase from "firebase";
+import { firebaseConfig } from "./config";
+import { postNewEvent } from './src/db/events'
+
+firebase.initializeApp(firebaseConfig);
 
 const switchNavigator = createSwitchNavigator(
   {
@@ -21,14 +22,13 @@ const switchNavigator = createSwitchNavigator(
     Auth: AuthNavigator
   },
   {
-    initialRouteName: 'App'
+    initialRouteName: "AuthLoading"
   }
 )
 
 class App extends Component {
   // componentDidMount() {
-  //   postUserbyID('johnboy', 'john', 'boy', 'tester@tester.com', 23,'johnboy street', 'JB5 7JB', 50 , -10)
-
+  //   postNewEvent('testevent2', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2')
   // }
 
   state = {}
