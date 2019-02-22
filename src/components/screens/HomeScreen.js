@@ -6,11 +6,13 @@ import {
   Button,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
 
 import firebase from "firebase";
+import { getUserByID } from "../../db/users";
 
 class HomeScreen extends Component {
   state = {
@@ -58,6 +60,12 @@ class HomeScreen extends Component {
     pastEvent: false
   };
 
+  async componentDidMount() {
+    const { uid } = await firebase.auth().currentUser;
+    const userObject = await getUserByID(uid);
+    const userString = JSON.stringify(userObject);
+    AsyncStorage.setItem('user', userString)
+  }
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });
   };

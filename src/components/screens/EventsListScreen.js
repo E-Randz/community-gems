@@ -69,6 +69,13 @@ export default class EventsList extends Component {
     ]
   };
 
+  async componentDidMount() {
+    const userString = await AsyncStorage.getItem('user');
+    const user = JSON.parse(userString);
+    console.log('hello');
+    console.log(user);
+  }
+
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });
   };
