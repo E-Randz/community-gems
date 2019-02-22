@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#00BFFF",
     paddingBottom: 10,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center",
     marginBottom: 10
   },
@@ -192,18 +192,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#318CE7",
     width: 80,
     height: 50,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center"
-  },
-  plusHolder: {
-    // marginTop: 10,
-    // height: 25,
-    // flexDirection: "row",
-    // justifyContent: "center",
-    // marginBottom: 20,
-    // width: 120,
-    // borderRadius: 30,
-    // backgroundColor: "black"
   },
   reviewBox: {
     fontSize: 6,
@@ -213,9 +203,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginTop: 2
   },
-  //   reviewHolder: {
-  //     backgroundColor: "#00BFFF"
-  //   },
   reviewBox: {
     fontSize: 6,
     backgroundColor: "#00BFFF",
