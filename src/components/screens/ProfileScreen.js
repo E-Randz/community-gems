@@ -56,8 +56,9 @@ const reviews = [
 export default class Profile extends Component {
   state = {
     visibleModal: null,
-    img: "emphty",
-    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+    img: "https://bootdey.com/img/Content/avatar/avatar6.png",
+    uri: "https://bootdey.com/img/Content/avatar/avatar6.png",
+    address: ""
   };
 
   askPermissionsAsync = async () => {
@@ -68,14 +69,15 @@ export default class Profile extends Component {
   onChangeImagePress = async type => {
     await this.askPermissionsAsync();
 
-    /* if (type = 'take') {*/ let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    }); /*} else {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    }); }*/
+    const result = type
+      ? await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [4, 3]
+        })
+      : await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          aspect: [4, 3]
+        });
 
     if (!result.cancelled) {
       console.log(result.uri);
@@ -118,16 +120,23 @@ export default class Profile extends Component {
   _renderModalContent = () => (
     <View style={styles.modalContent}>
       <Text>Profile Form</Text>
-      <TouchableOpacity onPress={this.onChangeImagePress}>
+      <Text>Change profile image</Text>
+
+      <TouchableOpacity onPress={() => this.onChangeImagePress("take")}>
         <View style={styles.button2}>
-          <Text>Change profile image</Text>
+          <Text>Take New Image</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => this.onChangeImagePress("")}>
+        <View style={styles.button2}>
+          <Text>Choose From Gallery</Text>
         </View>
       </TouchableOpacity>
       <Text>Change address</Text>
       <Input
         placeholder="Address"
         onChangeText={event_adress => this.setState({ event_adress })}
-        value={""}
+        value={this.state.address}
       />
       <Input
         placeholder="Postcode"
@@ -206,7 +215,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 130,
     height: 130,
-    borderRadius: 63,
+    borderRadius: 40,
     borderWidth: 4,
     borderColor: "white",
     marginBottom: 10,
@@ -295,7 +304,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     backgroundColor: "#00BFFF",
-    padding: 33,
+    padding: 15,
     // fontSize: 50,
     margin: 5,
     justifyContent: "center",
