@@ -135,9 +135,9 @@ export default class EventsList extends Component {
                 }
               }}
               title={event.title}
-              subtitle={`${event.start}\n${event.location}\nOrganizer :${
-                event.eventOrganizer
-              }`}
+              subtitle={`${event.start.slice(0, 10)}\n${
+                event.location
+              }\nOrganizer :${event.eventOrganizer}`}
               style={styles.reviewBox}
             />
           ))}
@@ -180,29 +180,20 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#00BFFF",
     paddingBottom: 10,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center",
     marginBottom: 10
   },
   plus: {
     fontSize: 30,
     marginLeft: "85%",
+    marginTop: "-10%",
     color: "white",
     backgroundColor: "#318CE7",
     width: 80,
     height: 50,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center"
-  },
-  plusHolder: {
-    // marginTop: 10,
-    // height: 25,
-    // flexDirection: "row",
-    // justifyContent: "center",
-    // marginBottom: 20,
-    // width: 120,
-    // borderRadius: 30,
-    // backgroundColor: "black"
   },
   reviewBox: {
     fontSize: 6,
@@ -212,15 +203,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginTop: 2
   },
-  //   reviewHolder: {
-  //     backgroundColor: "#00BFFF"
-  //   },
   reviewBox: {
     fontSize: 6,
     backgroundColor: "#00BFFF",
     fontWeight: "600",
     borderBottomColor: "#00BFFF",
-    borderBottomWidth: 1
+    borderBottomWidth: 2
   },
   body: {
     marginTop: 70,

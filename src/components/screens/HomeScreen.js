@@ -8,79 +8,13 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
+import { ListItem, ButtonGroup } from "react-native-elements";
 
 import firebase from "firebase";
 
-// import { db } from "../../config/db";
-// const db = firebase.database();
-
-// let userRef = db.ref("/Users");
-
-// class HomeScreen extends Component {
-//   state = {
-//     users: []
-//   }
-
-//   componentDidMount () {
-//     // userRef.on("value", snapshot => {
-//     //   let data = snapshot.val();
-//     //   let users = Object.values(data);
-//     //   this.setState({
-//     //     users
-//     //   });
-//     // });
-//   }
-
-//   render () {
-//     return
-//       <Text>Hello</Text>
-//   }
-// }
-
-// export default HomeScreen
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   }
-// })
-
 class HomeScreen extends Component {
   state = {
-    events: [
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "tom"
-      },
-      {
-        title: "event2",
-        start: "2010-01-09T18:30:00",
-        location: "salford",
-        eventOrganizer: "peter"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
+    upcoming: [
       {
         title: "event1",
         start: "2010-01-09T12:30:00",
@@ -99,30 +33,57 @@ class HomeScreen extends Component {
         location: "manchester",
         eventOrganizer: "user"
       }
-    ]
+    ],
+    attended: [
+      {
+        title: "attendedOne",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
+      },
+      {
+        title: "attendedTwo",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
+      },
+      {
+        title: "attendedThree",
+        start: "2010-01-09T12:30:00",
+        location: "manchester",
+        eventOrganizer: "user"
+      }
+    ],
+    selectedIndex: 0,
+    pastEvent: false
+  };
+
+  updateIndex = selectedIndex => {
+    this.setState({ selectedIndex });
   };
 
   render() {
-    const { events } = this.state;
-
+    const { upcoming, attended, pastEvent, events } = this.state;
+    const buttons = ["Upcoming", "Attended"];
+    const { selectedIndex } = this.state;
+    console.log(this.state.selectedIndex);
     return (
       <ScrollView>
+        <View
+          style={{
+            paddingTop: 80,
+            backgroundColor: "#00BFFF",
+            alignItems: "center"
+          }}
+        />
+        <Text style={styles.title}>HOME</Text>
         <View style={styles.container}>
           <View style={styles.userInfoBox}>
-            <Text style={styles.userInfoName}>Tymmy123</Text>
-
             <View style={styles.userData}>
-              <Image
-                style={styles.userIamge}
-                source={require("../../../assets/heart.jpg")}
-
-              />
               <View style={styles.userText}>
-                <Text style={styles.userText_content}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s.
-                </Text>
+                <Text style={styles.homeText}>Welcome back user!</Text>
+                <Text style={styles.homeText}>You have 100 gems 💎</Text>
+                <Text style={styles.homeText}>You have 5 Upcoming Events</Text>
               </View>
             </View>
 
@@ -131,41 +92,59 @@ class HomeScreen extends Component {
                 style={styles.userInfoBox_buttons}
                 onPress={() => this.props.navigation.navigate("Leaderboard")}
               >
-                <Text>View Leaderboard</Text>
+                <Text>Leaderboard</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.userInfoBox_buttons}
                 onPress={() => this.props.navigation.navigate("Profile")}
               >
-                <Text>View Profile</Text>
+                <Text>Profile</Text>
               </TouchableOpacity>
             </View>
-
           </View>
 
-          <View style={styles.buttonsBox}>
-            <TouchableOpacity style={styles.eventButtons}>
-              <Text>Upcoming</Text>
-            </TouchableOpacity>
+          <ButtonGroup
+            onPress={this.updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={buttons}
+            containerStyle={{ height: 50 }}
+          />
 
-            <TouchableOpacity style={styles.eventButtons}>
-              <Text>Attended</Text>
-            </TouchableOpacity>
+          <View>
+            {selectedIndex
+              ? attended.map((event, i) => (
+                  <ListItem
+                    key={i}
+                    leftAvatar={{
+                      source: {
+                        uri:
+                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }
+                    }}
+                    title={event.title}
+                    subtitle={`${event.start.slice(0, 10)}\n${
+                      event.location
+                    }\nOrganizer :${event.eventOrganizer}`}
+                    style={styles.reviewBox}
+                  />
+                ))
+              : upcoming.map((event, i) => (
+                  <ListItem
+                    key={i}
+                    leftAvatar={{
+                      source: {
+                        uri:
+                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }
+                    }}
+                    title={event.title}
+                    subtitle={`${event.start.slice(0, 10)}\n${
+                      event.location
+                    }\nOrganizer :${event.eventOrganizer}`}
+                    style={styles.reviewBox}
+                  />
+                ))}
           </View>
-
-          <View style={styles.eventsList}>
-            {events.map((event, i) => (
-              <View style={styles.eventParent} key={i}>
-                <Text style={styles.eventTitle}>title: {event.title}</Text>
-                <View style={styles.eventDetails}>
-                  <Text>{event.start}</Text>
-                  <Text>{event.location}</Text>
-                  <Text>By: {event.eventOrganizer}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-
         </View>
       </ScrollView>
     );
@@ -175,19 +154,8 @@ class HomeScreen extends Component {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "pink",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-
-    marginTop: 80
-  },
-
   userInfoBox: {
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
     alignItems: "flex-start"
   },
 
@@ -197,30 +165,38 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: "grey",
     fontWeight: "bold"
-
   },
 
   userData: {
     flexDirection: "row"
   },
 
-  userIamge: {
-    width: 150,
-    height: 120,
-    margin: 10,
-    borderRadius: 16
+  reviewBox: {
+    fontSize: 6,
+    backgroundColor: "#00BFFF",
+    fontWeight: "600",
+    borderColor: "#00BFFF",
+    borderBottomWidth: 2,
+    marginTop: 2
   },
 
+  homeText: {
+    textAlign: "center",
+    fontSize: 20
+  },
 
   userText: {
-    width: 220,
-    height: 120,
-    margin: 10
+    width: "100%",
+    height: 150,
+    textAlign: "center"
   },
 
   userText_content: {
     justifyContent: "space-evenly",
-    color: "grey"
+    color: "grey",
+    borderWidth: 1,
+    borderColor: "#00BFFF",
+    marginRight: 10
   },
 
   buttonsBox: {
@@ -231,35 +207,39 @@ const styles = StyleSheet.create({
   },
 
   userInfoBox_buttons: {
-    backgroundColor: "lightblue",
+    backgroundColor: "#00BFFF",
     padding: 12,
-    margin: 16,
+    marginTop: -40,
+    marginRight: 5,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderWidth: 1,
+    borderColor: "black",
     width: "40%"
   },
 
   eventButtons: {
     flexDirection: "row",
-    backgroundColor: "lightblue",
+    backgroundColor: "#00BFFF",
     padding: 12,
-    // margin: 16,
+    margin: 5,
     justifyContent: "center",
     alignItems: "center",
+
     borderRadius: 4,
     // borderColor: 'rgba(0, 0, 0, 0.1)',
     width: "48.5%",
     borderWidth: 2,
-    borderColor: "blue"
+    borderColor: "black"
   },
 
   eventsList: {
     width: "90%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "lightpink"
+    backgroundColor: "#00BFFF",
+    marginTop: 20
   },
 
   eventParent: {
@@ -271,60 +251,19 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontWeight: "bold"
   },
+  title: {
+    fontSize: 30,
+    color: "white",
+    backgroundColor: "#00BFFF",
+    paddingBottom: 10,
+    //fontFamily: "Futura",
+    textAlign: "center",
+    marginBottom: 20
+  },
   eventDetails: {
     flexDirection: "row",
-    justifyContent: "space-evenly"
-
+    justifyContent: "space-evenly",
+    padding: 20,
+    backgroundColor: "blue"
   }
 });
-
-// events: [
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'tom'
-// },
-// {
-//   title: 'event2',
-//   start: '2010-01-09T18:30:00',
-//   location: 'salford',
-//   eventOrganizer: 'peter'
-// }
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// {
-//   title: 'event1',
-//   start: '2010-01-09T12:30:00',
-//   location: 'manchester',
-//   eventOrganizer: 'user'
-// },
-// ]
