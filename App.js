@@ -27,9 +27,9 @@ const switchNavigator = createSwitchNavigator(
 
 class App extends Component {
 
-  componentDidMount() {
-    postNewEvent('testevent2', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2')
-  }
+  // componentDidMount() {
+  //   postNewEvent('testevent2', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2')
+  // }
 
   state = {};
   render() {
