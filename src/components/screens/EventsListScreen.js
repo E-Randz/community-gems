@@ -86,13 +86,18 @@ export default class EventsList extends Component {
       }
     ];
     const { events, sort_by } = this.state;
-    console.log(sort_by);
     const buttons = ["List", "Map"];
     const { selectedIndex } = this.state;
     return (
       <ScrollView>
         <View style={styles.header}>
-          <Text style={styles.pageTitle}>Events</Text>
+          <TouchableOpacity
+            style={styles.plusHolder}
+            onPress={() => this.props.navigation.navigate("CreateEvent")}
+          >
+            <Text style={styles.plus}>+</Text>
+          </TouchableOpacity>
+          <Text style={styles.pageTitle}>EVENTS</Text>
         </View>
         <Dropdown
           valueExtractor={({ value }) => value}
@@ -144,8 +149,9 @@ export default class EventsList extends Component {
 
 const styles = StyleSheet.create({
   header: {
+    paddingTop: 45,
     backgroundColor: "#00BFFF",
-    height: 100
+    alignItems: "center"
   },
 
   buttonBox: {
@@ -170,12 +176,33 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   pageTitle: {
-    fontSize: 22,
-    color: "black",
-    fontWeight: "600",
-    alignSelf: "center",
-    position: "absolute",
-    marginTop: 50
+    fontSize: 30,
+    color: "white",
+    backgroundColor: "#00BFFF",
+    paddingBottom: 10,
+    fontFamily: "Futura",
+    textAlign: "center",
+    marginBottom: 10
+  },
+  plus: {
+    fontSize: 30,
+    marginLeft: "85%",
+    color: "white",
+    backgroundColor: "#318CE7",
+    width: 80,
+    height: 50,
+    fontFamily: "Futura",
+    textAlign: "center"
+  },
+  plusHolder: {
+    // marginTop: 10,
+    // height: 25,
+    // flexDirection: "row",
+    // justifyContent: "center",
+    // marginBottom: 20,
+    // width: 120,
+    // borderRadius: 30,
+    // backgroundColor: "black"
   },
   reviewBox: {
     fontSize: 6,
