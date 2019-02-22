@@ -10,8 +10,7 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
-// import postUserbyID from './src/db/users'
-
+import { postNewEvent } from './src/db/events'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -22,16 +21,15 @@ const switchNavigator = createSwitchNavigator(
     Auth: AuthNavigator
   },
   {
-    initialRouteName: "Auth"
+    initialRouteName: "App"
   }
 );
 
 class App extends Component {
 
-  // componentDidMount() {
-  //   postUserbyID('johnboy', 'john', 'boy', 'tester@tester.com', 23,'johnboy street', 'JB5 7JB', 50 , -10)
-
-  // }
+  componentDidMount() {
+    postNewEvent('testevent', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2', [])
+  }
 
   state = {};
   render() {
