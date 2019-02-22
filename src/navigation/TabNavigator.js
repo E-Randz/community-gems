@@ -1,3 +1,4 @@
+
 import { createBottomTabNavigator } from "react-navigation";
 import messageNav from "../navigation/MessageNav";
 import HomeNavigator from "./HomeNavigator";
@@ -7,6 +8,6 @@ const TabNavigator = createBottomTabNavigator({
   Home: HomeNavigator,
   Events: EventsNavigator,
   Messages: messageNav
-});
+})
 
-export default TabNavigator;
+export default TabNavigator
