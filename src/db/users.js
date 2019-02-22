@@ -22,12 +22,9 @@ export const postNewUser = (uid, username, firstName, surname, email, houseNo, s
     )
 }
 
-export const getUserByID = (userID) => {
-  firebase.database().ref(`/Users/${userID}`)
-    .once('value')
-    .then((snapshot) => {
-      return snapshot.val();
-    })
+export const getUserByID = async (userID) => {
+  const snapshot = await firebase.database().ref(`/Users/${userID}`).once('value')
+  return snapshot;
 }
 
 export const editUser = (userID, description, houseNo, street, town, postcode) => {
@@ -49,5 +46,4 @@ export const editUser = (userID, description, houseNo, street, town, postcode) =
     firebase.database().ref(`/Users/${userID}`).update(postData);
   })
   .catch(console.log);
-  
 }
