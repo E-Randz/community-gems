@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, StyleSheet } from "react-native";
-import { Input } from "../Input";
-import { Button } from "../Button";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
 import firebase from "firebase";
 
 class CreateEventScreen extends Component {
@@ -12,11 +17,11 @@ class CreateEventScreen extends Component {
     event_description: "",
     event_postcode: "",
     event_date: "",
-    event_postDate: "",
+    event_postDate: Date.now(),
     event_numOfVolunteers: "",
     event_timeScale: "",
-    event_creator: "",
-    event_participants: []
+    event_creator: "user",
+    event_participants: ["user", "user2", "user3"]
   };
 
   addEvent = (
@@ -60,98 +65,97 @@ class CreateEventScreen extends Component {
   render() {
     return (
       <ScrollView>
-        <Text>Home Screen1</Text>
-        <Input
-          placeholder="please insert event_name"
-          label="event_name"
-          onChangeText={event_name => this.setState({ event_name })}
-          value={this.state.event_name}
+        <View
+          style={{
+            paddingTop: 90,
+            backgroundColor: "#00BFFF",
+            alignItems: "center"
+          }}
         />
-        <Input
-          placeholder="please insert event_adress"
-          label="event_adress"
-          onChangeText={event_adress => this.setState({ event_adress })}
-          value={this.state.event_adress}
-        />
-        <Input
-          placeholder="please insert event_type"
-          label="event_type"
-          onChangeText={event_type => this.setState({ event_type })}
-          value={this.state.event_type}
-        />
-        <Input
-          placeholder="please insert event_description"
-          label="event_description"
-          onChangeText={event_description =>
-            this.setState({ event_description })
-          }
-          value={this.state.event_description}
-        />
-        <Input
-          placeholder="please insert event_postcode"
-          label="event_postcode"
-          onChangeText={event_postcode => this.setState({ event_postcode })}
-          value={this.state.event_postcode}
-        />
-        <Input
-          placeholder="please insert event_date"
-          label="event date"
-          onChangeText={event_date => this.setState({ event_date })}
-          value={this.state.event_date}
-        />
-        <Input
-          placeholder="please insert event_postDate"
-          label="event_postDate"
-          onChangeText={event_postDate => this.setState({ event_postDate })}
-          value={this.state.event_postDate}
-        />
-        <Input
-          placeholder="please insert event_numOfVolunteers"
-          label="event_numOfVolunteers"
-          onChangeText={event_numOfVolunteers =>
-            this.setState({ event_numOfVolunteers })
-          }
-          value={this.state.event_numOfVolunteers}
-        />
-        <Input
-          placeholder="please insert event_timeScale"
-          label="event_timeScale"
-          onChangeText={event_timeScale => this.setState({ event_timeScale })}
-          value={this.state.event_timeScale}
-        />
-        <Input
-          placeholder="please insert event_creator"
-          label="event_creator"
-          onChangeText={event_creator => this.setState({ event_creator })}
-          value={this.state.event_creator}
-        />
-        <Input
-          placeholder="please insert event_participants"
-          label="event_participants"
-          onChangeText={event_participants =>
-            this.setState({ event_participants })
-          }
-          value={this.state.event_participants}
-        />
-        <Button
-          onPress={() =>
-            this.addEvent(
-              this.state.event_name,
-              this.state.event_adress,
-              this.state.event_type,
-              this.state.event_description,
-              this.state.event_postcode,
-              this.state.event_date,
-              this.state.event_postDate,
-              this.state.event_numOfVolunteers,
-              this.state.event_timeScale,
-              this.state.event_creator,
-              this.state.event_participants
-            )
-          }
-        >
-          Add Event
-        </Button>
+        <Text style={styles.title}>CREATE AN EVENT</Text>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            placeholder="please insert event name"
+            label="name"
+            onChangeText={event_name => this.setState({ event_name })}
+            value={this.state.event_name}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert event adress"
+            label="adress"
+            onChangeText={event_adress => this.setState({ event_adress })}
+            value={this.state.event_adress}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert event type"
+            label="event type"
+            onChangeText={event_type => this.setState({ event_type })}
+            value={this.state.event_type}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert event description"
+            label="description"
+            onChangeText={event_description =>
+              this.setState({ event_description })
+            }
+            value={this.state.event_description}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert the event postcode"
+            label="event postcode"
+            onChangeText={event_postcode => this.setState({ event_postcode })}
+            value={this.state.event_postcode}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert the date of event"
+            label="event date"
+            onChangeText={event_date => this.setState({ event_date })}
+            value={this.state.event_date}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert number of volunteers"
+            label="number of volunteers needed"
+            onChangeText={event_numOfVolunteers =>
+              this.setState({ event_numOfVolunteers })
+            }
+            value={this.state.event_numOfVolunteers}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert length of event"
+            label="length of event"
+            onChangeText={event_timeScale => this.setState({ event_timeScale })}
+            value={this.state.event_timeScale}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              this.addEvent(
+                this.state.event_name,
+                this.state.event_adress,
+                this.state.event_type,
+                this.state.event_description,
+                this.state.event_postcode,
+                this.state.event_date,
+                this.state.event_postDate,
+                this.state.event_numOfVolunteers,
+                this.state.event_timeScale,
+                this.state.event_creator,
+                this.state.event_participants
+              );
+              this.props.navigation.navigate("CreateEvent");
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>ADD EVENT</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
   }
@@ -162,8 +166,45 @@ export default CreateEventScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center"
+  },
+  input: {
+    marginTop: 10,
+    height: 60,
+    borderColor: "#E6E6E6",
+    borderBottomWidth: 1,
+    backgroundColor: "#F8F8F8",
+    textAlign: "center",
+    fontSize: 17,
+    width: "100%"
+  },
+  title: {
+    fontSize: 30,
+    color: "white",
+    backgroundColor: "#00BFFF",
+    paddingBottom: 10,
+    fontFamily: "Futura",
+    textAlign: "center",
+    marginBottom: 20
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: "#00BFFF",
+    borderColor: "black",
+    borderWidth: 1.5,
+    textAlign: "center",
+    color: "white",
+    fontSize: 64,
+    overflow: "hidden",
+    padding: 15,
+    width: "100%"
+  },
+  buttonText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 24,
+    fontFamily: "Futura"
   }
 });
