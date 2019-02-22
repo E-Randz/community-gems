@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#00BFFF",
     paddingBottom: 10,
-    fontFamily: "Futura",
+    ////////fontFamily: "Futura",
     textAlign: "center",
     marginBottom: 20
   },
