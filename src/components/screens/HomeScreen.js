@@ -104,7 +104,7 @@ class HomeScreen extends Component {
 
             <View style={styles.userData}>
               <Image
-                style={styles.userIamge}
+                style={styles.userImage}
                 source={require('../../../assets/heart.jpg')}
               />
               <View style={styles.userText}>
@@ -195,14 +195,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-
     marginTop: 80
   },
 
   userInfoBox: {
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
     alignItems: 'flex-start'
   },
 
@@ -218,7 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
 
-  userIamge: {
+  userImage: {
     width: 150,
     height: 120,
     margin: 10,
