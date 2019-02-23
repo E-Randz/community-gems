@@ -10,7 +10,7 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
-import { postNewEvent } from './src/db/events'
+import { postNewEvent, getUserEvents, getEventUsers } from './src/db/events'
 
 firebase.initializeApp(firebaseConfig);
 
@@ -27,9 +27,13 @@ const switchNavigator = createSwitchNavigator(
 
 class App extends Component {
 
-  // componentDidMount() {
-  //   postNewEvent('testevent2', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2')
-  // }
+  componentDidMount() {
+    getEventUsers('-LZKWvtNG3XhaVWFDIhz')
+    getUserEvents('08aoDFnYysOUCfPADRAu911RAKH3')
+
+    // postNewEvent('Move my pots', '12 arlington drive', 'stockport', 'sk27eb', 'street clean', 'great event', Date.now(), Date.now(), 3, 'Small job', 'vabbbzbsbs', 'VsRmfX5PtQRP7KIJ2yStGYGKJef2')
+ 
+  }
 
   state = {};
   render() {

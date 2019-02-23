@@ -51,3 +51,17 @@ export const editUser = (userID, description, houseNo, street, town, postcode) =
   .catch(console.log);
   
 }
+
+export const getUserEvents = (userID) => {
+  firebase.database().ref(`/Users/${userID}/Events`)
+    .once('value')
+    .then((snapshot) => {
+      return snapshot.val();
+    })
+}
+
+export const addEventToUser = (event, userID) => {
+  firebase.database().ref(`/Users/${userID}/Events`)
+  .update(event)
+  .catch(console.log)
+}

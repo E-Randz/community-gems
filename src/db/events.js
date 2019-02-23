@@ -21,7 +21,7 @@ export const postNewEvent = (name, firstLineOfAddress, town, postcode, type, des
       timeScale,
       creatorUsername,
       creatorUid,
-      attendees: {...creatorUsername},
+      attendees: [creatorUsername],
       lat,
       long,
 
@@ -60,8 +60,17 @@ export const editEvent = (eventID, name, firstLineOfAddress, town, postcode, typ
 
 }
 
-export const getUserEvents = (user) => {
-  //make a call to the events database 
-  //check the attendees of each event 
-  //return if the user is included in the attendees
+export const getEventUsers = (eventID) => {
+  firebase.database().ref(`/Events/${eventID}/attendees`)
+  .once('value')
+  .then((snapshot) => {
+    return snapshot.val();
+  })
+}
+
+export const addUsertoEvent = (EventId, user) => {
+  firebase.database().ref(`/Events/${EventID}/attendees`)
+  .update(user)
+  .catch(console.log)
+
 }
