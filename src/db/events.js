@@ -64,13 +64,20 @@ export const getEventUsers = (eventID) => {
   firebase.database().ref(`/Events/${eventID}/attendees`)
   .once('value')
   .then((snapshot) => {
-    return snapshot.val();
+    console.log(snapshot.val());
   })
 }
 
-export const addUsertoEvent = (EventId, user) => {
-  firebase.database().ref(`/Events/${EventID}/attendees`)
+export const addUserToEvent = (eventID, user) => {
+  firebase.database().ref(`/Events/${eventID}`)
+  .child('attendees')
   .update(user)
   .catch(console.log)
+}
 
+export const deleteUserFromEvent = (eventID, userID) => {
+  firebase.database().ref(`/Events/${eventID}/attendees/`)
+  .child(userID)
+  .remove()
+  .catch(console.log)
 }

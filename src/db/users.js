@@ -56,18 +56,20 @@ export const getUserEvents = (userID) => {
   firebase.database().ref(`/Users/${userID}/Events`)
     .once('value')
     .then((snapshot) => {
-      return snapshot.val();
+      console.log(snapshot.val());
     })
 }
 
-export const addEventToUser = (event, userID) => {
-  firebase.database().ref(`/Users/${userID}/Events`)
+export const addEventToUser = (userID, event) => {
+  firebase.database().ref(`/Users/${userID}`)
+  .child('Events')
   .update(event)
   .catch(console.log)
-  //things needed in the event
-  //eventID
-  //name
-  //time and date
-  //lat and long
-  //status
+}
+
+export const deleteEventFromUser = (userID, eventID) => {
+  firebase.database().remove(`/Users/${userID}/Events/`)
+  .child(eventID)
+  .remove()
+  .catch(console.log)
 }
