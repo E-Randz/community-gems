@@ -49,6 +49,7 @@ export const editUser = (
       const long = res.data.results[0].geometry.location.lng;
 
       const postData = {
+        description,
         houseNo,
         street,
         town,
