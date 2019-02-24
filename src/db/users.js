@@ -64,4 +64,10 @@ export const addEventToUser = (event, userID) => {
   firebase.database().ref(`/Users/${userID}/Events`)
   .update(event)
   .catch(console.log)
+  //things needed in the event
+  //eventID
+  //name
+  //time and date
+  //lat and long
+  //status
 }
