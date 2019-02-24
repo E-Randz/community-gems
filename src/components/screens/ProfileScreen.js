@@ -138,10 +138,11 @@ export default class Profile extends Component {
   updateInput = (name, value) => {
     this.setState({
       [name]: value
-    })
-  }
+    });
+  };
 
   setUserInputs = () => {
+
     const { user, userID } = this.props.navigation.state.params;
     const { description, houseNo, street, town, postcode } = user;
     this.setState({
@@ -151,9 +152,9 @@ export default class Profile extends Component {
       street,
       town,
       postcode,
-      visibleModal: null,
-    })
-  }
+      visibleModal: null
+    });
+  };
 
   saveProfileChanges = async () => {
     const { userID, description, houseNo, street, town, postcode } = this.state;
@@ -184,28 +185,30 @@ export default class Profile extends Component {
         <Text>Edit Description</Text>
         <Input
           placeholder="Write something about your self...."
-          onChangeText={description => this.updateInput('description', description)}
+          onChangeText={description =>
+            this.updateInput("description", description)
+          }
           value={this.state.description}
         />
         <Text>Change address</Text>
         <Input
           placeholder="House Number"
-          onChangeText={houseNo => this.updateInput('houseNo', houseNo)}
+          onChangeText={houseNo => this.updateInput("houseNo", houseNo)}
           value={this.state.houseNo}
         />
         <Input
           placeholder="Street"
-          onChangeText={street => this.updateInput('street', street)}
+          onChangeText={street => this.updateInput("street", street)}
           value={this.state.street}
         />
         <Input
           placeholder="Town"
-          onChangeText={town => this.updateInput('town', town)}
+          onChangeText={town => this.updateInput("town", town)}
           value={this.state.town}
         />
         <Input
           placeholder="Postcode"
-          onChangeText={postcode => this.updateInput('postcode', postcode)}
+          onChangeText={postcode => this.updateInput("postcode", postcode)}
           value={this.state.postcode}
         />
         <TouchableOpacity onPress={this.saveProfileChanges}>
@@ -231,9 +234,7 @@ export default class Profile extends Component {
         <View style={styles.body}>
           <Text style={styles.name}>{user.username}</Text>
           <Text style={styles.info}>Gems: {user.gems}💎</Text>
-          <Text style={styles.description}>
-          {user.description}
-          </Text>
+          <Text style={styles.description}>{user.description}</Text>
         </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity

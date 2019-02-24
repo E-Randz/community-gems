@@ -58,8 +58,10 @@ class HomeScreen extends Component {
     ],
     selectedIndex: 0,
     pastEvent: false,
+
     user: null,
     userID: null,
+
   };
 
  componentDidMount() {
@@ -70,9 +72,11 @@ class HomeScreen extends Component {
     const userID = await firebase.auth().currentUser.uid;
     const user = await getUserByID(userID);
     this.setState({
+
       user,
       userID
     })
+
   }
 
   updateIndex = selectedIndex => {
@@ -84,26 +88,31 @@ class HomeScreen extends Component {
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
     return (
-      user && 
-      
-      <ScrollView>
-        <View
-          style={{
-            paddingTop: 80,
-            backgroundColor: "#00BFFF",
-            alignItems: "center"
-          }}
-        />
-        <Text style={styles.title}>HOME</Text>
-        <View style={styles.container}>
-          <View style={styles.userInfoBox}>
-            <View style={styles.userData}>
-              <View style={styles.userText}>
-                <Text style={styles.homeText}>Welcome back {user.username}!</Text>
-                <Text style={styles.homeText}>You have {user.gems} gems 💎</Text>
-                <Text style={styles.homeText}>You have {'???'} Upcoming Events</Text>
+      user && (
+        <ScrollView>
+          <View
+            style={{
+              paddingTop: 80,
+              backgroundColor: "#00BFFF",
+              alignItems: "center"
+            }}
+          />
+          <Text style={styles.title}>HOME</Text>
+          <View style={styles.container}>
+            <View style={styles.userInfoBox}>
+              <View style={styles.userData}>
+                <View style={styles.userText}>
+                  <Text style={styles.homeText}>
+                    Welcome back {user.username}!
+                  </Text>
+                  <Text style={styles.homeText}>
+                    You have {user.gems} gems 💎
+                  </Text>
+                  <Text style={styles.homeText}>
+                    You have {upcoming.length} Upcoming Events
+                  </Text>
+                </View>
               </View>
-            </View>
 
             <View style={styles.buttonsBox}>
               <TouchableOpacity
@@ -119,52 +128,54 @@ class HomeScreen extends Component {
                 <Text>Profile</Text>
               </TouchableOpacity>
             </View>
-          </View>
 
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={buttons}
-            containerStyle={{ height: 50 }}
-          />
+            <ButtonGroup
+              onPress={this.updateIndex}
+              selectedIndex={selectedIndex}
+              buttons={buttons}
+              containerStyle={{ height: 50 }}
+            />
 
-          <View>
-            {selectedIndex
-              ? attended.map((event, i) => (
-                  <ListItem
-                    key={i}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }
-                    }}
-                    title={event.title}
-                    subtitle={`${event.start.slice(0, 10)}\n${
-                      event.location
-                    }\nOrganizer :${event.eventOrganizer}`}
-                    style={styles.reviewBox}
-                  />
-                ))
-              : upcoming.map((event, i) => (
-                  <ListItem
-                    key={i}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }
-                    }}
-                    title={event.title}
-                    subtitle={`${event.start.slice(0, 10)}\n${
-                      event.location
-                    }\nOrganizer :${event.eventOrganizer}`}
-                    style={styles.reviewBox}
-                  />
-                ))}
+            <View>
+              {selectedIndex
+                ? attended.map((event, i) => (
+                    <ListItem
+                      key={i}
+                      leftAvatar={{
+                        source: {
+                          uri:
+                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                        }
+                      }}
+                      title={event.title}
+                      subtitle={`${event.start.slice(0, 10)}\n${
+                        event.location
+                      }\nOrganizer :${event.eventOrganizer}`}
+                      style={styles.reviewBox}
+                    />
+                  ))
+                : upcoming.map((event, i) => (
+                    <TouchableOpacity>
+                      <ListItem
+                        key={i}
+                        leftAvatar={{
+                          source: {
+                            uri:
+                              "https://bootdey.com/img/Content/avatar/avatar6.png"
+                          }
+                        }}
+                        title={event.title}
+                        subtitle={`${event.start.slice(0, 10)}\n${
+                          event.location
+                        }\nOrganizer :${event.eventOrganizer}`}
+                        style={styles.reviewBox}
+                      />
+                    </TouchableOpacity>
+                  ))}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )
     );
   }
 }

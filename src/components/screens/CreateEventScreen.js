@@ -9,6 +9,8 @@ import {
   AsyncStorage
 } from "react-native";
 import firebase from "firebase";
+import { Dropdown } from "react-native-material-dropdown";
+import DatePicker from "react-native-datepicker";
 
 class CreateEventScreen extends Component {
   state = {
@@ -17,7 +19,7 @@ class CreateEventScreen extends Component {
     event_type: "",
     event_description: "",
     event_postcode: "",
-    event_date: "",
+    event_date: new Date(),
     event_postDate: Date.now(),
     event_numOfVolunteers: "",
     event_timeScale: "",
@@ -64,6 +66,66 @@ class CreateEventScreen extends Component {
   };
 
   render() {
+    const EventTypes = [
+      {
+        value: "clean the streets"
+      },
+      {
+        value: "gardening"
+      },
+      {
+        value: "Fundraising"
+      },
+      {
+        value: "Outdoor Activities"
+      },
+      {
+        value: "Housework"
+      }
+    ];
+    const EventLengths = [
+      {
+        value: "0-1 hour"
+      },
+      {
+        value: "1-3 hours"
+      },
+      {
+        value: "3-6 hours"
+      }
+    ];
+    const EventVolunteers = [
+      {
+        value: "1"
+      },
+      {
+        value: "2"
+      },
+      {
+        value: "3"
+      },
+      {
+        value: "4"
+      },
+      {
+        value: "5"
+      },
+      {
+        value: "6"
+      },
+      {
+        value: "7"
+      },
+      {
+        value: "8"
+      },
+      {
+        value: "9"
+      },
+      {
+        value: "10"
+      }
+    ];
     return (
       <ScrollView>
         <View
@@ -91,13 +153,6 @@ class CreateEventScreen extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder="please insert event type"
-            label="event type"
-            onChangeText={event_type => this.setState({ event_type })}
-            value={this.state.event_type}
-          />
-          <TextInput
-            style={styles.input}
             placeholder="please insert event description"
             label="description"
             onChangeText={event_description =>
@@ -112,28 +167,55 @@ class CreateEventScreen extends Component {
             onChangeText={event_postcode => this.setState({ event_postcode })}
             value={this.state.event_postcode}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="please insert the date of event"
-            label="event date"
-            onChangeText={event_date => this.setState({ event_date })}
-            value={this.state.event_date}
+          <DatePicker
+            style={{ width: "50%" }}
+            date={this.state.event_date}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            minDate={Date.now()}
+            maxDate="2023-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 12
+              },
+              dateInput: {
+                marginLeft: 49
+              },
+              dateTouchBody: {
+                width: "170%",
+                marginTop: 15
+              }
+              // ... You can check the source to find the other keys.
+            }}
+            onDateChange={event_date => {
+              this.setState({ event_date });
+            }}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="please insert number of volunteers"
-            label="number of volunteers needed"
-            onChangeText={event_numOfVolunteers =>
-              this.setState({ event_numOfVolunteers })
+          <Dropdown
+            valueExtractor={({ value }) => value}
+            label="Please choose number of volunteers"
+            data={EventVolunteers}
+            onChangeText={value =>
+              this.setState({ event_numOfVolunteers: value })
             }
-            value={this.state.event_numOfVolunteers}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="please insert length of event"
-            label="length of event"
-            onChangeText={event_timeScale => this.setState({ event_timeScale })}
-            value={this.state.event_timeScale}
+          <Dropdown
+            valueExtractor={({ value }) => value}
+            label="Please choose event type"
+            data={EventTypes}
+            onChangeText={value => this.setState({ event_type: value })}
+          />
+          <Dropdown
+            valueExtractor={({ value }) => value}
+            label="Please length of event"
+            data={EventLengths}
+            onChangeText={value => this.setState({ event_timeScale: value })}
           />
           <TouchableOpacity
             onPress={() => {
@@ -165,12 +247,12 @@ class CreateEventScreen extends Component {
 export default CreateEventScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center"
-  },
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: "white",
+  //   alignItems: "center",
+  //   justifyContent: "center"
+  // },
   input: {
     marginTop: 10,
     height: 60,
