@@ -14,6 +14,7 @@ import { Input } from "../Input";
 import { ImagePicker, Permissions } from "expo";
 import firebase from "firebase";
 import uuid from "uuid";
+import { editUser, editUserPhoto } from "../../db/users";
 
 const reviews = [
   {
@@ -62,11 +63,16 @@ export default class Profile extends Component {
     houseNo: "",
     town: "",
     postcode: "",
-    description: ""
+    description: "",
+    userID: null,
   };
 
   componentDidMount() {
-    this.setUserInputs();
+    const {user: {image}} = this.props.navigation.state.params;
+    this.setState({
+      img: image || 'https://bootdey.com/img/Content/avatar/avatar6.png'
+    }, () => this.setUserInputs())
+  
   }
 
   askPermissionsAsync = async () => {
@@ -87,6 +93,7 @@ export default class Profile extends Component {
           aspect: [4, 3]
         });
 
+    console.log(result);
     if (!result.cancelled) {
       this.uploadImage(result.uri, "test-image")
         .then(() => {
@@ -120,21 +127,26 @@ export default class Profile extends Component {
     const snapshot = await ref.put(blob);
     blob.close();
     const remoteURI = await snapshot.ref.getDownloadURL();
-    this.setState({ img: remoteURI });
+    this.setState({ img: remoteURI }, () => {
+      editUserPhoto(this.state.userID, remoteURI)
+        .then(() => {
+          console.log('done');
+        })
+    });
   };
 
   updateInput = (name, value) => {
-    console.log(name, value);
     this.setState({
       [name]: value
     });
   };
 
   setUserInputs = () => {
-    const {
-      user: { description, houseNo, street, town, postcode }
-    } = this.props.navigation.state.params;
+
+    const { user, userID } = this.props.navigation.state.params;
+    const { description, houseNo, street, town, postcode } = user;
     this.setState({
+      userID,
       description,
       houseNo,
       street,
@@ -143,6 +155,16 @@ export default class Profile extends Component {
       visibleModal: null
     });
   };
+
+  saveProfileChanges = async () => {
+    const { userID, description, houseNo, street, town, postcode } = this.state;
+    const err = await editUser(userID, description, houseNo, street, town, postcode)
+    if (!err) {
+      this.setState({
+        visibleModal: null,
+      })
+    }
+  }
 
   _renderModalContent = () => (
     <ScrollView>
@@ -189,12 +211,12 @@ export default class Profile extends Component {
           onChangeText={postcode => this.updateInput("postcode", postcode)}
           value={this.state.postcode}
         />
-        <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <TouchableOpacity onPress={this.saveProfileChanges}>
           <View style={styles.button}>
             <Text>Submit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+        <TouchableOpacity onPress={this.setUserInputs}>
           <View style={styles.button}>
             <Text>Close</Text>
           </View>

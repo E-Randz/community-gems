@@ -58,15 +58,25 @@ class HomeScreen extends Component {
     ],
     selectedIndex: 0,
     pastEvent: false,
-    user: null
+
+    user: null,
+    userID: null,
+
   };
 
-  async componentDidMount() {
-    const { uid } = await firebase.auth().currentUser;
-    const user = await getUserByID(uid);
+ componentDidMount() {
+    this.retrieveUser()
+  }
+
+  retrieveUser = async () => {
+    const userID = await firebase.auth().currentUser.uid;
+    const user = await getUserByID(userID);
     this.setState({
-      user
-    });
+
+      user,
+      userID
+    })
+
   }
 
   updateIndex = selectedIndex => {
@@ -74,7 +84,7 @@ class HomeScreen extends Component {
   };
 
   render() {
-    const { upcoming, attended, pastEvent, events, user } = this.state;
+    const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
     return (
@@ -104,22 +114,19 @@ class HomeScreen extends Component {
                 </View>
               </View>
 
-              <View style={styles.buttonsBox}>
-                <TouchableOpacity
-                  style={styles.userInfoBox_buttons}
-                  onPress={() => this.props.navigation.navigate("Leaderboard")}
-                >
-                  <Text>Leaderboard</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.userInfoBox_buttons}
-                  onPress={() =>
-                    this.props.navigation.navigate("Profile", { user })
-                  }
-                >
-                  <Text>Profile</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.buttonsBox}>
+              <TouchableOpacity
+                style={styles.userInfoBox_buttons}
+                onPress={() => this.props.navigation.navigate("Leaderboard")}
+              >
+                <Text>Leaderboard</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.userInfoBox_buttons}
+                onPress={() => this.props.navigation.navigate("Profile", {user, userID})}
+              >
+                <Text>Profile</Text>
+              </TouchableOpacity>
             </View>
 
             <ButtonGroup
