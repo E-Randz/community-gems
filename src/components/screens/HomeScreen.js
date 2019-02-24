@@ -59,13 +59,19 @@ class HomeScreen extends Component {
     selectedIndex: 0,
     pastEvent: false,
     user: null,
+    userID: null,
   };
 
-  async componentDidMount() {
-    const { uid } = await firebase.auth().currentUser;
-    const user = await getUserByID(uid);
+ componentDidMount() {
+    this.retrieveUser()
+  }
+
+  retrieveUser = async () => {
+    const userID = await firebase.auth().currentUser.uid;
+    const user = await getUserByID(userID);
     this.setState({
       user,
+      userID
     })
   }
 
@@ -74,7 +80,7 @@ class HomeScreen extends Component {
   };
 
   render() {
-    const { upcoming, attended, pastEvent, events, user } = this.state;
+    const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
     return (
@@ -108,7 +114,7 @@ class HomeScreen extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Profile", {user})}
+                onPress={() => this.props.navigation.navigate("Profile", {user, userID})}
               >
                 <Text>Profile</Text>
               </TouchableOpacity>

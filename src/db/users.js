@@ -43,12 +43,12 @@ export const editUser = (
   postcode
 ) => {
   const address = `${houseNo}+${street}+${town}+${postcode}`;
-  getCoords(address)
+   getCoords(address)
     .then(res => {
       const lat = res.data.results[0].geometry.location.lat;
       const long = res.data.results[0].geometry.location.lng;
-
       const postData = {
+        description,
         houseNo,
         street,
         town,
@@ -57,13 +57,22 @@ export const editUser = (
         long
       };
 
-      firebase
+      return firebase
         .database()
         .ref(`/Users/${userID}`)
-        .update(postData);
+        .update(postData)
     })
-    .catch(console.log);
 };
+
+export const editUserPhoto = (userID, uri) => {
+  const image = {
+    image: uri
+  }
+  return firebase
+        .database()
+        .ref(`/Users/${userID}`)
+        .update(image)
+}
 
 export const getUserByID = async (userID) => {
   const snapshot = await firebase.database().ref(`/Users/${userID}`).once('value')
