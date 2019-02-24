@@ -59,13 +59,15 @@ export default class Profile extends Component {
     img: "https://bootdey.com/img/Content/avatar/avatar6.png",
     uri: "https://bootdey.com/img/Content/avatar/avatar6.png",
     street: "",
-    house: "",
+    houseNo: "",
     town: "",
     postcode: "",
-    defaultDescription:
-      "I am a hardworking volunteer for my community... (edit profile to change info)",
     description: ""
   };
+
+  componentDidMount() {
+    this.setUserInputs();
+  }
 
   askPermissionsAsync = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
@@ -121,6 +123,25 @@ export default class Profile extends Component {
     this.setState({ img: remoteURI });
   };
 
+  updateInput = (name, value) => {
+    console.log(name, value);
+    this.setState({
+      [name]: value
+    })
+  }
+
+  setUserInputs = () => {
+    const { user: { description, houseNo, street, town, postcode } } = this.props.navigation.state.params;
+    this.setState({
+      description,
+      houseNo,
+      street,
+      town,
+      postcode,
+      visibleModal: null,
+    })
+  }
+
   _renderModalContent = () => (
     <ScrollView>
       <View style={styles.modalContent}>
@@ -140,44 +161,33 @@ export default class Profile extends Component {
         <Text>Edit Description</Text>
         <Input
           placeholder="Write something about your self...."
-          onChangeText={description => this.setState({ description })}
+          onChangeText={description => this.updateInput('description', description)}
           value={this.state.description}
         />
-        <TouchableOpacity
-          onPress={() =>
-            this.setState({ defaultDescription: this.state.description }, () =>
-              Alert.alert("Done")
-            )
-          }
-        >
-          <View style={styles.button}>
-            <Text>Submit</Text>
-          </View>
-        </TouchableOpacity>
         <Text>Change address</Text>
         <Input
           placeholder="House Number"
-          onChangeText={house => this.setState({ house })}
-          value={this.state.house}
+          onChangeText={houseNo => this.updateInput('houseNo', houseNo)}
+          value={this.state.houseNo}
         />
         <Input
           placeholder="Street"
-          onChangeText={street => this.setState({ street })}
+          onChangeText={street => this.updateInput('street', street)}
           value={this.state.street}
         />
         <Input
           placeholder="Town"
-          onChangeText={town => this.setState({ town })}
+          onChangeText={town => this.updateInput('town', town)}
           value={this.state.town}
         />
         <Input
           placeholder="Postcode"
-          onChangeText={postcode => this.setState({ postcode })}
+          onChangeText={postcode => this.updateInput('postcode', postcode)}
           value={this.state.postcode}
         />
         <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
           <View style={styles.button}>
-            <Text>Submit address</Text>
+            <Text>Submit</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
