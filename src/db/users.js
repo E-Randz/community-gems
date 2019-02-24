@@ -34,16 +34,6 @@ export const postNewUser = (
     });
 };
 
-export const getUserByID = userID => {
-  firebase
-    .database()
-    .ref(`/Users/${userID}`)
-    .once("value")
-    .then(snapshot => {
-      return snapshot.val();
-    });
-};
-
 export const editUser = (
   userID,
   description,
@@ -74,6 +64,7 @@ export const editUser = (
     })
     .catch(console.log);
 };
+
 export const getUserByID = async (userID) => {
   const snapshot = await firebase.database().ref(`/Users/${userID}`).once('value')
   return snapshot.val();

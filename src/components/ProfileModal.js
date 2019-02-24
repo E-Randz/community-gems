@@ -2,10 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, ScrollView, View, Input, Alert } from 'react-native'
 
 const ProfileModal = (props) => {
-  const {
-    onChangeImagePress,
-    
-  }
+
   return (
   <ScrollView>
     <View style={styles.modalContent}>
