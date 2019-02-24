@@ -14,7 +14,7 @@ import { Input } from "../Input";
 import { ImagePicker, Permissions } from "expo";
 import firebase from "firebase";
 import uuid from "uuid";
-import { editUser } from "../../db/users";
+import { editUser, editUserPhoto } from "../../db/users";
 
 const reviews = [
   {
@@ -68,7 +68,11 @@ export default class Profile extends Component {
   };
 
   componentDidMount() {
-    this.setUserInputs();
+    const {user: {image}} = this.props.navigation.state.params;
+    this.setState({
+      img: image || 'https://bootdey.com/img/Content/avatar/avatar6.png'
+    }, () => this.setUserInputs())
+  
   }
 
   askPermissionsAsync = async () => {
@@ -123,8 +127,12 @@ export default class Profile extends Component {
     const snapshot = await ref.put(blob);
     blob.close();
     const remoteURI = await snapshot.ref.getDownloadURL();
-    console.log(remoteURI,'uri' )
-    this.setState({ img: remoteURI });
+    this.setState({ img: remoteURI }, () => {
+      editUserPhoto(this.state.userID, remoteURI)
+        .then(() => {
+          console.log('done');
+        })
+    });
   };
 
   updateInput = (name, value) => {

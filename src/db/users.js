@@ -64,6 +64,16 @@ export const editUser = (
     })
 };
 
+export const editUserPhoto = (userID, uri) => {
+  const image = {
+    image: uri
+  }
+  return firebase
+        .database()
+        .ref(`/Users/${userID}`)
+        .update(image)
+}
+
 export const getUserByID = async (userID) => {
   const snapshot = await firebase.database().ref(`/Users/${userID}`).once('value')
   return snapshot.val();
