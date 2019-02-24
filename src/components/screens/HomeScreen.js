@@ -57,25 +57,29 @@ class HomeScreen extends Component {
       }
     ],
     selectedIndex: 0,
-    pastEvent: false
+    pastEvent: false,
+    user: null,
   };
 
   async componentDidMount() {
     const { uid } = await firebase.auth().currentUser;
-    const userObject = await getUserByID(uid);
-    const userString = JSON.stringify(userObject);
-    AsyncStorage.setItem('user', userString)
+    const user = await getUserByID(uid);
+    this.setState({
+      user,
+    })
   }
+
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });
   };
 
   render() {
-    const { upcoming, attended, pastEvent, events } = this.state;
+    const { upcoming, attended, pastEvent, events, user } = this.state;
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
-    console.log(this.state.selectedIndex);
     return (
+      user && 
+      
       <ScrollView>
         <View
           style={{
@@ -89,9 +93,9 @@ class HomeScreen extends Component {
           <View style={styles.userInfoBox}>
             <View style={styles.userData}>
               <View style={styles.userText}>
-                <Text style={styles.homeText}>Welcome back user!</Text>
-                <Text style={styles.homeText}>You have 100 gems 💎</Text>
-                <Text style={styles.homeText}>You have 5 Upcoming Events</Text>
+                <Text style={styles.homeText}>Welcome back {user.username}!</Text>
+                <Text style={styles.homeText}>You have {user.gems} gems 💎</Text>
+                <Text style={styles.homeText}>You have {'???'} Upcoming Events</Text>
               </View>
             </View>
 
@@ -104,7 +108,7 @@ class HomeScreen extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Profile")}
+                onPress={() => this.props.navigation.navigate("Profile", {user})}
               >
                 <Text>Profile</Text>
               </TouchableOpacity>
