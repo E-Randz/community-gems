@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,19 +7,11 @@ import {
   Image,
   ScrollView,
   TouchableOpacity
-} from 'react-native'
+} from "react-native";
+import Map from "../map";
+import { ListItem, ButtonGroup } from "react-native-elements";
 
-import firebase from 'firebase'
-
-// import { db } from "../../config/db";
-// const db = firebase.database();
-
-// let userRef = db.ref("/Users");
-
-// class HomeScreen extends Component {
-//   state = {
-//     users: []
-//   }
+import firebase from "firebase";
 
 //   componentDidMount () {
 //     // userRef.on("value", snapshot => {
@@ -31,161 +23,118 @@ import firebase from 'firebase'
 //     // });
 //   }
 
-//   render () {
-//     return
-//       <Text>Hello</Text>
-//   }
-// }
-
-// export default HomeScreen
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   }
-// })
-
 class EventViewOrganiser extends Component {
   state = {
     volunteers: [
       {
-        name: 'Sam',
-        prop1: 'something',
-        prop2: 'some info'
+        name: "Sam",
+        prop1: "something",
+        prop2: "some info"
       },
       {
-        name: 'Peter',
-        prop1: 'another something',
-        prop2: 'other info'
+        name: "Peter",
+        prop1: "another something",
+        prop2: "other info"
       },
       {
-        name: 'Mobutu Sese seko Nkuku Ngbendu Wa za banga',
-        prop1: 'almost the same',
-        prop2: 'same kind of info'
+        name: "Mobutu Sese seko Nkuku Ngbendu Wa za banga",
+        prop1: "almost the same",
+        prop2: "same kind of info"
       }
     ],
 
     isVolunteer: true
-  }
+  };
 
-  render () {
-    const { volunteers, isVolunteer } = this.state
+  render() {
+    const { volunteers, isVolunteer } = this.state;
 
     return (
       <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.eventImage_parent}>
+        <View
+          style={{
+            paddingTop: 80,
+            backgroundColor: "#00BFFF",
+            alignItems: "center"
+          }}
+        />
+        <Text style={styles.title}>EVENT TITLE</Text>
+        <Map />
+        <View style={styles.eventBox}>
+          <Text style={styles.date}>03/10/22</Text>
+
+          <View style={styles.userText}>
+            <Text style={styles.gem}>💎 3 / all day, </Text>
             <Image
-              style={styles.eventImage}
-              source={require('../../../assets/location.jpeg')}
+              style={styles.userIcon}
+              source={require("../../../assets/users.png")}
             />
+            <Text> x {volunteers.length}</Text>
           </View>
 
-          <View style={styles.eventBox}>
-            <View style={styles.eventTitle}>
-              <Text style={styles.eventTitleText}>
-                Event title here, from DB/props
+          <Text style={styles.eventDesc}>
+            this event will be a litterpicking event taking place at Altrincham
+            street from 2-6, thanks for helping clean our streets!
+          </Text>
+
+          <TouchableOpacity
+            style={styles.location_buttons}
+            // onPress={() => this.props.navigation.navigate('')}
+          >
+            <Text>Edit</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.title}>volunteers</Text>
+        <View style={styles.isVolunteer}>
+          {isVolunteer ? (
+            volunteers.map((volunteer, i) => (
+              <ListItem
+                key={i}
+                leftAvatar={{
+                  source: {
+                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                  }
+                }}
+                title={volunteer.name}
+                subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
+                style={styles.reviewBox}
+              />
+            ))
+          ) : (
+            <View style={styles.isVolunteerFalse}>
+              <Text style={styles.isVolunteerFalseChild1}>
+                There are no volunteers for this event.
               </Text>
+              <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
             </View>
-
-            <View style={styles.dateInfo}>
-              <Text style={styles.dateInfo_text}>
-                {'we can use Moment here, npm install moment --save '}
-              </Text>
-            </View>
-
-            <View style={styles.infoParent}>
-              <View style={styles.userText}>
-                <Text style={styles.gem}>💎 3 / all day, </Text>
-                <Image
-                  style={styles.userIcon}
-                  source={require('../../../assets/users.png')}
-                />
-                <Text> x {volunteers.length}</Text>
-              </View>
-            </View>
-
-            <View style={styles.userDataParent}>
-              <View style={styles.detailsTextParent}>
-                <Text style={styles.detailsText}>Detials:</Text>
-              </View>
-              <View style={styles.descriptionTextParent}>
-                <Text style={styles.descriptionText}>
-                  Brief description of the event goes here!! Brief description
-                  of the event goes here!! Brief description of the event goes
-                  here!! Brief description of the event goes here!! Brief
-                  description of the event goes here!! Brief description of the
-                  event goes here!!
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.buttonsBox}>
-              <TouchableOpacity
-                style={styles.location_buttons}
-                // onPress={() => this.props.navigation.navigate('')}
-              >
-                <Text>Map</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.location_buttons}
-                // onPress={() => this.props.navigation.navigate('')}
-              >
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.isVolunteer}>
-            {isVolunteer ? (
-              volunteers.map((volunteer, i) => (
-                <View style={styles.isVolunteerTrue} key={i}>
-                  <Text style={styles.isVolunteerTrueChild1}>
-                    {volunteer.name}
-                  </Text>
-                  <Text>{volunteer.prop1}</Text>
-                  <Text>{volunteer.prop2}</Text>
-                </View>
-              ))
-            ) : (
-              <View style={styles.isVolunteerFalse}>
-                <Text style={styles.isVolunteerFalseChild1}>
-                  There are no volunteers for this event.
-                </Text>
-                <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
-              </View>
-            )}
-          </View>
+          )}
         </View>
       </ScrollView>
-    )
+    );
   }
 
   handleIsVolunteer = () => {
     this.setState({
       pastEvent: true
-    })
-  }
+    });
+  };
 }
 
-export default EventViewOrganiser
+export default EventViewOrganiser;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'pink',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: 30
+  title: {
+    fontSize: 30,
+    color: "white",
+    backgroundColor: "#00BFFF",
+    paddingBottom: 10,
+    //fontFamily: "Futura",
+    textAlign: "center",
+    marginBottom: 20
   },
 
-  eventImage_parent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: 40
+  map: {
+    height: 200
   },
 
   eventImage: {
@@ -193,62 +142,67 @@ const styles = StyleSheet.create({
   },
 
   eventBox: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    textAlign: 'left',
-    paddingLeft: 30
+    textAlign: "center",
+    padding: 15,
+    borderRadius: 15,
+    justifyContent: "center"
   },
 
   eventTitle: {
-    flexDirection: 'column',
-    textAlign: 'left'
+    flexDirection: "column",
+    textAlign: "left"
+  },
+
+  eventDesc: {
+    justifyContent: "center",
+    textAlign: "center",
+    padding: 15,
+    fontSize: 14
   },
 
   eventTitleText: {
     fontSize: 16,
-    fontWeight: 'bold'
-  },
-  dateInfo: {
-    flexDirection: 'column',
-    textAlign: 'left'
+    fontWeight: "bold"
   },
 
-  dateInfo_text: {
-    fontSize: 16
+  date: {
+    fontSize: 17,
+    justifyContent: "center",
+    textAlign: "center"
   },
 
   infoParent: {
-    flexDirection: 'row',
-    textAlign: 'left'
+    flexDirection: "row",
+    textAlign: "left"
   },
   userText: {
-    flexDirection: 'row'
+    flexDirection: "row",
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: 17
+  },
+
+  reviewBox: {
+    fontSize: 6,
+    backgroundColor: "#00BFFF",
+    fontWeight: "600",
+    borderColor: "#00BFFF",
+    borderBottomWidth: 2,
+    marginTop: 2
   },
 
   userIcon: {
     width: 20,
     height: 20
-    // marginLeft: 20
   },
   userDataParent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 20,
     marginRight: 20
   },
 
-  detailsTextParent: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-  detailsText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 10
-  },
-
   buttonsBox: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 16,
     // justifyContent: ,
     padding: 20,
@@ -256,43 +210,35 @@ const styles = StyleSheet.create({
   },
 
   location_buttons: {
-    backgroundColor: 'lightblue',
-    padding: 6,
-    marginLeft: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-    width: '25%',
-    alignSelf: 'center'
-  },
-
-  isVolunteer: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    backgroundColor: 'lightpink'
+    backgroundColor: "#00BFFF",
+    padding: 8,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
+    borderColor: "black",
+    borderWidth: 1,
+    width: "25%",
+    alignSelf: "center"
   },
 
   isVolunteerTrue: {
-    width: '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightpink'
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
-  isVolunteerTrueChild1: {},
-
   isVolunteerFalse: {
-    width: '90%',
+    width: "90%",
     marginBottom: 15,
     borderBottomWidth: 2
   },
   isVolunteerFalseChild1: {
-    fontWeight: 'bold'
+    fontWeight: "bold"
   },
   isVolunteerFalseChild2: {
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
     fontSize: 18
   }
-})
+});
