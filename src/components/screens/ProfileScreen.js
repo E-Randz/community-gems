@@ -56,9 +56,18 @@ const reviews = [
 export default class Profile extends Component {
   state = {
     visibleModal: null,
-    img: "emphty",
-    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+    img: "https://bootdey.com/img/Content/avatar/avatar6.png",
+    uri: "https://bootdey.com/img/Content/avatar/avatar6.png",
+    street: "",
+    houseNo: "",
+    town: "",
+    postcode: "",
+    description: ""
   };
+
+  componentDidMount() {
+    this.setUserInputs();
+  }
 
   askPermissionsAsync = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
@@ -68,20 +77,20 @@ export default class Profile extends Component {
   onChangeImagePress = async type => {
     await this.askPermissionsAsync();
 
-    /* if (type = 'take') {*/ let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    }); /*} else {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    }); }*/
+    const result = type
+      ? await ImagePicker.launchCameraAsync({
+          allowsEditing: true
+          // aspect: [4, 3]
+        })
+      : await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          aspect: [4, 3]
+        });
 
     if (!result.cancelled) {
-      console.log(result.uri);
       this.uploadImage(result.uri, "test-image")
         .then(() => {
-          Alert.alert("image caught");
+          Alert.alert("Profile image changed");
         })
         .catch(error => Alert.alert(error));
     }
@@ -111,54 +120,96 @@ export default class Profile extends Component {
     const snapshot = await ref.put(blob);
     blob.close();
     const remoteURI = await snapshot.ref.getDownloadURL();
-    console.log("remote URI ======", remoteURI);
     this.setState({ img: remoteURI });
   };
 
+  updateInput = (name, value) => {
+    console.log(name, value);
+    this.setState({
+      [name]: value
+    })
+  }
+
+  setUserInputs = () => {
+    const { user: { description, houseNo, street, town, postcode } } = this.props.navigation.state.params;
+    this.setState({
+      description,
+      houseNo,
+      street,
+      town,
+      postcode,
+      visibleModal: null,
+    })
+  }
+
   _renderModalContent = () => (
-    <View style={styles.modalContent}>
-      <Text>Profile Form</Text>
-      <TouchableOpacity onPress={this.onChangeImagePress}>
-        <View style={styles.button2}>
-          <Text>Change profile image</Text>
-        </View>
-      </TouchableOpacity>
-      <Text>Change address</Text>
-      <Input
-        placeholder="Address"
-        onChangeText={event_adress => this.setState({ event_adress })}
-        value={""}
-      />
-      <Input
-        placeholder="Postcode"
-        onChangeText={event_adress => this.setState({ event_adress })}
-        value={""}
-      />
-      <TouchableOpacity onPress={() => this.test}>
-        <View style={styles.button}>
-          <Text>Submit address</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
-        <View style={styles.button}>
-          <Text>Close</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <ScrollView>
+      <View style={styles.modalContent}>
+        <Text>Profile Form</Text>
+        <Text>Change profile image</Text>
+
+        <TouchableOpacity onPress={() => this.onChangeImagePress("take")}>
+          <View style={styles.button2}>
+            <Text>Take New Image</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.onChangeImagePress("")}>
+          <View style={styles.button2}>
+            <Text>Choose From Gallery</Text>
+          </View>
+        </TouchableOpacity>
+        <Text>Edit Description</Text>
+        <Input
+          placeholder="Write something about your self...."
+          onChangeText={description => this.updateInput('description', description)}
+          value={this.state.description}
+        />
+        <Text>Change address</Text>
+        <Input
+          placeholder="House Number"
+          onChangeText={houseNo => this.updateInput('houseNo', houseNo)}
+          value={this.state.houseNo}
+        />
+        <Input
+          placeholder="Street"
+          onChangeText={street => this.updateInput('street', street)}
+          value={this.state.street}
+        />
+        <Input
+          placeholder="Town"
+          onChangeText={town => this.updateInput('town', town)}
+          value={this.state.town}
+        />
+        <Input
+          placeholder="Postcode"
+          onChangeText={postcode => this.updateInput('postcode', postcode)}
+          value={this.state.postcode}
+        />
+        <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+          <View style={styles.button}>
+            <Text>Submit</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
+          <View style={styles.button}>
+            <Text>Close</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 
   render() {
-    console.log("state img ============", this.state.img);
+    const { user } = this.props.navigation.state.params;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
         <Image style={styles.avatar} source={{ uri: this.state.img }} />
         <View style={styles.body}>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.info}>Gems: 5💎</Text>
+          <Text style={styles.name}>{user.username}</Text>
+          <Text style={styles.info}>Gems: {user.gems}💎</Text>
           <Text style={styles.description}>
-            I am a hardworking volunteer for my community... (edit profile to
-            change info)
+          {user.description}
           </Text>
         </View>
         <View style={styles.buttonBox}>
@@ -206,7 +257,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 130,
     height: 130,
-    borderRadius: 63,
+    borderRadius: 40,
     borderWidth: 4,
     borderColor: "white",
     marginBottom: 10,
@@ -295,7 +346,9 @@ const styles = StyleSheet.create({
   },
   button2: {
     backgroundColor: "#00BFFF",
-    padding: 33,
+    height: 50,
+    width: 200,
+    // padding: 15,
     // fontSize: 50,
     margin: 5,
     justifyContent: "center",

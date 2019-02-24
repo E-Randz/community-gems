@@ -74,6 +74,10 @@ export const editUser = (
     })
     .catch(console.log);
 };
+export const getUserByID = async (userID) => {
+  const snapshot = await firebase.database().ref(`/Users/${userID}`).once('value')
+  return snapshot.val();
+}
 
 export const addReview = (uid, review_body, review_date) => {
   const review = {
