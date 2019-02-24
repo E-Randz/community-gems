@@ -43,11 +43,10 @@ export const editUser = (
   postcode
 ) => {
   const address = `${houseNo}+${street}+${town}+${postcode}`;
-  getCoords(address)
+   getCoords(address)
     .then(res => {
       const lat = res.data.results[0].geometry.location.lat;
       const long = res.data.results[0].geometry.location.lng;
-
       const postData = {
         description,
         houseNo,
@@ -58,12 +57,11 @@ export const editUser = (
         long
       };
 
-      firebase
+      return firebase
         .database()
         .ref(`/Users/${userID}`)
-        .update(postData);
+        .update(postData)
     })
-    .catch(console.log);
 };
 
 export const getUserByID = async (userID) => {
