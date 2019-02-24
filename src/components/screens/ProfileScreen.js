@@ -190,15 +190,16 @@ export default class Profile extends Component {
   );
 
   render() {
+    const { user } = this.props.navigation.state.params;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
         <Image style={styles.avatar} source={{ uri: this.state.img }} />
         <View style={styles.body}>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.info}>Gems: 5💎</Text>
+          <Text style={styles.name}>{user.username}</Text>
+          <Text style={styles.info}>Gems: {user.gems}💎</Text>
           <Text style={styles.description}>
-            {this.state.defaultDescription}
+          {user.description}
           </Text>
         </View>
         <View style={styles.buttonBox}>
