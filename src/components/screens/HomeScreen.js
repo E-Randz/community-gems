@@ -58,15 +58,15 @@ class HomeScreen extends Component {
     ],
     selectedIndex: 0,
     pastEvent: false,
-    user: null,
+    user: null
   };
 
   async componentDidMount() {
     const { uid } = await firebase.auth().currentUser;
     const user = await getUserByID(uid);
     this.setState({
-      user,
-    })
+      user
+    });
   }
 
   updateIndex = selectedIndex => {
@@ -78,87 +78,97 @@ class HomeScreen extends Component {
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
     return (
-      user && 
-      
-      <ScrollView>
-        <View
-          style={{
-            paddingTop: 80,
-            backgroundColor: "#00BFFF",
-            alignItems: "center"
-          }}
-        />
-        <Text style={styles.title}>HOME</Text>
-        <View style={styles.container}>
-          <View style={styles.userInfoBox}>
-            <View style={styles.userData}>
-              <View style={styles.userText}>
-                <Text style={styles.homeText}>Welcome back {user.username}!</Text>
-                <Text style={styles.homeText}>You have {user.gems} gems 💎</Text>
-                <Text style={styles.homeText}>You have {'???'} Upcoming Events</Text>
+      user && (
+        <ScrollView>
+          <View
+            style={{
+              paddingTop: 80,
+              backgroundColor: "#00BFFF",
+              alignItems: "center"
+            }}
+          />
+          <Text style={styles.title}>HOME</Text>
+          <View style={styles.container}>
+            <View style={styles.userInfoBox}>
+              <View style={styles.userData}>
+                <View style={styles.userText}>
+                  <Text style={styles.homeText}>
+                    Welcome back {user.username}!
+                  </Text>
+                  <Text style={styles.homeText}>
+                    You have {user.gems} gems 💎
+                  </Text>
+                  <Text style={styles.homeText}>
+                    You have {upcoming.length} Upcoming Events
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.buttonsBox}>
+                <TouchableOpacity
+                  style={styles.userInfoBox_buttons}
+                  onPress={() => this.props.navigation.navigate("Leaderboard")}
+                >
+                  <Text>Leaderboard</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.userInfoBox_buttons}
+                  onPress={() =>
+                    this.props.navigation.navigate("Profile", { user })
+                  }
+                >
+                  <Text>Profile</Text>
+                </TouchableOpacity>
               </View>
             </View>
 
-            <View style={styles.buttonsBox}>
-              <TouchableOpacity
-                style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Leaderboard")}
-              >
-                <Text>Leaderboard</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.userInfoBox_buttons}
-                onPress={() => this.props.navigation.navigate("Profile", {user})}
-              >
-                <Text>Profile</Text>
-              </TouchableOpacity>
+            <ButtonGroup
+              onPress={this.updateIndex}
+              selectedIndex={selectedIndex}
+              buttons={buttons}
+              containerStyle={{ height: 50 }}
+            />
+
+            <View>
+              {selectedIndex
+                ? attended.map((event, i) => (
+                    <ListItem
+                      key={i}
+                      leftAvatar={{
+                        source: {
+                          uri:
+                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                        }
+                      }}
+                      title={event.title}
+                      subtitle={`${event.start.slice(0, 10)}\n${
+                        event.location
+                      }\nOrganizer :${event.eventOrganizer}`}
+                      style={styles.reviewBox}
+                    />
+                  ))
+                : upcoming.map((event, i) => (
+                    <TouchableOpacity>
+                      <ListItem
+                        key={i}
+                        leftAvatar={{
+                          source: {
+                            uri:
+                              "https://bootdey.com/img/Content/avatar/avatar6.png"
+                          }
+                        }}
+                        title={event.title}
+                        subtitle={`${event.start.slice(0, 10)}\n${
+                          event.location
+                        }\nOrganizer :${event.eventOrganizer}`}
+                        style={styles.reviewBox}
+                      />
+                    </TouchableOpacity>
+                  ))}
             </View>
           </View>
-
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={buttons}
-            containerStyle={{ height: 50 }}
-          />
-
-          <View>
-            {selectedIndex
-              ? attended.map((event, i) => (
-                  <ListItem
-                    key={i}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }
-                    }}
-                    title={event.title}
-                    subtitle={`${event.start.slice(0, 10)}\n${
-                      event.location
-                    }\nOrganizer :${event.eventOrganizer}`}
-                    style={styles.reviewBox}
-                  />
-                ))
-              : upcoming.map((event, i) => (
-                  <ListItem
-                    key={i}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }
-                    }}
-                    title={event.title}
-                    subtitle={`${event.start.slice(0, 10)}\n${
-                      event.location
-                    }\nOrganizer :${event.eventOrganizer}`}
-                    style={styles.reviewBox}
-                  />
-                ))}
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )
     );
   }
 }
