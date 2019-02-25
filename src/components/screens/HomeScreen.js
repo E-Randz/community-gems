@@ -10,6 +10,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
+import moment from 'moment';
 
 import firebase from "firebase";
 import { getUserByID } from "../../db/users";
@@ -70,7 +71,6 @@ class HomeScreen extends Component {
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
     const user = await getUserByID(userID);
-    console.log(user);
     this.setState({
       user,
       userID
@@ -86,12 +86,21 @@ class HomeScreen extends Component {
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
 
-    let eventsArr = [];
+    const attendedArr = [];
+    const upcomingArr = [];
 
-    if (user) {
-      eventsArr = Object.entries(user.Events);
-      console.log(eventsArr)
+    if (user && user.Events) {
+      const { Events } = user;
+      for(let event in Events) {
+        const eventObject = {
+          ...Events[event],
+          eventID: event,
+        };
+        if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
+        else upcomingArr.push(eventObject);
+      }
     }
+
     return (
       user && (
         <ScrollView>
@@ -144,39 +153,40 @@ class HomeScreen extends Component {
           />
 
           <View>
-            {selectedIndex 
-              ? eventsArr.map(([eventID, eventInfo], i) => (
-                  <ListItem
-                    key={eventID}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          `${eventInfo.uri}`
-                      }
-                    }}
-                    title={eventInfo.title}
-                    subtitle={`${eventInfo.dateTime}\n${
-                      eventInfo.town
-                    }\nOrganizer :${eventInfo.creatorUsername}`}
-                    style={styles.reviewBox}
-                  />
-                ))
-              : upcoming.map((event, i) => (
-                  <TouchableOpacity>
+              {selectedIndex ? attendedArr.map((event, i) => (
+                  <TouchableOpacity key={i}>
                     <ListItem
-                      key={i}
+                      key={event.eventID}
                       leftAvatar={{
                         source: {
                           uri:
-                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                            `${event.uri}`
                         }
                       }}
                       title={event.title}
-                      subtitle={`${event.start.slice(0, 10)}\n${
-                        event.location
-                      }\nOrganizer :${event.eventOrganizer}`}
+                      subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
+                        event.town
+                      }\nOrganizer :${event.creatorUsername}`}
                       style={styles.reviewBox}
                     />
+                    </TouchableOpacity>
+                  ))
+                : upcomingArr.map((event, i) => (
+                  <TouchableOpacity key={i}>
+                  <ListItem
+                    key={event.eventID}
+                    leftAvatar={{
+                      source: {
+                        uri:
+                          `${event.uri}`
+                      }
+                    }}
+                    title={event.title}
+                    subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
+                      event.town
+                    }\nOrganizer :${event.creatorUsername}`}
+                    style={styles.reviewBox}
+                  />
                   </TouchableOpacity>
                 ))}
           </View>
@@ -302,3 +312,8 @@ const styles = StyleSheet.create({
     backgroundColor: "blue"
   }
 });
+
+
+
+// {selectedIndex && <UserEventsList events={attendedArr} />}
+// {!selectedIndex && <UserEventsList events={upcomingArr} />}
