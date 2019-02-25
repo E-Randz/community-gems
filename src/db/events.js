@@ -115,11 +115,9 @@ export const deleteUserFromEvent = (eventID, userID) => {
     .catch(console.log);
 };
 
-export const getEvents = () => {
-  firebase
-    .database()
-    .ref('Events')
-    .on('value')
-    .then(snapshot => snapshot.val)
-    .catch(console.log)
+
+export const getEvents = async () => {
+  const snapshot = await firebase.database().ref('/Events').once('value')
+  return snapshot.val();
+
 }

@@ -70,7 +70,6 @@ class HomeScreen extends Component {
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
     const user = await getUserByID(userID);
-    console.log(user);
     this.setState({
       user,
       userID
@@ -89,8 +88,7 @@ class HomeScreen extends Component {
     let eventsArr = [];
 
     if (user) {
-      eventsArr = Object.entries(user.Events);
-      console.log(eventsArr)
+      eventsArr = Object.entries(user.Events); 
     }
     return (
       user && (
