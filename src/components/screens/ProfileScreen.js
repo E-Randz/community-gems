@@ -64,15 +64,19 @@ export default class Profile extends Component {
     town: "",
     postcode: "",
     description: "",
-    userID: null,
+    userID: null
   };
 
   componentDidMount() {
-    const {user: {image}} = this.props.navigation.state.params;
-    this.setState({
-      img: image || 'https://bootdey.com/img/Content/avatar/avatar6.png'
-    }, () => this.setUserInputs())
-  
+    const {
+      user: { image }
+    } = this.props.navigation.state.params;
+    this.setState(
+      {
+        img: image || "https://bootdey.com/img/Content/avatar/avatar6.png"
+      },
+      () => this.setUserInputs()
+    );
   }
 
   askPermissionsAsync = async () => {
@@ -128,10 +132,10 @@ export default class Profile extends Component {
     blob.close();
     const remoteURI = await snapshot.ref.getDownloadURL();
     this.setState({ img: remoteURI }, () => {
-      editUserPhoto(this.state.userID, remoteURI)
-        .then(() => {
-          console.log('done');
-        })
+      editUserPhoto(this.state.userID, remoteURI).then(() => {
+        const { updateUserPhoto } = this.props.navigation.state.params;
+        updateUserPhoto(remoteURI);
+      });
     });
   };
 
@@ -142,8 +146,11 @@ export default class Profile extends Component {
   };
 
   setUserInputs = () => {
-
-    const { user, userID } = this.props.navigation.state.params;
+    const {
+      user,
+      userID,
+      updateUserState
+    } = this.props.navigation.state.params;
     const { description, houseNo, street, town, postcode } = user;
     this.setState({
       userID,
@@ -157,14 +164,26 @@ export default class Profile extends Component {
   };
 
   saveProfileChanges = async () => {
+    const { updateUserState } = this.props.navigation.state.params;
+
     const { userID, description, houseNo, street, town, postcode } = this.state;
-    const err = await editUser(userID, description, houseNo, street, town, postcode)
+    const err = await editUser(
+      userID,
+      description,
+      houseNo,
+      street,
+      town,
+      postcode
+    );
     if (!err) {
-      this.setState({
-        visibleModal: null,
-      })
+      this.setState(
+        {
+          visibleModal: null
+        },
+        () => updateUserState({ description, houseNo, street, town, postcode })
+      );
     }
-  }
+  };
 
   _renderModalContent = () => (
     <ScrollView>
@@ -232,10 +251,11 @@ export default class Profile extends Component {
         <View style={styles.header} />
         <Image style={styles.avatar} source={{ uri: this.state.img }} />
         <View style={styles.body}>
-          <Text style={styles.name}>{user.username}</Text>
+          <Text style={styles.name}>{this.state.username}</Text>
           <Text style={styles.info}>Gems: {user.gems}💎</Text>
-          <Text style={styles.description}>{user.description}</Text>
+          <Text style={styles.description}>{this.state.description}</Text>
         </View>
+
         <View style={styles.buttonBox}>
           <TouchableOpacity
             style={styles.buttonContainer}

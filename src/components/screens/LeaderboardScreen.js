@@ -165,8 +165,8 @@ export default class AvatarAndClickable extends Component {
               fontSize: 30,
               color: "white",
               backgroundColor: "#00BFFF",
-              paddingBottom: 10,
-              fontFamily: "Futura"
+              paddingBottom: 10
+              // fontFamily: "Futura"
             }}
           >
             Gem Leaderboard 💎
