@@ -11,6 +11,7 @@ import {
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { Constants } from "expo";
 import { Dropdown } from "react-native-material-dropdown";
+import Map from "../map";
 
 export default class EventsList extends Component {
   state = {
@@ -69,6 +70,13 @@ export default class EventsList extends Component {
     ]
   };
 
+  async componentDidMount() {
+    const userString = await AsyncStorage.getItem("user");
+    const user = JSON.parse(userString);
+    console.log("hello");
+    console.log(user);
+  }
+
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });
   };
@@ -105,20 +113,6 @@ export default class EventsList extends Component {
           data={data}
           onChangeText={value => this.setState({ sort_by: value })}
         />
-
-        {/* <View style={styles.container2}>
-          <Picker
-            selectedValue={this.state.sort_by}
-            style={{ width: 200, height: 44 }}
-            itemStyle={{ height: 44 }}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ sort_by: itemValue })
-            }
-          >
-            <Picker.Item label="Date" value="date" />
-            <Picker.Item label="Type" value="type" />
-          </Picker>
-        </View> */}
         <ButtonGroup
           onPress={this.updateIndex}
           selectedIndex={selectedIndex}
@@ -126,21 +120,29 @@ export default class EventsList extends Component {
           containerStyle={{ height: 50 }}
         />
         <View style={styles.reviewHolder}>
-          {events.map((event, i) => (
-            <ListItem
-              key={i}
-              leftAvatar={{
-                source: {
-                  uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                }
-              }}
-              title={event.title}
-              subtitle={`${event.start}\n${event.location}\nOrganizer :${
-                event.eventOrganizer
-              }`}
-              style={styles.reviewBox}
-            />
-          ))}
+          {selectedIndex ? (
+            <View style={styles.map}>
+              <Map />
+            </View>
+          ) : (
+            events.map((event, i) => (
+              <TouchableOpacity>
+                <ListItem
+                  key={i}
+                  leftAvatar={{
+                    source: {
+                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                    }
+                  }}
+                  title={event.title}
+                  subtitle={`${event.start.slice(0, 10)}\n${
+                    event.location
+                  }\nOrganizer :${event.eventOrganizer}`}
+                  style={styles.reviewBox}
+                />
+              </TouchableOpacity>
+            ))
+          )}
         </View>
       </ScrollView>
     );
@@ -180,29 +182,20 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#00BFFF",
     paddingBottom: 10,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center",
     marginBottom: 10
   },
   plus: {
     fontSize: 30,
     marginLeft: "85%",
+    marginTop: "-10%",
     color: "white",
     backgroundColor: "#318CE7",
     width: 80,
     height: 50,
-    fontFamily: "Futura",
+    //fontFamily: "Futura",
     textAlign: "center"
-  },
-  plusHolder: {
-    // marginTop: 10,
-    // height: 25,
-    // flexDirection: "row",
-    // justifyContent: "center",
-    // marginBottom: 20,
-    // width: 120,
-    // borderRadius: 30,
-    // backgroundColor: "black"
   },
   reviewBox: {
     fontSize: 6,
@@ -212,15 +205,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginTop: 2
   },
-  //   reviewHolder: {
-  //     backgroundColor: "#00BFFF"
-  //   },
+  map: {
+    height: "200%",
+    borderWidth: 1,
+    borderColor: "#00BFFF"
+  },
   reviewBox: {
     fontSize: 6,
     backgroundColor: "#00BFFF",
     fontWeight: "600",
     borderBottomColor: "#00BFFF",
-    borderBottomWidth: 1
+    borderBottomWidth: 2
   },
   body: {
     marginTop: 70,
