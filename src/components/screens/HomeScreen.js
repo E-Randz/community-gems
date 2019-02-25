@@ -10,7 +10,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import UserEventsList from '../UserEventsList';
+import moment from 'moment';
 
 import firebase from "firebase";
 import { getUserByID } from "../../db/users";
@@ -164,7 +164,7 @@ class HomeScreen extends Component {
                         }
                       }}
                       title={event.title}
-                      subtitle={`${event.dateTime}\n${
+                      subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
                         event.town
                       }\nOrganizer :${event.creatorUsername}`}
                       style={styles.reviewBox}
@@ -182,7 +182,7 @@ class HomeScreen extends Component {
                       }
                     }}
                     title={event.title}
-                    subtitle={`${event.dateTime}\n${
+                    subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
                       event.town
                     }\nOrganizer :${event.creatorUsername}`}
                     style={styles.reviewBox}
