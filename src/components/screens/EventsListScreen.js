@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -6,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
   Picker
 } from "react-native";
 import { ListItem, ButtonGroup, ThemeConsumer } from "react-native-elements";
@@ -13,6 +15,7 @@ import { Constants } from "expo";
 import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
 import { getEvents } from '../../db/events'
+import { getUserByID } from '../../db/users'
 
 export default class EventsList extends Component {
   state = {
@@ -22,7 +25,7 @@ export default class EventsList extends Component {
     user: null,
     userID: null,
     events: [],
-    
+    refreshing: false
   };
 
  componentDidMount() {
@@ -38,6 +41,23 @@ export default class EventsList extends Component {
   })
    }
 
+   _onRefresh = () => {
+     this.setState({
+       refreshing: true
+     });
+    getEvents().then(results => {
+      const eventArr = Object.entries(results).map(event => {
+        return {
+          eventID: event[0],
+          ...event[1]
+        }
+      })
+      this.setState({
+        events: eventArr,
+        refreshing: false
+      })
+    })
+   }
 
 
  retrieveUser = async () => {
@@ -45,7 +65,7 @@ export default class EventsList extends Component {
    const user = await getUserByID(userID);
    this.setState({
      user,
-     userID
+     userID,
    });
  };
 
@@ -71,13 +91,18 @@ export default class EventsList extends Component {
     // console.log(arr)
     const { events, sort_by } = this.state;
     const buttons = ["List", "Map"];
-    const { selectedIndex } = this.state;
+    const { selectedIndex, user, userID } = this.state;
     return (
-      <ScrollView>
+      <ScrollView 
+      refreshControl={
+        <RefreshControl 
+        refreshing={this.state.refreshing} 
+        onRefresh={this._onRefresh}
+        />}>
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.plusHolder}
-            onPress={() => this.props.navigation.navigate("CreateEvent")}
+            onPress={() => this.props.navigation.navigate("CreateEvent", { user , userID} )}
           >
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>

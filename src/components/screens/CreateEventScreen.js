@@ -11,59 +11,42 @@ import {
 import firebase from "firebase";
 import { Dropdown } from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
+import { postNewEvent } from '../../db/events'
+
 
 class CreateEventScreen extends Component {
+  
   state = {
-    event_name: "",
-    event_adress: "",
-    event_type: "",
-    event_description: "",
-    event_postcode: "",
-    event_date: new Date(),
-    event_postDate: Date.now(),
-    event_numOfVolunteers: "",
-    event_timeScale: "",
-    event_creator: "user",
-    event_participants: ["user", "user2", "user3"]
+    name: "",
+    firstLineOfAddress: "",
+    town: "",
+    postcode: "",
+    type: "",
+    description: '',
+    dateTime: new Date(),
+    createdDate: Date.now(),
+    noOfVolunteers: "",
+    timeScale: "",
+    creatorUsername: null,
+    creatorUid: null,
   };
 
-  addEvent = (
-    event_name,
-    event_adress,
-    event_type,
-    event_description,
-    event_postcode,
-    event_date,
-    event_postDate,
-    event_numOfVolunteers,
-    event_timeScale,
-    event_creator,
-    event_participants
-  ) => {
-    console.log("got to function");
-    const db = firebase.database();
-    const event = {
-      event_name,
-      event_adress,
-      event_type,
-      event_description,
-      event_postcode,
-      event_date,
-      event_postDate,
-      event_numOfVolunteers,
-      event_timeScale,
-      event_creator,
-      event_participants
-    };
-    console.log(event);
-    try {
-      db.ref("Events")
-        .push(event)
-        .then(event => console.log(event));
-    } catch (err) {
-      console.log(err.toString());
-    }
-  };
+  setUser = () => {
+    const {
+      user,
+      userID
+    } = this.props.navigation.state.params
+    const {username} = user
+    this.setState({
+      creatorUid: userID,
+      creatorUsername: username
+    })
+  }
+
+
+  componentDidMount() {
+    this.setUser()
+  }
 
   render() {
     const EventTypes = [
@@ -141,36 +124,43 @@ class CreateEventScreen extends Component {
             style={styles.input}
             placeholder="please insert event name"
             label="name"
-            onChangeText={event_name => this.setState({ event_name })}
-            value={this.state.event_name}
+            onChangeText={name => this.setState({ name })}
+            value={this.state.name}
           />
           <TextInput
             style={styles.input}
             placeholder="please insert event adress"
             label="adress"
-            onChangeText={event_adress => this.setState({ event_adress })}
-            value={this.state.event_adress}
+            onChangeText={firstLineOfAddress => this.setState({ firstLineOfAddress })}
+            value={this.state.firstLineOfAddress}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert town"
+            label="town"
+            onChangeText={town => this.setState({ town })}
+            value={this.state.town}
           />
           <TextInput
             style={styles.input}
             placeholder="please insert event description"
             label="description"
-            onChangeText={event_description =>
-              this.setState({ event_description })
+            onChangeText={description =>
+              this.setState({ description })
             }
-            value={this.state.event_description}
+            value={this.state.description}
           />
           <TextInput
             style={styles.input}
             placeholder="please insert the event postcode"
             label="event postcode"
-            onChangeText={event_postcode => this.setState({ event_postcode })}
-            value={this.state.event_postcode}
+            onChangeText={postcode => this.setState({ postcode })}
+            value={this.state.postcode}
           />
           <DatePicker
             style={{ width: "50%" }}
-            date={this.state.event_date}
-            mode="date"
+            date={this.state.dateTime}
+            mode="datetime"
             placeholder="select date"
             format="YYYY-MM-DD"
             minDate={Date.now()}
@@ -193,8 +183,8 @@ class CreateEventScreen extends Component {
               }
               // ... You can check the source to find the other keys.
             }}
-            onDateChange={event_date => {
-              this.setState({ event_date });
+            onDateChange={dateTime => {
+              this.setState({ dateTime });
             }}
           />
           <Dropdown
@@ -202,37 +192,37 @@ class CreateEventScreen extends Component {
             label="Please choose number of volunteers"
             data={EventVolunteers}
             onChangeText={value =>
-              this.setState({ event_numOfVolunteers: value })
+              this.setState({ noOfVolunteers: value })
             }
           />
           <Dropdown
             valueExtractor={({ value }) => value}
             label="Please choose event type"
             data={EventTypes}
-            onChangeText={value => this.setState({ event_type: value })}
+            onChangeText={value => this.setState({ type: value })}
           />
           <Dropdown
             valueExtractor={({ value }) => value}
             label="Please length of event"
             data={EventLengths}
-            onChangeText={value => this.setState({ event_timeScale: value })}
+            onChangeText={value => this.setState({ timeScale: value })}
           />
           <TouchableOpacity
             onPress={() => {
-              this.addEvent(
-                this.state.event_name,
-                this.state.event_adress,
-                this.state.event_type,
-                this.state.event_description,
-                this.state.event_postcode,
-                this.state.event_date,
-                this.state.event_postDate,
-                this.state.event_numOfVolunteers,
-                this.state.event_timeScale,
-                this.state.event_creator,
-                this.state.event_participants
-              );
-              this.props.navigation.navigate("CreateEvent");
+              postNewEvent(
+                this.state.name,
+                this.state.firstLineOfAddress,
+                this.state.town,
+                this.state.postcode,
+                this.state.type,
+                this.state.description,
+                this.state.dateTime,
+                this.state.createdDate,
+                this.state.noOfVolunteers,
+                this.state.timeScale,
+                this.state.creatorUsername,
+                this.state.creatorUid,
+              ).then(() => this.props.navigation.navigate("EventsList"));
             }}
             style={styles.button}
           >

@@ -14,10 +14,9 @@ export const postNewEvent = (
   timeScale,
   creatorUsername,
   creatorUid,
-  participants
 ) => {
   const address = `${firstLineOfAddress}+${town}+${postcode}`;
-  getCoords(address).then(
+  return getCoords(address).then(
     res => {
       const lat = res.data.results[0].geometry.location.lat;
       const long = res.data.results[0].geometry.location.lng;
@@ -39,11 +38,12 @@ export const postNewEvent = (
         lat,
         long
       };
-    },
-    firebase
+      firebase
       .database()
       .ref("/Events")
       .push(postEventData)
+    },
+    
   );
 };
 
