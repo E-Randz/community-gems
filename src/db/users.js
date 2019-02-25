@@ -79,6 +79,28 @@ export const getUserByID = async (userID) => {
   return snapshot.val();
 }
 
+export const getUserEvents = (userID) => {
+  firebase.database().ref(`/Users/${userID}/Events`)
+    .once('value')
+    .then((snapshot) => {
+      console.log(snapshot.val());
+    })
+}
+
+export const addEventToUser = (userID, event) => {
+  firebase.database().ref(`/Users/${userID}`)
+  .child('Events')
+  .update(event)
+  .catch(console.log)
+}
+
+export const deleteEventFromUser = (userID, eventID) => {
+  firebase.database().remove(`/Users/${userID}/Events/`)
+  .child(eventID)
+  .remove()
+  .catch(console.log)
+}
+
 export const addReview = (uid, review_body, review_date) => {
   const review = {
     review_body,
@@ -90,3 +112,4 @@ export const addReview = (uid, review_body, review_date) => {
     .ref(`/Users/${uid}/reviews`)
     .push(review);
 };
+
