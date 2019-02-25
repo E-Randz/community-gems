@@ -66,5 +66,7 @@ Input.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   secureTextEntry: PropTypes.bool,
-  name: PropTypes.string
+  name: PropTypes.string,
+  multiline: PropTypes.bool,
+  numberOfLines: PropTypes.number,
 };
