@@ -114,3 +114,12 @@ export const deleteUserFromEvent = (eventID, userID) => {
     .remove()
     .catch(console.log);
 };
+
+export const getEvents = () => {
+  firebase
+    .database()
+    .ref('Events')
+    .on('value')
+    .then(snapshot => snapshot.val)
+    .catch(console.log)
+}
