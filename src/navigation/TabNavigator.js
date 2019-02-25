@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "react-navigation";
 import messageNav from "../navigation/MessageNav";
 import HomeNavigator from "./HomeNavigator";
 import EventsNavigator from "./EventsNavigator";
-import EventViewOrganiser from "../components/screens/EventViewOrganiser";
+import EventsViewOrganiser from "../components/screens/EventViewOrganiser";
 
 const TabNavigator = createBottomTabNavigator({
   Home: HomeNavigator,
