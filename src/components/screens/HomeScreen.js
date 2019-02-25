@@ -86,8 +86,8 @@ class HomeScreen extends Component {
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
 
-    let attendedArr = [];
-    let upcomingArr = [];
+    const attendedArr = [];
+    const upcomingArr = [];
 
     if (user && user.Events) {
       const { Events } = user;
