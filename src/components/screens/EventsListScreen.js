@@ -18,6 +18,8 @@ export default class EventsList extends Component {
     sort_by: null,
     selectedIndex: 0,
     sort_by: "",
+    user: null,
+    userID: null,
     events: [
       {
         title: "event1",
@@ -70,12 +72,18 @@ export default class EventsList extends Component {
     ]
   };
 
-  async componentDidMount() {
-    const userString = await AsyncStorage.getItem("user");
-    const user = JSON.parse(userString);
-    console.log("hello");
-    console.log(user);
-  }
+ componentDidMount() {
+   this.retrieveUser();
+ }
+
+ retrieveUser = async () => {
+   const userID = await firebase.auth().currentUser.uid;
+   const user = await getUserByID(userID);
+   this.setState({
+     user,
+     userID
+   });
+ };
 
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });

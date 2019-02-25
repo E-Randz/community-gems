@@ -9,6 +9,8 @@ import React, { Component } from "react";
 
 class Main extends React.Component {
   state = {
+    user: null,
+    userID: null,
     name: ""
   }; // 2. <- Add the component state
 
@@ -18,6 +20,19 @@ class Main extends React.Component {
     // 1.
     this.props.navigation.navigate("Chat", { name: this.state.name });
   };
+
+   componentDidMount() {
+     this.retrieveUser();
+   }
+
+   retrieveUser = async () => {
+     const userID = await firebase.auth().currentUser.uid;
+     const user = await getUserByID(userID);
+     this.setState({
+       user,
+       userID
+     });
+   };
 
   render() {
     return (

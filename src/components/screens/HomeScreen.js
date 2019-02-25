@@ -70,6 +70,7 @@ class HomeScreen extends Component {
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
     const user = await getUserByID(userID);
+    console.log(user);
     this.setState({
       user,
       userID
@@ -84,6 +85,13 @@ class HomeScreen extends Component {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
+
+    let eventsArr = [];
+
+    if (user) {
+      eventsArr = Object.entries(user.Events);
+      console.log(eventsArr)
+    }
     return (
       user && (
         <ScrollView>
@@ -136,20 +144,20 @@ class HomeScreen extends Component {
           />
 
           <View>
-            {selectedIndex
-              ? attended.map((event, i) => (
+            {selectedIndex 
+              ? eventsArr.map(([eventID, eventInfo], i) => (
                   <ListItem
-                    key={i}
+                    key={eventID}
                     leftAvatar={{
                       source: {
                         uri:
-                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                          `${eventInfo.uri}`
                       }
                     }}
-                    title={event.title}
-                    subtitle={`${event.start.slice(0, 10)}\n${
-                      event.location
-                    }\nOrganizer :${event.eventOrganizer}`}
+                    title={eventInfo.title}
+                    subtitle={`${eventInfo.dateTime}\n${
+                      eventInfo.town
+                    }\nOrganizer :${eventInfo.creatorUsername}`}
                     style={styles.reviewBox}
                   />
                 ))
