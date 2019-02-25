@@ -10,56 +10,15 @@ import {
   AsyncStorage
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import moment from 'moment';
+import moment from "moment";
 
 import firebase from "firebase";
 import { getUserByID } from "../../db/users";
 
 class HomeScreen extends Component {
   state = {
-    upcoming: [
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      }
-    ],
-    attended: [
-      {
-        title: "attendedOne",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "attendedTwo",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "attendedThree",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      }
-    ],
     selectedIndex: 0,
     pastEvent: false,
-
     user: null,
     userID: null
   };
@@ -81,6 +40,24 @@ class HomeScreen extends Component {
     this.setState({ selectedIndex });
   };
 
+  updateUserState = userInfo => {
+    this.setState(
+      state => ({
+        user: {
+          ...state.user,
+          ...userInfo
+        }
+      }),
+      () => console.log(this.state.user)
+    );
+  };
+
+  updateUserPhoto = uri => {
+    this.setState({
+      uri
+    });
+  };
+
   render() {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
@@ -91,10 +68,10 @@ class HomeScreen extends Component {
 
     if (user && user.Events) {
       const { Events } = user;
-      for(let event in Events) {
+      for (let event in Events) {
         const eventObject = {
           ...Events[event],
-          eventID: event,
+          eventID: event
         };
         if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
         else upcomingArr.push(eventObject);
@@ -122,7 +99,7 @@ class HomeScreen extends Component {
                   You have {user.gems} gems 💎
                 </Text>
                 <Text style={styles.homeText}>
-                  You have {upcoming.length} Upcoming Events
+                  You have {upcomingArr.length} Upcoming Events
                 </Text>
               </View>
             </View>
@@ -138,7 +115,12 @@ class HomeScreen extends Component {
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
               onPress={() =>
-                this.props.navigation.navigate("Profile", { user, userID })
+                this.props.navigation.navigate("Profile", {
+                  user,
+                  userID,
+                  updateUserState: this.updateUserState,
+                  updateUserPhoto: this.updateUserPhoto
+                })
               }
             >
               <Text>Profile</Text>
@@ -153,40 +135,39 @@ class HomeScreen extends Component {
           />
 
           <View>
-              {selectedIndex ? attendedArr.map((event, i) => (
+            {selectedIndex
+              ? attendedArr.map((event, i) => (
                   <TouchableOpacity key={i}>
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri:
-                            `${event.uri}`
+                          uri: `${event.uri}`
                         }
                       }}
                       title={event.title}
-                      subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
-                        event.town
-                      }\nOrganizer :${event.creatorUsername}`}
+                      subtitle={`${moment(event.dateTime).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
                       style={styles.reviewBox}
                     />
-                    </TouchableOpacity>
-                  ))
-                : upcomingArr.map((event, i) => (
+                  </TouchableOpacity>
+                ))
+              : upcomingArr.map((event, i) => (
                   <TouchableOpacity key={i}>
-                  <ListItem
-                    key={event.eventID}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          `${event.uri}`
-                      }
-                    }}
-                    title={event.title}
-                    subtitle={`${moment(event.dateTime).format('MMMM Do YYYY, h:mm a')}\n${
-                      event.town
-                    }\nOrganizer :${event.creatorUsername}`}
-                    style={styles.reviewBox}
-                  />
+                    <ListItem
+                      key={event.eventID}
+                      leftAvatar={{
+                        source: {
+                          uri: `${event.uri}`
+                        }
+                      }}
+                      title={event.title}
+                      subtitle={`${moment(event.dateTime).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      style={styles.reviewBox}
+                    />
                   </TouchableOpacity>
                 ))}
           </View>
@@ -312,8 +293,6 @@ const styles = StyleSheet.create({
     backgroundColor: "blue"
   }
 });
-
-
 
 // {selectedIndex && <UserEventsList events={attendedArr} />}
 // {!selectedIndex && <UserEventsList events={upcomingArr} />}
