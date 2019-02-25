@@ -66,6 +66,8 @@ class HomeScreen extends Component {
     const attendedArr = [];
     const upcomingArr = [];
 
+    if (user) {
+      eventsArr = Object.entries(user.Events); 
     if (user && user.Events) {
       const { Events } = user;
       for (let event in Events) {

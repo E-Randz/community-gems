@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -6,12 +7,15 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
   Picker
 } from "react-native";
-import { ListItem, ButtonGroup } from "react-native-elements";
+import { ListItem, ButtonGroup, ThemeConsumer } from "react-native-elements";
 import { Constants } from "expo";
 import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
+import { getEvents } from '../../db/events'
+import { getUserByID } from '../../db/users'
 
 export default class EventsList extends Component {
   state = {
@@ -20,68 +24,48 @@ export default class EventsList extends Component {
     sort_by: "",
     user: null,
     userID: null,
-    events: [
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "tom"
-      },
-      {
-        title: "event2",
-        start: "2010-01-09T18:30:00",
-        location: "salford",
-        eventOrganizer: "peter"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      }
-    ]
+    events: [],
+    refreshing: false
   };
 
  componentDidMount() {
-   this.retrieveUser();
- }
+  this.retrieveUser();
+  getEvents().then(results => {
+    const eventArr = Object.entries(results).map(event => {
+      return {eventID: event[0],
+      ...event[1]}
+    })
+    this.setState({
+      events : eventArr
+    }) 
+  })
+   }
+
+   _onRefresh = () => {
+     this.setState({
+       refreshing: true
+     });
+    getEvents().then(results => {
+      const eventArr = Object.entries(results).map(event => {
+        return {
+          eventID: event[0],
+          ...event[1]
+        }
+      })
+      this.setState({
+        events: eventArr,
+        refreshing: false
+      })
+    })
+   }
+
 
  retrieveUser = async () => {
    const userID = await firebase.auth().currentUser.uid;
    const user = await getUserByID(userID);
    this.setState({
      user,
-     userID
+     userID,
    });
  };
 
@@ -89,7 +73,9 @@ export default class EventsList extends Component {
     this.setState({ selectedIndex });
   };
 
+  
   render() {
+    console.log(this.state.events)
     const data = [
       {
         value: "Date"
@@ -101,15 +87,22 @@ export default class EventsList extends Component {
         value: "Type"
       }
     ];
+    // const arr = this.state.events[0]
+    // console.log(arr)
     const { events, sort_by } = this.state;
     const buttons = ["List", "Map"];
-    const { selectedIndex } = this.state;
+    const { selectedIndex, user, userID } = this.state;
     return (
-      <ScrollView>
+      <ScrollView 
+      refreshControl={
+        <RefreshControl 
+        refreshing={this.state.refreshing} 
+        onRefresh={this._onRefresh}
+        />}>
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.plusHolder}
-            onPress={() => this.props.navigation.navigate("CreateEvent")}
+            onPress={() => this.props.navigation.navigate("CreateEvent", { user , userID} )}
           >
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
@@ -142,10 +135,10 @@ export default class EventsList extends Component {
                       uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
                     }
                   }}
-                  title={event.title}
-                  subtitle={`${event.start.slice(0, 10)}\n${
-                    event.location
-                  }\nOrganizer :${event.eventOrganizer}`}
+                  title={event.name}
+                  subtitle={`${event.timeScale}\n${
+                    event.town
+                  }\nOrganizer: ${event.creatorUsername}`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>
