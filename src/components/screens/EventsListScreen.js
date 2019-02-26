@@ -86,9 +86,8 @@ export default class EventsList extends Component {
     ];
     // const arr = this.state.events[0]
     // console.log(arr)
-    const { events, sort_by } = this.state;
     const buttons = ["List", "Map"];
-    const { selectedIndex, user, userID } = this.state;
+    const { selectedIndex, user, userID, events, sort_by } = this.state;
     return (
       <ScrollView
         refreshControl={
@@ -124,7 +123,7 @@ export default class EventsList extends Component {
         <View style={{ height: 520 }}>
           {selectedIndex ? (
             <View style={styles.map}>
-              <Map events={this.state.events} />
+              <Map events={events} user={user}/>
             </View>
           ) : (
             events.map((event, i) => (

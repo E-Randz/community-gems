@@ -12,32 +12,14 @@ export default class Map extends Component {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421
     },
-    primary: {
-      name: "my location",
-      coords: { latitude: 53.48071, longitude: -2.23438 }
-    }
-    // places: [
-    //   {
-    //     name: "streetclean",
-    //     coords: { latitude: 63.48071, longitude: -3.23438 }
-    //   },
-    //   {
-    //     name: "streetpaint",
-    //     coords: { latitude: 73.48071, longitude: -4.23438 }
-    //   },
-    //   {
-    //     name: "streetburn",
-    //     coords: { latitude: 83.48071, longitude: -4.23438 }
-    //   }
-    // ]
+
   };
 
-  renderMarkers() {
-    // const { eventID, name, lat, long } = this.props.events;
+  
 
+  renderMarkers() {
     return this.props.events.map(event => {
-      console.log('hello');
-      <Marker
+      return <Marker
         key={event.eventID}
         title={event.name}
         coordinate={{ latitude: event.lat, longitude: event.long }}
@@ -46,6 +28,7 @@ export default class Map extends Component {
   }
 
   render() {
+    console.log({latitude: this.props.user.lat, longitude: this.props.user.long});
     const { region, primary, places } = this.state;
 
     return (
@@ -56,9 +39,10 @@ export default class Map extends Component {
         ShowsMyLocationButton
       >
         <Marker
-          key={primary.name}
-          title={primary.name}
-          coordinate={primary.coords}
+          key={'Home'}
+          title={"Home"}
+          coordinate={{latitude: this.props.user.lat, longitude: this.props.user.long}}
+          pinColor={"blue"}
         />
         {this.renderMarkers()}
       </MapView>

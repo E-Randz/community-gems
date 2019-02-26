@@ -8,9 +8,7 @@ const Input = ({
   onChangeText,
   placeholder,
   secureTextEntry,
-  name,
-  multiline = false,
-  numberOfLines = 1
+  name
 }) => {
   return (
     <View style={styles.container}>
@@ -24,8 +22,6 @@ const Input = ({
         value={value}
         autoCapitalize="none"
         name={name}
-        multiline={multiline}
-        numberOfLines={numberOfLines}
       />
     </View>
   );
@@ -65,7 +61,5 @@ Input.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   secureTextEntry: PropTypes.bool,
-  name: PropTypes.string,
-  multiline: PropTypes.bool,
-  numberOfLines: PropTypes.number
+  name: PropTypes.string
 };
