@@ -34,7 +34,7 @@ export const postNewEvent = (
         timeScale,
         creatorUsername,
         creatorUid,
-        attendees: [creatorUsername],
+        attendees: {[creatorUid]: [creatorUsername]},
         lat,
         long
       };
@@ -42,8 +42,7 @@ export const postNewEvent = (
       .database()
       .ref("/Events")
       .push(postEventData)
-    },
-    
+    },   
   );
 };
 
@@ -97,12 +96,15 @@ export const getEventUsers = eventID => {
     });
 };
 
-export const addUserToEvent = (eventID, user) => {
+export const addUserToEvent = (eventID, username, userID) => {
+  const eventAttendee = {
+    [userID] : [username]
+  }
   firebase
     .database()
     .ref(`/Events/${eventID}`)
     .child('attendees')
-    .update(user)
+    .update(eventAttendee)
     .catch(console.log);
 };
 
@@ -119,5 +121,9 @@ export const deleteUserFromEvent = (eventID, userID) => {
 export const getEvents = async () => {
   const snapshot = await firebase.database().ref('/Events').once('value')
   return snapshot.val();
+}
 
+export const getEventByID = async (eventID) => {
+  const snapshot = await firebase.database().ref(`/Events/${eventID}`).once('value')
+  return snapshot.val();
 }
