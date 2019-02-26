@@ -1,7 +1,7 @@
 import React from "react";
 // 1.
 import { GiftedChat } from "react-native-gifted-chat";
-import Fire from "../components/Fire";
+import Fire from "./Fire";
 
 class Chat extends React.Component {
   // 2.
