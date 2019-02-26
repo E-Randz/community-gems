@@ -1,32 +1,31 @@
 import firebase from "firebase";
 class Fire {
   state = {
-    uid: null
+    messagePath: null
   };
-  test = uid => {
-    this.state = { uid };
+
+
+  test = messagePath => {
+    this.state = { messagePath };
+
   };
-  // 1.
 
   get ref() {
-    const refe = this.state.uid
-      ? firebase.database().ref(`messages/${this.state.uid}`)
+    const refe = this.state.messagePath
+      ? firebase.database().ref(`messages/${this.state.messagePath}`)
       : firebase.database().ref("messages");
     return refe;
   }
-  // 2.
+
   on = callback =>
     this.ref
       .limitToLast(20)
       .on("child_added", snapshot => callback(this.parse(snapshot)));
-  // 3.
+
   parse = snapshot => {
-    // 1.
     const { timestamp: numberStamp, text, user } = snapshot.val();
     const { key: _id } = snapshot;
-    // 2.
     const timestamp = new Date(numberStamp);
-    // 3.
     const message = {
       _id,
       timestamp,
@@ -35,24 +34,19 @@ class Fire {
     };
     return message;
   };
-  // 4.
-  off() {
-    this.ref.off();
-  }
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid;
   }
-  // 2.
+
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP;
   }
 
-  // 3.
   send = messages => {
+    console.log("got here");
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
-      // 4.
       const message = {
         text,
         user,
@@ -61,8 +55,12 @@ class Fire {
       this.append(message);
     }
   };
-  // 5.
+
   append = message => this.ref.push(message);
+
+  off() {
+    this.ref.off();
+  }
 }
 
 Fire.shared = new Fire();

@@ -4,16 +4,13 @@ import { GiftedChat } from "react-native-gifted-chat";
 import Fire from "./Fire";
 
 class Chat extends React.Component {
-  // 2.
   static navigationOptions = ({ navigation }) => ({
-    title: (navigation.state.params || {}).name || "Chat!"
+    title: navigation.state.params.name || "Chat!"
   });
-  // 3.
   state = {
     messages: []
   };
 
-  // 1.
   componentDidMount() {
     Fire.shared.on(message =>
       this.setState(previousState => ({
@@ -21,7 +18,6 @@ class Chat extends React.Component {
       }))
     );
   }
-  // 2.
   componentWillUnmount() {
     Fire.shared.off();
   }
@@ -29,13 +25,12 @@ class Chat extends React.Component {
   get user() {
     // Return our name and our UID for GiftedChat to parse
     return {
-      name: this.props.navigation.state.params.name,
+      name: this.props.navigation.state.params.person,
       _id: Fire.shared.uid
     };
   }
 
   render() {
-    // 4.
     return (
       <GiftedChat
         messages={this.state.messages}
