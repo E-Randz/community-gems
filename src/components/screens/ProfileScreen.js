@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert
 } from "react-native";
+import moment from "moment";
 import Modal from "react-native-modal";
 import { ListItem } from "react-native-elements";
 import { Input } from "../Input";
@@ -16,8 +17,6 @@ import firebase from "firebase";
 import uuid from "uuid";
 import { editUser, editUserPhoto, addReview } from "../../db/users";
 import ReviewModal from "../ReviewModal";
-
-const hardCodedUserID = "0R6uS2UKntTJoSnllE5otwHhNl93";
 
 export default class Profile extends Component {
   state = {
@@ -149,7 +148,6 @@ export default class Profile extends Component {
 
   leaveReview = review_body => {
     const { userID, user } = this.state;
-    console.log(userID, user.username);
   };
 
   closeModal = () => {
@@ -237,35 +235,33 @@ export default class Profile extends Component {
           >
             <Text> Edit Info</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => this.setState({ visibleModal: 2 })}
-          >
-            <Text>Leave A Review</Text>
-          </TouchableOpacity>
         </View>
         <Modal isVisible={this.state.visibleModal === 1}>
           {this._renderModalContent()}
         </Modal>
-        <Modal isVisible={this.state.visibleModal === 2}>
-          <ReviewModal
-            leaveReview={this.leaveReview}
-            closeModal={this.closeModal}
-          />
-        </Modal>
         <View style={styles.reviewHolder}>
           {reviews.map(([reviewID, review], i) => (
-            <ListItem
-              key={i}
-              leftAvatar={{
-                source: {
-                  uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                }
-              }}
-              title={review.reviewer_username}
-              subtitle={review.review_body}
-              style={styles.reviewBox}
-            />
+            <TouchableOpacity
+              key={reviewID}
+              onPress={() =>
+                this.props.navigation.navigate("OtherProfile", {
+                  userID: review.reviewer_uid
+                })
+              }
+            >
+              <ListItem
+                leftAvatar={{
+                  source: {
+                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                  }
+                }}
+                title={review.reviewer_username}
+                subtitle={`${review.review_body}\n${moment(
+                  review.review_date
+                ).format("MMMM Do YYYY, h:mm a")}`}
+                style={styles.reviewBox}
+              />
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>

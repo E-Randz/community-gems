@@ -4,8 +4,10 @@ class Fire {
     messagePath: null
   };
 
+
   test = messagePath => {
     this.state = { messagePath };
+
   };
 
   get ref() {
