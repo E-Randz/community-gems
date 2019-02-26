@@ -61,6 +61,10 @@ class HomeScreen extends Component {
     });
   };
 
+  navigateToEvent = (eventID) => {
+    this.props.navigation.navigate('EventView', {eventID});
+  }
+
   render() {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
@@ -142,7 +146,7 @@ class HomeScreen extends Component {
           <View>
             {selectedIndex
               ? attendedArr.map((event, i) => (
-                  <TouchableOpacity key={i}>
+                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
@@ -159,7 +163,7 @@ class HomeScreen extends Component {
                   </TouchableOpacity>
                 ))
               : upcomingArr.map((event, i) => (
-                  <TouchableOpacity key={i}>
+                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{

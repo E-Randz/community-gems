@@ -25,7 +25,9 @@ export default class EventsList extends Component {
     user: null,
     userID: null,
     events: [],
-    refreshing: false
+    refreshing: false,
+    user: null,
+    userID: null,
   };
 
  componentDidMount() {
@@ -75,7 +77,6 @@ export default class EventsList extends Component {
 
   
   render() {
-    console.log(this.state.events)
     const data = [
       {
         value: "Date"
@@ -127,7 +128,7 @@ export default class EventsList extends Component {
             </View>
           ) : (
             events.map((event, i) => (
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("EventView")} key={i}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("EventView", {event, user, userID})} key={i}>
                 <ListItem
                   leftAvatar={{
                     source: {

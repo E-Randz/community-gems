@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
+import { getEventByID } from "../../db/events"; 
 
 import firebase from "firebase";
 
@@ -43,73 +44,102 @@ class EventViewOrganiser extends Component {
       }
     ],
 
-    isVolunteer: true
+    isVolunteer: true,
+    event: null,
   };
 
+
+  async componentDidMount() {
+    let event;
+    if (this.props.navigation.state.params.event) {
+      event = this.props.navigation.state.params.event;
+    } else {
+      const { eventID } = this.props.navigation.state.params;
+      event = await getEventByID(eventID)
+    }
+    this.setState({
+      event
+    })
+  }
+
   render() {
-    const { volunteers, isVolunteer } = this.state;
+    const { volunteers, isVolunteer, event } = this.state;
+    const {user, userID } = this.props.navigation.state.params;
+
+
+    let gems = 0;
+    
+    if (event)
+    gems = event.timeScale === "0-1 hour"  ? 1 :
+           event.timeScale === "1-3 hours" ? 2 : 3;
 
     return (
-      <ScrollView>
-        <View
-          style={{
-            paddingTop: 80,
-            backgroundColor: "#00BFFF",
-            alignItems: "center"
-          }}
-        />
-        <Text style={styles.title}>EVENT TITLE</Text>
-        <Map />
-        <View style={styles.eventBox}>
-          <Text style={styles.date}>03/10/22</Text>
+      event && (
+        <ScrollView>
 
-          <View style={styles.userText}>
-            <Text style={styles.gem}>💎 3 / all day, </Text>
-            <Image
-              style={styles.userIcon}
-              source={require("../../../assets/users.png")}
+          <View
+            style={{
+              paddingTop: 80,
+              backgroundColor: "#00BFFF",
+              alignItems: "center"
+            }}
             />
-            <Text> x {volunteers.length}</Text>
+          <Text style={styles.title}>{event.name}</Text>
+          <Map />
+          <View style={styles.eventBox}>
+            <Text style={styles.date}>{event.dateTime}</Text>
+            <View style={styles.userText}>
+              <Text style={styles.gem}>💎 {gems} / {event.timeScale}, </Text>
+              <Image
+                style={styles.userIcon}
+                source={require("../../../assets/users.png")}
+                />
+              <Text> x {event.noOfVolunteers}</Text>
+            </View>
+
+            <Text style={styles.eventDesc}>
+              {event.description}
+            </Text>
+            <Text>address: {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}</Text>
+
+            <TouchableOpacity
+              style={styles.location_buttons}
+              onPress={() => this.handleJoinEvent(event, userID)}
+              >
+              <Text>Join</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.location_buttons}>
+              <Text>Award Gems!</Text>
+            </TouchableOpacity>
           </View>
 
-          <Text style={styles.eventDesc}>
-            this event will be a litterpicking event taking place at Altrincham
-            street from 2-6, thanks for helping clean our streets!
-          </Text>
-
-          <TouchableOpacity
-            style={styles.location_buttons}
-            // onPress={() => this.props.navigation.navigate('')}
-          >
-            <Text>Edit</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.title}>volunteers</Text>
-        <View style={styles.isVolunteer}>
-          {isVolunteer ? (
-            volunteers.map((volunteer, i) => (
-              <ListItem
-                key={i}
-                leftAvatar={{
-                  source: {
-                    uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                  }
-                }}
-                title={volunteer.name}
-                subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
-                style={styles.reviewBox}
-              />
-            ))
-          ) : (
-            <View style={styles.isVolunteerFalse}>
-              <Text style={styles.isVolunteerFalseChild1}>
-                There are no volunteers for this event.
-              </Text>
-              <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
+            <Text style={styles.title}>volunteers</Text>
+            <View style={styles.isVolunteer}>
+              {isVolunteer ? (
+                volunteers.map((volunteer, i) => (
+                  <ListItem
+                    key={i}
+                    leftAvatar={{
+                      source: {
+                        uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }
+                    }}
+                    title={volunteer.name}
+                    subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
+                    style={styles.reviewBox}
+                  />
+                ))
+              ) : (
+                <View style={styles.isVolunteerFalse}>
+                  <Text style={styles.isVolunteerFalseChild1}>
+                    There are no volunteers for this event.
+                  </Text>
+                  <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
+                </View>
+              )}
             </View>
-          )}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )
     );
   }
 
