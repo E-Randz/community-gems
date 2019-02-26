@@ -162,7 +162,7 @@ class CreateEventScreen extends Component {
             date={this.state.dateTime}
             mode="datetime"
             placeholder="select date"
-            format="YYYY-MM-DD"
+            format="YYYY-MM-DD hh:mm"
             minDate={Date.now()}
             maxDate="2023-01-01"
             confirmBtnText="Confirm"
