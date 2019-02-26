@@ -10,7 +10,7 @@ const Input = ({
   secureTextEntry,
   name,
   multiline = false,
-  numberOfLines = 1,
+  numberOfLines = 1
 }) => {
   return (
     <View style={styles.container}>
@@ -26,7 +26,6 @@ const Input = ({
         name={name}
         multiline={multiline}
         numberOfLines={numberOfLines}
-
       />
     </View>
   );
@@ -68,5 +67,5 @@ Input.propTypes = {
   secureTextEntry: PropTypes.bool,
   name: PropTypes.string,
   multiline: PropTypes.bool,
-  numberOfLines: PropTypes.number,
+  numberOfLines: PropTypes.number
 };

@@ -67,19 +67,19 @@ class HomeScreen extends Component {
     const upcomingArr = [];
 
     if (user) {
-      eventsArr = Object.entries(user.Events); 
-    if (user && user.Events) {
-      const { Events } = user;
-      for (let event in Events) {
-        const eventObject = {
-          ...Events[event],
-          eventID: event
-        };
-        if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
-        else upcomingArr.push(eventObject);
+      eventsArr = Object.entries(user.Events);
+      if (user && user.Events) {
+        const { Events } = user;
+        for (let event in Events) {
+          const eventObject = {
+            ...Events[event],
+            eventID: event
+          };
+          if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
+          else upcomingArr.push(eventObject);
+        }
       }
     }
-
     return (
       user && (
         <ScrollView>
@@ -178,7 +178,6 @@ class HomeScreen extends Component {
     );
   }
 }
-
 export default HomeScreen;
 
 const styles = StyleSheet.create({
@@ -295,6 +294,3 @@ const styles = StyleSheet.create({
     backgroundColor: "blue"
   }
 });
-
-// {selectedIndex && <UserEventsList events={attendedArr} />}
-// {!selectedIndex && <UserEventsList events={upcomingArr} />}
