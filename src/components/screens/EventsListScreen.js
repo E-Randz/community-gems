@@ -127,9 +127,8 @@ export default class EventsList extends Component {
             </View>
           ) : (
             events.map((event, i) => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("EventView")} key={i}>
                 <ListItem
-                  key={i}
                   leftAvatar={{
                     source: {
                       uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
