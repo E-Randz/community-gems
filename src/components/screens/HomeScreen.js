@@ -10,55 +10,15 @@ import {
   AsyncStorage
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
+import moment from "moment";
 
 import firebase from "firebase";
 import { getUserByID } from "../../db/users";
 
 class HomeScreen extends Component {
   state = {
-    upcoming: [
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "event1",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      }
-    ],
-    attended: [
-      {
-        title: "attendedOne",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "attendedTwo",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      },
-      {
-        title: "attendedThree",
-        start: "2010-01-09T12:30:00",
-        location: "manchester",
-        eventOrganizer: "user"
-      }
-    ],
     selectedIndex: 0,
     pastEvent: false,
-
     user: null,
     userID: null
   };
@@ -70,7 +30,6 @@ class HomeScreen extends Component {
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
     const user = await getUserByID(userID);
-    console.log(user);
     this.setState({
       user,
       userID
@@ -81,17 +40,46 @@ class HomeScreen extends Component {
     this.setState({ selectedIndex });
   };
 
+  updateUserState = userInfo => {
+    this.setState(
+      state => ({
+        user: {
+          ...state.user,
+          ...userInfo
+        }
+      }),
+      () => console.log(this.state.user)
+    );
+  };
+
+  updateUserPhoto = uri => {
+    this.setState({
+      uri
+    });
+  };
+
   render() {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
     const buttons = ["Upcoming", "Attended"];
     const { selectedIndex } = this.state;
 
-    let eventsArr = [];
+    const attendedArr = [];
+    const upcomingArr = [];
 
     if (user) {
-      eventsArr = Object.entries(user.Events);
-      console.log(eventsArr)
+      eventsArr = Object.entries(user.Events); 
+    if (user && user.Events) {
+      const { Events } = user;
+      for (let event in Events) {
+        const eventObject = {
+          ...Events[event],
+          eventID: event
+        };
+        if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
+        else upcomingArr.push(eventObject);
+      }
     }
+
     return (
       user && (
         <ScrollView>
@@ -113,7 +101,7 @@ class HomeScreen extends Component {
                   You have {user.gems} gems 💎
                 </Text>
                 <Text style={styles.homeText}>
-                  You have {upcoming.length} Upcoming Events
+                  You have {upcomingArr.length} Upcoming Events
                 </Text>
               </View>
             </View>
@@ -129,7 +117,12 @@ class HomeScreen extends Component {
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
               onPress={() =>
-                this.props.navigation.navigate("Profile", { user, userID })
+                this.props.navigation.navigate("Profile", {
+                  user,
+                  userID,
+                  updateUserState: this.updateUserState,
+                  updateUserPhoto: this.updateUserPhoto
+                })
               }
             >
               <Text>Profile</Text>
@@ -144,37 +137,37 @@ class HomeScreen extends Component {
           />
 
           <View>
-            {selectedIndex 
-              ? eventsArr.map(([eventID, eventInfo], i) => (
-                  <ListItem
-                    key={eventID}
-                    leftAvatar={{
-                      source: {
-                        uri:
-                          `${eventInfo.uri}`
-                      }
-                    }}
-                    title={eventInfo.title}
-                    subtitle={`${eventInfo.dateTime}\n${
-                      eventInfo.town
-                    }\nOrganizer :${eventInfo.creatorUsername}`}
-                    style={styles.reviewBox}
-                  />
-                ))
-              : upcoming.map((event, i) => (
-                  <TouchableOpacity>
+            {selectedIndex
+              ? attendedArr.map((event, i) => (
+                  <TouchableOpacity key={i}>
                     <ListItem
-                      key={i}
+                      key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri:
-                            "https://bootdey.com/img/Content/avatar/avatar6.png"
+                          uri: `${event.uri}`
                         }
                       }}
                       title={event.title}
-                      subtitle={`${event.start.slice(0, 10)}\n${
-                        event.location
-                      }\nOrganizer :${event.eventOrganizer}`}
+                      subtitle={`${moment(event.dateTime).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      style={styles.reviewBox}
+                    />
+                  </TouchableOpacity>
+                ))
+              : upcomingArr.map((event, i) => (
+                  <TouchableOpacity key={i}>
+                    <ListItem
+                      key={event.eventID}
+                      leftAvatar={{
+                        source: {
+                          uri: `${event.uri}`
+                        }
+                      }}
+                      title={event.title}
+                      subtitle={`${moment(event.dateTime).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>
@@ -302,3 +295,6 @@ const styles = StyleSheet.create({
     backgroundColor: "blue"
   }
 });
+
+// {selectedIndex && <UserEventsList events={attendedArr} />}
+// {!selectedIndex && <UserEventsList events={upcomingArr} />}

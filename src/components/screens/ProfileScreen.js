@@ -14,45 +14,10 @@ import { Input } from "../Input";
 import { ImagePicker, Permissions } from "expo";
 import firebase from "firebase";
 import uuid from "uuid";
-import { editUser, editUserPhoto } from "../../db/users";
+import { editUser, editUserPhoto, addReview } from "../../db/users";
+import ReviewModal from "../ReviewModal";
 
-const reviews = [
-  {
-    comment_id: 1,
-    comment_creator: "liam",
-    comment_body: "great guy, great work",
-    comment_votes: "100",
-    comment_date: Date.now()
-  },
-  {
-    comment_id: 2,
-    comment_creator: "Mo",
-    comment_body: "hard working volunteer",
-    comment_votes: "5678943",
-    comment_date: Date.now()
-  },
-  {
-    comment_id: 4,
-    comment_creator: "Flav",
-    comment_body: "hard working volunteer hard wor",
-    comment_votes: "5678943",
-    comment_date: Date.now()
-  },
-  {
-    comment_id: 5,
-    comment_creator: "Yas",
-    comment_body: "djodi",
-    comment_votes: "5678943",
-    comment_date: Date.now()
-  },
-  {
-    comment_id: 3,
-    comment_creator: "john",
-    comment_body: "e3jhirui34r",
-    comment_votes: "3",
-    comment_date: Date.now()
-  }
-];
+const hardCodedUserID = '0R6uS2UKntTJoSnllE5otwHhNl93';
 
 export default class Profile extends Component {
   state = {
@@ -65,14 +30,18 @@ export default class Profile extends Component {
     postcode: "",
     description: "",
     userID: null,
+    reviews: [],
   };
 
   componentDidMount() {
-    const {user: {image}} = this.props.navigation.state.params;
-    this.setState({
-      img: image || 'https://bootdey.com/img/Content/avatar/avatar6.png'
-    }, () => this.setUserInputs())
-  
+    const { user: { image, reviews } } = this.props.navigation.state.params;
+    this.setState(
+      {
+        img: image || "https://bootdey.com/img/Content/avatar/avatar6.png",
+        reviews: Object.entries(reviews)
+      },
+      () => this.setUserInputs()
+    );
   }
 
   askPermissionsAsync = async () => {
@@ -93,7 +62,6 @@ export default class Profile extends Component {
           aspect: [4, 3]
         });
 
-    console.log(result);
     if (!result.cancelled) {
       this.uploadImage(result.uri, "test-image")
         .then(() => {
@@ -112,7 +80,6 @@ export default class Profile extends Component {
         resolve(xhr.response);
       };
       xhr.onerror = function(e) {
-        console.log(e);
         reject(new TypeError("Network request failed"));
       };
       xhr.responseType = "blob";
@@ -128,10 +95,10 @@ export default class Profile extends Component {
     blob.close();
     const remoteURI = await snapshot.ref.getDownloadURL();
     this.setState({ img: remoteURI }, () => {
-      editUserPhoto(this.state.userID, remoteURI)
-        .then(() => {
-          console.log('done');
-        })
+      editUserPhoto(this.state.userID, remoteURI).then(() => {
+        const { updateUserPhoto } = this.props.navigation.state.params;
+        updateUserPhoto(remoteURI);
+      });
     });
   };
 
@@ -142,8 +109,11 @@ export default class Profile extends Component {
   };
 
   setUserInputs = () => {
-
-    const { user, userID } = this.props.navigation.state.params;
+    const {
+      user,
+      userID,
+      updateUserState
+    } = this.props.navigation.state.params;
     const { description, houseNo, street, town, postcode } = user;
     this.setState({
       userID,
@@ -157,13 +127,35 @@ export default class Profile extends Component {
   };
 
   saveProfileChanges = async () => {
+    const { updateUserState } = this.props.navigation.state.params;
+
     const { userID, description, houseNo, street, town, postcode } = this.state;
-    const err = await editUser(userID, description, houseNo, street, town, postcode)
+    const err = await editUser(
+      userID,
+      description,
+      houseNo,
+      street,
+      town,
+      postcode
+    );
     if (!err) {
-      this.setState({
-        visibleModal: null,
-      })
+      this.setState({visibleModal: null}, () => 
+        updateUserState({ description, houseNo, street, town, postcode })
+      );
     }
+  };
+
+  leaveReview = (review_body) => {
+    const {userID, user } = this.state;
+    console.log(userID, user.username)
+  }
+
+  
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    })
   }
 
   _renderModalContent = () => (
@@ -225,17 +217,21 @@ export default class Profile extends Component {
     </ScrollView>
   );
 
+
+
   render() {
     const { user } = this.props.navigation.state.params;
+    const { reviews } = this.state;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
         <Image style={styles.avatar} source={{ uri: this.state.img }} />
         <View style={styles.body}>
-          <Text style={styles.name}>{user.username}</Text>
+          <Text style={styles.name}>{this.state.username}</Text>
           <Text style={styles.info}>Gems: {user.gems}💎</Text>
-          <Text style={styles.description}>{user.description}</Text>
+          <Text style={styles.description}>{this.state.description}</Text>
         </View>
+
         <View style={styles.buttonBox}>
           <TouchableOpacity
             style={styles.buttonContainer}
@@ -243,12 +239,21 @@ export default class Profile extends Component {
           >
             <Text> Edit Info</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => this.setState({ visibleModal: 2 })}
+          >
+            <Text>Leave A Review</Text>
+          </TouchableOpacity>
         </View>
         <Modal isVisible={this.state.visibleModal === 1}>
           {this._renderModalContent()}
         </Modal>
+        <Modal isVisible={this.state.visibleModal === 2}>
+          <ReviewModal leaveReview={this.leaveReview} closeModal={this.closeModal}/>
+        </Modal>
         <View style={styles.reviewHolder}>
-          {reviews.map((list, i) => (
+          {reviews.map(([reviewID, review], i) => (
             <ListItem
               key={i}
               leftAvatar={{
@@ -256,8 +261,8 @@ export default class Profile extends Component {
                   uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
                 }
               }}
-              title={list.comment_creator}
-              subtitle={list.comment_body}
+              title={review.reviewer_username}
+              subtitle={review.review_body}
               style={styles.reviewBox}
             />
           ))}

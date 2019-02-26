@@ -102,10 +102,12 @@ export const deleteEventFromUser = (userID, eventID) => {
 }
 
 
-export const addReview = (uid, review_body, review_date) => {
+export const addReview = (uid, reviewer_uid, reviewer_username, review_body, review_date) => {
   const review = {
     review_body,
-    review_date
+    review_date,
+    reviewer_uid,
+    reviewer_username
   };
 
   firebase
