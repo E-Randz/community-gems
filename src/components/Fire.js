@@ -1,9 +1,19 @@
 import firebase from "firebase";
-
 class Fire {
+  state = {
+    uid: null
+  };
+  test = uid => {
+    this.state = { uid };
+    console.log(this.state.uid);
+  };
   // 1.
+
   get ref() {
-    return firebase.database().ref("messages");
+    const refe = this.state.uid
+      ? firebase.database().ref(`messages/${this.state.uid}`)
+      : firebase.database().ref("messages");
+    return refe;
   }
   // 2.
   on = callback =>
