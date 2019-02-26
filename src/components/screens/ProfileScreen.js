@@ -17,7 +17,7 @@ import uuid from "uuid";
 import { editUser, editUserPhoto, addReview } from "../../db/users";
 import ReviewModal from "../ReviewModal";
 
-const hardCodedUserID = '0R6uS2UKntTJoSnllE5otwHhNl93';
+const hardCodedUserID = "0R6uS2UKntTJoSnllE5otwHhNl93";
 
 export default class Profile extends Component {
   state = {
@@ -30,11 +30,13 @@ export default class Profile extends Component {
     postcode: "",
     description: "",
     userID: null,
-    reviews: [],
+    reviews: []
   };
 
   componentDidMount() {
-    const { user: { image, reviews } } = this.props.navigation.state.params;
+    const {
+      user: { image, reviews }
+    } = this.props.navigation.state.params;
     this.setState(
       {
         img: image || "https://bootdey.com/img/Content/avatar/avatar6.png",
@@ -139,24 +141,22 @@ export default class Profile extends Component {
       postcode
     );
     if (!err) {
-      this.setState({visibleModal: null}, () => 
+      this.setState({ visibleModal: null }, () =>
         updateUserState({ description, houseNo, street, town, postcode })
       );
     }
   };
 
-  leaveReview = (review_body) => {
-    const {userID, user } = this.state;
-    console.log(userID, user.username)
-  }
-
-  
+  leaveReview = review_body => {
+    const { userID, user } = this.state;
+    console.log(userID, user.username);
+  };
 
   closeModal = () => {
     this.setState({
-      visibleModal: 0,
-    })
-  }
+      visibleModal: 0
+    });
+  };
 
   _renderModalContent = () => (
     <ScrollView>
@@ -217,8 +217,6 @@ export default class Profile extends Component {
     </ScrollView>
   );
 
-
-
   render() {
     const { user } = this.props.navigation.state.params;
     const { reviews } = this.state;
@@ -250,7 +248,10 @@ export default class Profile extends Component {
           {this._renderModalContent()}
         </Modal>
         <Modal isVisible={this.state.visibleModal === 2}>
-          <ReviewModal leaveReview={this.leaveReview} closeModal={this.closeModal}/>
+          <ReviewModal
+            leaveReview={this.leaveReview}
+            closeModal={this.closeModal}
+          />
         </Modal>
         <View style={styles.reviewHolder}>
           {reviews.map(([reviewID, review], i) => (
