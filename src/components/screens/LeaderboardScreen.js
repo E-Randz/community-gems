@@ -1,170 +1,172 @@
-import React, { Component } from "react";
-import { View, Alert, Text, ScrollView } from "react-native";
-import { ButtonGroup } from "react-native-elements";
-
-import Leaderboard from "react-native-leaderboard";
+import React, { Component } from 'react'
+import { View, Alert, Text, ScrollView } from 'react-native'
+import { ButtonGroup } from 'react-native-elements'
+import { getAllUsers } from '../../db/users'
+import Leaderboard from 'react-native-leaderboard'
 
 export default class AvatarAndClickable extends Component {
   state = {
+    allUsers: [],
     localData: [
       {
-        name: "Liam",
+        name: 'Liam',
         gems: 72138,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Emma",
+        name: 'Emma',
         gems: 12,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Mohamed",
+        name: 'Mohamed',
         gems: 244,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "John",
+        name: 'John',
         gems: 33,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Flaviu",
+        name: 'Flaviu',
         gems: 20,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Yasmin",
+        name: 'Yasmin',
         gems: 68,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Rob",
+        name: 'Rob',
         gems: 1,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Tom",
+        name: 'Tom',
         gems: 0,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Mand",
+        name: 'Mand',
         gems: 8,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Alex",
+        name: 'Alex',
         gems: 2,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Nat",
+        name: 'Nat',
         gems: null,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       }
     ],
     UkData: [
       {
-        name: "fferf",
+        name: 'fferf',
         gems: 728,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Emefma",
+        name: 'Emefma',
         gems: 1212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Mohaeewqfmed",
+        name: 'Mohaeewqfmed',
         gems: 23144,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Jofeqfhn",
+        name: 'Jofeqfhn',
         gems: 3323,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "ffeefwerf",
+        name: 'ffeefwerf',
         gems: 72348,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Emxsefma",
+        name: 'Emxsefma',
         gems: 12212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Mohaedsewqfmed",
+        name: 'Mohaedsewqfmed',
         gems: 2444,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "Josqfhn",
+        name: 'Josqfhn',
         gems: 23,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "kas",
+        name: 'kas',
         gems: 7228,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "don",
+        name: 'don',
         gems: 1212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "dave",
+        name: 'dave',
         gems: 234,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "sam",
+        name: 'sam',
         gems: 323,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       },
       {
-        name: "jo",
+        name: 'jo',
         gems: 20,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
       }
     ],
     filter: 0
-  };
+  }
 
   _alert = (title, body) => {
-    Alert.alert(title, body, [{ text: "OK", onPress: () => {} }], {
+    Alert.alert(title, body, [{ text: 'OK', onPress: () => {} }], {
       cancelable: false
-    });
-  };
+    })
+  }
 
-  render() {
+  render () {
+    console.log(this.state.allUsers)
     const props = {
-      labelBy: "name",
-      sortBy: "gems",
-      data: this.state.filter > 0 ? this.state.localData : this.state.UkData,
-      icon: "iconUrl",
+      labelBy: 'name',
+      sortBy: 'gems',
+      data: this.state.filter > 0 ? this.state.localData : this.state.allUsers,
+      icon: 'iconUrl',
       onRowPress: (item, index) => {
-        this._alert(item.name + ", " + item.gems + " gems, wow!");
+        this._alert(item.name + ', ' + item.gems + ' gems, wow!')
       },
-      evenRowColor: "#E0F2F7"
-    };
+      evenRowColor: '#E0F2F7'
+    }
 
     return (
       <ScrollView>
         <View
           style={{
             paddingTop: 50,
-            backgroundColor: "#00BFFF",
-            alignItems: "center"
+            backgroundColor: '#00BFFF',
+            alignItems: 'center'
           }}
         >
           <Text
             style={{
               fontSize: 30,
-              color: "white",
-              backgroundColor: "#00BFFF",
+              color: 'white',
+              backgroundColor: '#00BFFF',
               paddingBottom: 10
               // fontFamily: "Futura"
             }}
@@ -173,15 +175,34 @@ export default class AvatarAndClickable extends Component {
           </Text>
           <ButtonGroup
             onPress={x => {
-              this.setState({ filter: x });
+              getAllUsers()
+              this.setState({ filter: x })
             }}
             selectedIndex={this.state.filter}
-            buttons={["UK", "Local"]}
+            buttons={['UK', 'Local']}
             containerStyle={{ height: 30 }}
           />
         </View>
         <Leaderboard {...props} />
       </ScrollView>
-    );
+    )
+  }
+  fetchAllUsers = async () => {
+    const arr = []
+    const users = await getAllUsers()
+    for (let user in users) {
+      // console.log(users[user])
+      const newObj = {
+        name: users[user].username,
+        gems: users[user].gems,
+        iconUrl: 'https://bootdey.com/img/Content/avatar/avatar6.png'
+      }
+      arr.push(newObj)
+    }
+    this.setState({ allUsers: arr })
+  }
+
+  componentDidMount () {
+    this.fetchAllUsers()
   }
 }
