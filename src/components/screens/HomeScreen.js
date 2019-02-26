@@ -53,8 +53,11 @@ class HomeScreen extends Component {
   };
 
   updateUserPhoto = uri => {
-    this.setState({
-      uri
+    this.setState(prevState => {
+      const { user } = prevState;
+      return {
+        user: { ...user, image: uri }
+      };
     });
   };
 
