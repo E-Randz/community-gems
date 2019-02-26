@@ -17,15 +17,18 @@ class Main extends React.Component {
     userID: null,
     name: "",
     events: [],
-    uid: ""
+    messagePath: ""
   };
 
   onChangeText = name => this.setState({ name });
 
   onPress = () => {
     // 1.
-    Fire.shared.test(this.state.uid);
-    this.props.navigation.navigate("Chat", { name: this.state.name });
+    Fire.shared.test(this.state.messagePath);
+    this.props.navigation.navigate("Chat", {
+      name: this.state.name,
+      person: this.state.user.username
+    });
   };
 
   componentDidMount() {
@@ -67,7 +70,10 @@ class Main extends React.Component {
               <TouchableOpacity>
                 <ListItem
                   onPress={() =>
-                    this.setState({ uid: event.eventID }, () => this.onPress())
+                    this.setState(
+                      { messagePath: event.eventID, name: event.name },
+                      () => this.onPress()
+                    )
                   }
                   style={styles.reviewBox}
                   key={i}
@@ -77,8 +83,8 @@ class Main extends React.Component {
                         "http://biomet-education.net/wp-content/uploads/2018/03/communication_discussion_workshop-512.png"
                     }
                   }}
-                  title={event.Town}
-                  subtitle={`${event.description}\n${event.creatorUsername}`}
+                  title={event.name}
+                  subtitle={`${event.Town}\n${event.description}`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>
@@ -108,9 +114,7 @@ const styles = StyleSheet.create({
     fontSize: offset
   },
   reviewBox: {
-    fontSize: 6,
     backgroundColor: "#00BFFF",
-    fontWeight: "600",
     borderColor: "#00BFFF",
     borderBottomWidth: 2,
     marginTop: 2
