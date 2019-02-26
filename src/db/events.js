@@ -101,7 +101,7 @@ export const addUserToEvent = (eventID, user) => {
   firebase
     .database()
     .ref(`/Events/${eventID}`)
-    .child("attendees")
+    .child('attendees')
     .update(user)
     .catch(console.log);
 };
