@@ -7,10 +7,10 @@ const Marker = MapView.Marker;
 export default class Map extends Component {
   state = {
     region: {
-      latitude: 53.48071,
-      longitude: -2.23438,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421
+      latitude: this.props.user.lat,
+      longitude: this.props.user.long,
+      latitudeDelta: 0.0422,
+      longitudeDelta: 0.0221
     },
 
   };
