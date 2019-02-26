@@ -15,27 +15,33 @@ export default class Map extends Component {
     primary: {
       name: "my location",
       coords: { latitude: 53.48071, longitude: -2.23438 }
-    },
-    places: [
-      {
-        name: "streetclean",
-        coords: { latitude: 63.48071, longitude: -3.23438 }
-      },
-      {
-        name: "streetpaint",
-        coords: { latitude: 73.48071, longitude: -4.23438 }
-      },
-      {
-        name: "streetburn",
-        coords: { latitude: 83.48071, longitude: -4.23438 }
-      }
-    ]
+    }
+    // places: [
+    //   {
+    //     name: "streetclean",
+    //     coords: { latitude: 63.48071, longitude: -3.23438 }
+    //   },
+    //   {
+    //     name: "streetpaint",
+    //     coords: { latitude: 73.48071, longitude: -4.23438 }
+    //   },
+    //   {
+    //     name: "streetburn",
+    //     coords: { latitude: 83.48071, longitude: -4.23438 }
+    //   }
+    // ]
   };
 
   renderMarkers() {
-    return this.state.places.map((place, i) => (
-      <Marker key={i} title={place.name} coordinate={place.coords} />
-    ));
+    // const { eventID, name, lat, long } = this.props.events;
+
+    return this.props.events.map(event => {
+      <Marker
+        key={event.eventID}
+        title={event.name}
+        coordinate={{ latitude: event.lat, longitude: event.long }}
+      />;
+    });
   }
 
   render() {

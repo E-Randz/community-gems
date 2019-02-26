@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from "firebase";
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -14,8 +14,8 @@ import { ListItem, ButtonGroup, ThemeConsumer } from "react-native-elements";
 import { Constants } from "expo";
 import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
-import { getEvents } from '../../db/events'
-import { getUserByID } from '../../db/users'
+import { getEvents } from "../../db/events";
+import { getUserByID } from "../../db/users";
 
 export default class EventsList extends Component {
   state = {
@@ -28,54 +28,51 @@ export default class EventsList extends Component {
     refreshing: false
   };
 
- componentDidMount() {
-  this.retrieveUser();
-  getEvents().then(results => {
-    const eventArr = Object.entries(results).map(event => {
-      return {eventID: event[0],
-      ...event[1]}
-    })
-    this.setState({
-      events : eventArr
-    }) 
-  })
-   }
+  componentDidMount() {
+    this.retrieveUser();
+    getEvents().then(results => {
+      const eventArr = Object.entries(results).map(event => {
+        return { eventID: event[0], ...event[1] };
+      });
+      this.setState({
+        events: eventArr
+      });
+    });
+  }
 
-   _onRefresh = () => {
-     this.setState({
-       refreshing: true
-     });
+  _onRefresh = () => {
+    this.setState({
+      refreshing: true
+    });
     getEvents().then(results => {
       const eventArr = Object.entries(results).map(event => {
         return {
           eventID: event[0],
           ...event[1]
-        }
-      })
+        };
+      });
       this.setState({
         events: eventArr,
         refreshing: false
-      })
-    })
-   }
+      });
+    });
+  };
 
-
- retrieveUser = async () => {
-   const userID = await firebase.auth().currentUser.uid;
-   const user = await getUserByID(userID);
-   this.setState({
-     user,
-     userID,
-   });
- };
+  retrieveUser = async () => {
+    const userID = await firebase.auth().currentUser.uid;
+    const user = await getUserByID(userID);
+    this.setState({
+      user,
+      userID
+    });
+  };
 
   updateIndex = selectedIndex => {
     this.setState({ selectedIndex });
   };
 
-  
   render() {
-    console.log(this.state.events)
+    // console.log(this.state.events);
     const data = [
       {
         value: "Date"
@@ -93,16 +90,20 @@ export default class EventsList extends Component {
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID } = this.state;
     return (
-      <ScrollView 
-      refreshControl={
-        <RefreshControl 
-        refreshing={this.state.refreshing} 
-        onRefresh={this._onRefresh}
-        />}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.plusHolder}
-            onPress={() => this.props.navigation.navigate("CreateEvent", { user , userID} )}
+            onPress={() =>
+              this.props.navigation.navigate("CreateEvent", { user, userID })
+            }
           >
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
@@ -120,10 +121,10 @@ export default class EventsList extends Component {
           buttons={buttons}
           containerStyle={{ height: 50 }}
         />
-        <View style={styles.reviewHolder}>
+        <View style={{ height: 520 }}>
           {selectedIndex ? (
             <View style={styles.map}>
-              <Map />
+              <Map events={this.state.events} />
             </View>
           ) : (
             events.map((event, i) => (
@@ -136,9 +137,9 @@ export default class EventsList extends Component {
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.timeScale}\n${
-                    event.town
-                  }\nOrganizer: ${event.creatorUsername}`}
+                  subtitle={`${event.timeScale}\n${event.town}\nOrganizer: ${
+                    event.creatorUsername
+                  }`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>
