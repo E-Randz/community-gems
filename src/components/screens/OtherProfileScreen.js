@@ -67,8 +67,26 @@ export default class Profile extends Component {
   };
 
   leaveReview = review_body => {
-    const { currentUserID, user } = this.state;
+    const { currentUserID, currentUser, userID } = this.state;
     const date = Date.now();
+    addReview(userID, currentUserID, currentUser.username, review_body, date);
+    this.closeModal();
+    this.setState(prevState => {
+      const { reviews } = prevState;
+      return {
+        reviews: [
+          ...reviews,
+          [
+            Math.random() * 1000,
+            {
+              review_body,
+              review_date: date,
+              reviewer_username: currentUser.username
+            }
+          ]
+        ]
+      };
+    });
   };
 
   closeModal = () => {
@@ -196,9 +214,6 @@ const styles = StyleSheet.create({
   body: {
     marginTop: 70,
     alignItems: "center"
-    // borderColor: "#00BFFF",
-    // borderWidth: 2,
-    // borderRadius: 13
   },
 
   name: {
@@ -221,13 +236,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
-    height: 25,
+    height: 30,
 
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    width: 120,
+    width: 130,
 
     borderRadius: 30,
     backgroundColor: "#00BFFF"
