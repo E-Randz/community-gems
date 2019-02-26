@@ -5,7 +5,6 @@ class Fire {
   };
   test = uid => {
     this.state = { uid };
-    console.log(this.state.uid);
   };
   // 1.
 
