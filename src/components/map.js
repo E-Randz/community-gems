@@ -36,6 +36,7 @@ export default class Map extends Component {
     // const { eventID, name, lat, long } = this.props.events;
 
     return this.props.events.map(event => {
+      console.log('hello');
       <Marker
         key={event.eventID}
         title={event.name}
