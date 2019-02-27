@@ -1,136 +1,16 @@
 import React, { Component } from "react";
-import { View, Alert, Text, ScrollView, Image } from "react-native";
+import { View, Alert, Text, ScrollView } from "react-native";
 import { ButtonGroup } from "react-native-elements";
 import { getAllUsers } from "../../db/users";
 import Leaderboard from "react-native-leaderboard";
+import { findLocals } from "../../utils";
 
 export default class AvatarAndClickable extends Component {
   state = {
     allUsers: [],
-    localData: [
-      {
-        name: "Liam",
-        gems: 72138,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Emma",
-        gems: 12,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Mohamed",
-        gems: 244,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "John",
-        gems: 33,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Flaviu",
-        gems: 20,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Yasmin",
-        gems: 68,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Rob",
-        gems: 1,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Tom",
-        gems: 0,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Mand",
-        gems: 8,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Alex",
-        gems: 2,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Nat",
-        gems: null,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      }
-    ],
-    UkData: [
-      {
-        name: "fferf",
-        gems: 728,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Emefma",
-        gems: 1212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Mohaeewqfmed",
-        gems: 23144,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Jofeqfhn",
-        gems: 3323,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "ffeefwerf",
-        gems: 72348,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Emxsefma",
-        gems: 12212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Mohaedsewqfmed",
-        gems: 2444,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "Josqfhn",
-        gems: 23,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "kas",
-        gems: 7228,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "don",
-        gems: 1212,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "dave",
-        gems: 234,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "sam",
-        gems: 323,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      },
-      {
-        name: "jo",
-        gems: 20,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
-      }
-    ],
+
+    localData: [],
+
     filter: 0
   };
 
@@ -141,7 +21,6 @@ export default class AvatarAndClickable extends Component {
   };
 
   render() {
-    console.log(this.state.allUsers);
     const props = {
       labelBy: "name",
       sortBy: "gems",
@@ -195,15 +74,20 @@ export default class AvatarAndClickable extends Component {
     const arr = [];
     const users = await getAllUsers();
     for (let user in users) {
-      // console.log(users[user])
       const newObj = {
         name: users[user].username,
         gems: users[user].gems,
-        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png"
+        iconUrl: "https://bootdey.com/img/Content/avatar/avatar6.png",
+        lat: users[user].lat,
+        long: users[user].long
       };
       arr.push(newObj);
     }
-    this.setState({ allUsers: arr });
+
+    this.setState({
+      allUsers: arr,
+      localData: findLocals(arr, this.props.navigation.state.params.user)
+    });
   };
 
   componentDidMount() {

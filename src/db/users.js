@@ -1,5 +1,5 @@
-import firebase from 'firebase'
-import getCoords from '../utils'
+import firebase from "firebase";
+import { getCoords } from "../utils";
 
 export const postNewUser = (
   uid,
@@ -14,7 +14,7 @@ export const postNewUser = (
   long,
   lat
 ) => {
-  const description = `Hi I am ${username}!`
+  const description = `Hi I am ${username}!`;
   firebase
     .database()
     .ref(`/Users/${uid}`)
@@ -43,10 +43,10 @@ export const editUser = (
   town,
   postcode
 ) => {
-  const address = `${houseNo}+${street}+${town}+${postcode}`
+  const address = `${houseNo}+${street}+${town}+${postcode}`;
   getCoords(address).then(res => {
-    const lat = res.data.results[0].geometry.location.lat
-    const long = res.data.results[0].geometry.location.lng
+    const lat = res.data.results[0].geometry.location.lat;
+    const long = res.data.results[0].geometry.location.lng;
     const postData = {
       description,
       houseNo,
@@ -55,51 +55,51 @@ export const editUser = (
       postcode,
       lat,
       long
-    }
+    };
 
     return firebase
       .database()
       .ref(`/Users/${userID}`)
-      .update(postData)
-  })
-}
+      .update(postData);
+  });
+};
 
 export const editUserPhoto = (userID, uri) => {
   const image = {
     image: uri
-  }
+  };
   return firebase
     .database()
     .ref(`/Users/${userID}`)
-    .update(image)
-}
+    .update(image);
+};
 
 export const getUserByID = async userID => {
   const snapshot = await firebase
     .database()
     .ref(`/Users/${userID}`)
-    .once('value')
-  return snapshot.val()
-}
+    .once("value");
+  return snapshot.val();
+};
 
 export const getUserEvents = userID => {
   firebase
     .database()
     .ref(`/Users/${userID}/Events`)
-    .once('value')
+    .once("value")
     .then(snapshot => {
-      console.log(snapshot.val())
-    })
-}
+      console.log(snapshot.val());
+    });
+};
 
 export const addEventToUser = (userID, event) => {
   firebase
     .database()
     .ref(`/Users/${userID}`)
-    .child('Events')
+    .child("Events")
     .update(event)
-    .catch(console.log)
-}
+    .catch(console.log);
+};
 
 export const deleteEventFromUser = (userID, eventID) => {
   firebase
@@ -107,8 +107,8 @@ export const deleteEventFromUser = (userID, eventID) => {
     .remove(`/Users/${userID}/Events/`)
     .child(eventID)
     .remove()
-    .catch(console.log)
-}
+    .catch(console.log);
+};
 
 export const addReview = (
   uid,
@@ -122,18 +122,18 @@ export const addReview = (
     review_date,
     reviewer_uid,
     reviewer_username
-  }
+  };
 
   firebase
     .database()
     .ref(`/Users/${uid}/reviews`)
-    .push(review)
-}
+    .push(review);
+};
 
 export const getAllUsers = async () => {
   const snapshot = await firebase
     .database()
     .ref(`/Users`)
-    .once('value')
-  return snapshot.val()
-}
+    .once("value");
+  return snapshot.val();
+};

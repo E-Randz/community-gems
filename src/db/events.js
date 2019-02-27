@@ -1,5 +1,5 @@
-import firebase from 'firebase'
-import getCoords from '../utils'
+import firebase from "firebase";
+import { getCoords } from "../utils";
 
 export const postNewEvent = (
   name,
