@@ -41,15 +41,12 @@ class HomeScreen extends Component {
   };
 
   updateUserState = userInfo => {
-    this.setState(
-      state => ({
-        user: {
-          ...state.user,
-          ...userInfo
-        }
-      }),
-      () => console.log(this.state.user)
-    );
+    this.setState(state => ({
+      user: {
+        ...state.user,
+        ...userInfo
+      }
+    }));
   };
 
   updateUserPhoto = uri => {
@@ -120,7 +117,10 @@ class HomeScreen extends Component {
           <View style={styles.buttonsBox}>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
-              onPress={() => this.props.navigation.navigate("Leaderboard")}
+              onPress={() => {
+                this.props.navigation.navigate("Leaderboard", { user })
+              }
+              }
             >
               <Text style={{ color: "#00BFFF", fontSize: 12 }}>
                 Leaderboard
