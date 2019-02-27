@@ -27,7 +27,7 @@ export default class EventsList extends Component {
     events: [],
     refreshing: false,
     user: null,
-    userID: null,
+    userID: null
   };
 
   componentDidMount() {
@@ -74,7 +74,6 @@ export default class EventsList extends Component {
   };
 
   render() {
-
     const data = [
       {
         value: "Date"
@@ -122,14 +121,23 @@ export default class EventsList extends Component {
           buttons={buttons}
           containerStyle={{ height: 50 }}
         />
-        <View style={{ height: 520 }}>
+        <View style={selectedIndex && { height: 520 }}>
           {selectedIndex ? (
             <View style={styles.map}>
-              <Map events={events} user={user}/>
+              <Map events={events} user={user} />
             </View>
           ) : (
             events.map((event, i) => (
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("EventView", {event, user, userID})} key={i}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("EventView", {
+                    event,
+                    user,
+                    userID
+                  })
+                }
+                key={i}
+              >
                 <ListItem
                   leftAvatar={{
                     source: {
