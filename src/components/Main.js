@@ -12,6 +12,7 @@ import firebase from "firebase";
 import { getUserByID } from "../db/users";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import Fire from "./Fire";
+import moment from "moment";
 
 class Main extends React.Component {
   state = {
@@ -108,9 +109,9 @@ class Main extends React.Component {
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.town}\n${event.description}\n${
-                    event.dateTime
-                  }`}
+                  subtitle={`${event.town}\n${moment(event.dateTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>
