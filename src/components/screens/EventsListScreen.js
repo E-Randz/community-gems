@@ -40,6 +40,7 @@ export default class EventsList extends Component {
         events: eventArr
       });
     });
+    
   }
 
   _onRefresh = () => {
@@ -67,6 +68,7 @@ export default class EventsList extends Component {
       user,
       userID
     });
+    
   };
 
   updateIndex = selectedIndex => {
@@ -89,6 +91,7 @@ export default class EventsList extends Component {
     // console.log(arr)
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID, events, sort_by } = this.state;
+
     return (
       <ScrollView
         refreshControl={
