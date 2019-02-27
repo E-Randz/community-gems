@@ -107,7 +107,6 @@ class CreateEventScreen extends Component {
 
 
   componentDidMount() {
-    console.log('here');
     this.setUser()
   }
 
