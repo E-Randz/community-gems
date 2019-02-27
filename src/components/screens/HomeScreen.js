@@ -152,7 +152,9 @@ class HomeScreen extends Component {
             {selectedIndex
               ? attendedArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID, user)}
+                    onPress={() =>
+                      this.navigateToEvent(event.eventID, { user })
+                    }
                     key={i}
                     user={user}
                   >
@@ -173,7 +175,9 @@ class HomeScreen extends Component {
                 ))
               : upcomingArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID)}
+                    onPress={() =>
+                      this.navigateToEvent(event.eventID, { user })
+                    }
                     key={i}
                   >
                     <ListItem

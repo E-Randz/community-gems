@@ -115,7 +115,7 @@ export default class Profile extends Component {
       userID,
       updateUserState
     } = this.props.navigation.state.params;
-    const { description, houseNo, street, town, postcode } = user;
+    const { description, houseNo, street, town, postcode, username } = user;
     this.setState({
       userID,
       description,
@@ -123,6 +123,7 @@ export default class Profile extends Component {
       street,
       town,
       postcode,
+      username,
       visibleModal: null
     });
   };
@@ -218,6 +219,7 @@ export default class Profile extends Component {
   render() {
     const { user } = this.props.navigation.state.params;
     const { reviews } = this.state;
+    console.log(this.state);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
