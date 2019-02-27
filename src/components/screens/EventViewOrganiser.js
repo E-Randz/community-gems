@@ -46,11 +46,11 @@ class EventViewOrganiser extends Component {
     ],
 
     isVolunteer: true,
-    event: {}
+    event: null
   };
 
   async componentDidMount() {
-    let event;
+    let event 
     if (this.props.navigation.state.params.event) {
       event = this.props.navigation.state.params.event;
     } else {
@@ -65,11 +65,11 @@ class EventViewOrganiser extends Component {
   render() {
     const { volunteers, isVolunteer, event } = this.state;
     const { user, userID } = this.props.navigation.state.params;
-    console.log(userID);
 
     let gems = 0;
 
     if (event) {
+      // console.log('event:', event)
       gems =
         event.timeScale === "0-1 hour"
           ? 1

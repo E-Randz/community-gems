@@ -219,7 +219,7 @@ export default class Profile extends Component {
   render() {
     const { user } = this.props.navigation.state.params;
     const { reviews } = this.state;
-    console.log(this.state);
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
