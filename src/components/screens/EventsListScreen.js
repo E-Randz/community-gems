@@ -16,13 +16,13 @@ import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
 import { getEvents } from "../../db/events";
 import { getUserByID } from "../../db/users";
+import { findLocals } from "../../utils";
 
 export default class EventsList extends Component {
   state = {
     sort_by: null,
     selectedIndex: 0,
     sort_by: "",
-    user: null,
     userID: null,
     events: [],
     refreshing: false,
@@ -31,16 +31,20 @@ export default class EventsList extends Component {
   };
 
   componentDidMount() {
-    this.retrieveUser();
-    getEvents().then(results => {
-      const eventArr = Object.entries(results).map(event => {
-        return { eventID: event[0], ...event[1] };
+    this.retrieveUser()
+      .then(() => getEvents())
+      .then(results => {
+        const eventArr = Object.entries(results).map(event => {
+          console.log(event);
+
+          return { eventID: event[0], ...event[1] };
+        });
+        const localEvents = findLocals(eventArr, this.state.user);
+
+        this.setState({
+          events: localEvents
+        });
       });
-      this.setState({
-        events: eventArr
-      });
-    });
-    
   }
 
   _onRefresh = () => {
@@ -68,7 +72,7 @@ export default class EventsList extends Component {
       user,
       userID
     });
-    
+    // console.log(this.state.user);
   };
 
   updateIndex = selectedIndex => {

@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Input } from "../Input";
 import * as firebase from "firebase";
 import { Button } from "../Button";
-import { postNewUser } from '../../db/users'
-import getCoords from '../../utils'
-
+import { postNewUser } from "../../db/users";
+import { getCoords } from "../../utils";
 
 class SignUpScreen extends Component {
   state = {
@@ -21,10 +20,20 @@ class SignUpScreen extends Component {
   };
 
   signUpUser = () => {
-    const { email, password, username, firstName, surname, house_number, streetName, town, postcode } = this.state;
+    const {
+      email,
+      password,
+      username,
+      firstName,
+      surname,
+      house_number,
+      streetName,
+      town,
+      postcode
+    } = this.state;
     const { navigate } = this.props.navigation;
     const address = `${house_number}+${streetName}+${town}+${postcode}`;
-    
+
     try {
       if (this.state.password.length < 6) {
         alert("Please enter atleast 6 characters");
@@ -34,13 +43,25 @@ class SignUpScreen extends Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          return getCoords(address)
+          return getCoords(address);
         })
-        .then((res) => {
-          const lat = res.data.results[0].geometry.location.lat
-          const long = res.data.results[0].geometry.location.lng
+        .then(res => {
+          const lat = res.data.results[0].geometry.location.lat;
+          const long = res.data.results[0].geometry.location.lng;
           const user = firebase.auth().currentUser;
-          postNewUser(user.uid, username, firstName, surname, email, house_number, streetName, town, postcode, long, lat);
+          postNewUser(
+            user.uid,
+            username,
+            firstName,
+            surname,
+            email,
+            house_number,
+            streetName,
+            town,
+            postcode,
+            long,
+            lat
+          );
         })
         .then(() => {
           navigate("App");
@@ -118,10 +139,10 @@ export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-top: 0,
-left: 0,
-right: 0,
-bottom: 0
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
   }
 });
