@@ -35,12 +35,9 @@ export default class EventsList extends Component {
       .then(() => getEvents())
       .then(results => {
         const eventArr = Object.entries(results).map(event => {
-          console.log(event);
-
           return { eventID: event[0], ...event[1] };
         });
         const localEvents = findLocals(eventArr, this.state.user);
-
         this.setState({
           events: localEvents
         });
@@ -58,8 +55,9 @@ export default class EventsList extends Component {
           ...event[1]
         };
       });
+      const localEvents = findLocals(eventArr, this.state.user);
       this.setState({
-        events: eventArr,
+        events: localEvents,
         refreshing: false
       });
     });

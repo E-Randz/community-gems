@@ -15,7 +15,7 @@ export const findLocals = (arr, home) => {
     return geolib.isPointInCircle(
       { latitude: item.lat, longitude: item.long },
       { latitude: home.lat, longitude: home.long },
-      8400
+      140000
     );
   });
   return locals;

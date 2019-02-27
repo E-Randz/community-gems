@@ -41,15 +41,12 @@ class HomeScreen extends Component {
   };
 
   updateUserState = userInfo => {
-    this.setState(
-      state => ({
-        user: {
-          ...state.user,
-          ...userInfo
-        }
-      }),
-      () => console.log(this.state.user)
-    );
+    this.setState(state => ({
+      user: {
+        ...state.user,
+        ...userInfo
+      }
+    }));
   };
 
   updateUserPhoto = uri => {
@@ -60,9 +57,9 @@ class HomeScreen extends Component {
       };
     });
   };
- 
+
   navigateToEvent = (eventID, user) => {
-    this.props.navigation.navigate("EventView", { eventID , user });
+    this.props.navigation.navigate("EventView", { eventID, user });
   };
 
   render() {
@@ -115,7 +112,9 @@ class HomeScreen extends Component {
           <View style={styles.buttonsBox}>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
-              onPress={() => this.props.navigation.navigate("Leaderboard")}
+              onPress={() =>
+                this.props.navigation.navigate("Leaderboard", { user })
+              }
             >
               <Text>Leaderboard</Text>
             </TouchableOpacity>
