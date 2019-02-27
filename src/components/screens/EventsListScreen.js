@@ -31,8 +31,11 @@ export default class EventsList extends Component {
   };
 
   componentDidMount() {
-    this.retrieveUser();
-    this.getFutureEvents();
+    this.retrieveUser()
+    .then(()=> {
+      this.getFutureEvents();
+    })
+    
   }
 
   _onRefresh = () => {
@@ -48,7 +51,7 @@ export default class EventsList extends Component {
       }, [])
     const localEvents = findLocals(events, this.state.user);
       this.setState({
-        events: localEvents
+        events: localEvents,
         refreshing: false
       });
     });
