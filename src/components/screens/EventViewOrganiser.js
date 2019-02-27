@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import { getEventByID } from "../../db/events"; 
+import { getEventByID } from "../../db/events";
 
 import firebase from "firebase";
 
@@ -45,9 +45,8 @@ class EventViewOrganiser extends Component {
     ],
 
     isVolunteer: true,
-    event: null,
+    event: null
   };
-
 
   async componentDidMount() {
     let event;
@@ -55,57 +54,62 @@ class EventViewOrganiser extends Component {
       event = this.props.navigation.state.params.event;
     } else {
       const { eventID } = this.props.navigation.state.params;
-      event = await getEventByID(eventID)
+      event = await getEventByID(eventID);
     }
     this.setState({
       event
-    })
+    });
   }
 
   render() {
     const { volunteers, isVolunteer, event } = this.state;
-    const {user, userID } = this.props.navigation.state.params;
-
+    const { user, userID } = this.props.navigation.state.params;
 
     let gems = 0;
-    
+
     if (event)
-    gems = event.timeScale === "0-1 hour"  ? 1 :
-           event.timeScale === "1-3 hours" ? 2 : 3;
+      gems =
+        event.timeScale === "0-1 hour"
+          ? 1
+          : event.timeScale === "1-3 hours"
+          ? 2
+          : 3;
 
     return (
       event && (
         <ScrollView>
-
           <View
             style={{
               paddingTop: 80,
               backgroundColor: "#00BFFF",
               alignItems: "center"
             }}
-            />
+          />
           <Text style={styles.title}>{event.name}</Text>
-          <Map />
+          {/* <Map events={event} user={user} /> */}
           <View style={styles.eventBox}>
             <Text style={styles.date}>{event.dateTime}</Text>
             <View style={styles.userText}>
-              <Text style={styles.gem}>💎 {gems} / {event.timeScale}, </Text>
+              <Text style={styles.gem}>
+                💎 {gems} / {event.timeScale},{" "}
+              </Text>
               <Image
                 style={styles.userIcon}
                 source={require("../../../assets/users.png")}
-                />
+              />
               <Text> x {event.noOfVolunteers}</Text>
             </View>
 
-            <Text style={styles.eventDesc}>
-              {event.description}
+            <Text style={styles.eventDesc}>{event.description}</Text>
+            <Text>
+              address:{" "}
+              {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
             </Text>
-            <Text>address: {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}</Text>
 
             <TouchableOpacity
               style={styles.location_buttons}
               onPress={() => this.handleJoinEvent(event, userID)}
-              >
+            >
               <Text>Join</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.location_buttons}>
@@ -113,31 +117,31 @@ class EventViewOrganiser extends Component {
             </TouchableOpacity>
           </View>
 
-            <Text style={styles.title}>volunteers</Text>
-            <View style={styles.isVolunteer}>
-              {isVolunteer ? (
-                volunteers.map((volunteer, i) => (
-                  <ListItem
-                    key={i}
-                    leftAvatar={{
-                      source: {
-                        uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                      }
-                    }}
-                    title={volunteer.name}
-                    subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
-                    style={styles.reviewBox}
-                  />
-                ))
-              ) : (
-                <View style={styles.isVolunteerFalse}>
-                  <Text style={styles.isVolunteerFalseChild1}>
-                    There are no volunteers for this event.
-                  </Text>
-                  <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
-                </View>
-              )}
-            </View>
+          <Text style={styles.title}>volunteers</Text>
+          <View style={styles.isVolunteer}>
+            {isVolunteer ? (
+              volunteers.map((volunteer, i) => (
+                <ListItem
+                  key={i}
+                  leftAvatar={{
+                    source: {
+                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                    }
+                  }}
+                  title={volunteer.name}
+                  subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
+                  style={styles.reviewBox}
+                />
+              ))
+            ) : (
+              <View style={styles.isVolunteerFalse}>
+                <Text style={styles.isVolunteerFalseChild1}>
+                  There are no volunteers for this event.
+                </Text>
+                <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
+              </View>
+            )}
+          </View>
         </ScrollView>
       )
     );
@@ -241,14 +245,14 @@ const styles = StyleSheet.create({
 
   location_buttons: {
     backgroundColor: "#00BFFF",
-    padding: 8,
-    margin: 5,
+    padding: 5,
+    margin: 3,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 16,
     borderColor: "black",
     borderWidth: 1,
-    width: "25%",
+    width: "40%",
     alignSelf: "center"
   },
 
