@@ -3,7 +3,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  View
+  ScrollView,
+  View,
+  Image
 } from "react-native";
 import React, { Component } from "react";
 import firebase from "firebase";
@@ -62,8 +64,30 @@ class Main extends React.Component {
   render() {
     const { user, events } = this.state;
     return (
-      <View>
-        <Text style={styles.title}>Chats</Text>
+      <ScrollView>
+        <View
+          style={{
+            paddingTop: 10,
+            backgroundColor: "#00BFFF",
+            alignItems: "center"
+          }}
+        >
+          <Image
+            style={{ height: 60, width: 60, marginLeft: -300 }}
+            source={require("../img/LogoGems.png")}
+          />
+          <Text
+            style={{
+              fontSize: 30,
+              color: "white",
+              backgroundColor: "#00BFFF",
+              paddingBottom: 10
+              // fontFamily: "Futura"
+            }}
+          >
+            CHAT
+          </Text>
+        </View>
         {events &&
           events.map((event, i) => {
             return (
@@ -90,7 +114,7 @@ class Main extends React.Component {
               </TouchableOpacity>
             );
           })}
-      </View>
+      </ScrollView>
     );
   }
 }

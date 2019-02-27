@@ -61,9 +61,9 @@ class HomeScreen extends Component {
     });
   };
 
-  navigateToEvent = (eventID) => {
-    this.props.navigation.navigate('EventView', {eventID});
-  }
+  navigateToEvent = eventID => {
+    this.props.navigation.navigate("EventView", { eventID });
+  };
 
   render() {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
@@ -92,11 +92,16 @@ class HomeScreen extends Component {
         <ScrollView>
           <View
             style={{
-              paddingTop: 80,
+              paddingTop: 10,
               backgroundColor: "#00BFFF",
               alignItems: "center"
             }}
-          />
+          >
+            <Image
+              style={{ height: 60, width: 60, marginLeft: -300 }}
+              source={require("../../img/LogoGems.png")}
+            />
+          </View>
           <Text style={styles.title}>HOME</Text>
           <View style={styles.userInfoBox}>
             <View style={styles.userData}>
@@ -146,7 +151,10 @@ class HomeScreen extends Component {
           <View>
             {selectedIndex
               ? attendedArr.map((event, i) => (
-                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
+                  <TouchableOpacity
+                    onPress={() => this.navigateToEvent(event.eventID)}
+                    key={i}
+                  >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
@@ -163,7 +171,10 @@ class HomeScreen extends Component {
                   </TouchableOpacity>
                 ))
               : upcomingArr.map((event, i) => (
-                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
+                  <TouchableOpacity
+                    onPress={() => this.navigateToEvent(event.eventID)}
+                    key={i}
+                  >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{

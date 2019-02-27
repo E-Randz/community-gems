@@ -6,46 +6,41 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from "react-native";
 import firebase from "firebase";
 import { Dropdown } from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
-import { postNewEvent } from '../../db/events'
-
+import { postNewEvent } from "../../db/events";
 
 class CreateEventScreen extends Component {
-  
   state = {
     name: "",
     firstLineOfAddress: "",
     town: "",
     postcode: "",
     type: "",
-    description: '',
+    description: "",
     dateTime: new Date(),
     createdDate: Date.now(),
     noOfVolunteers: "",
     timeScale: "",
     creatorUsername: null,
-    creatorUid: null,
+    creatorUid: null
   };
 
   setUser = () => {
-    const {
-      user,
-      userID
-    } = this.props.navigation.state.params
-    const {username} = user
+    const { user, userID } = this.props.navigation.state.params;
+    const { username } = user;
     this.setState({
       creatorUid: userID,
       creatorUsername: username
-    })
-  }
-
+    });
+  };
 
   componentDidMount() {
-    this.setUser()
+    this.setUser();
   }
 
   render() {
@@ -113,11 +108,16 @@ class CreateEventScreen extends Component {
       <ScrollView>
         <View
           style={{
-            paddingTop: 90,
+            paddingTop: 10,
             backgroundColor: "#00BFFF",
             alignItems: "center"
           }}
-        />
+        >
+          <Image
+            style={{ height: 60, width: 60, marginLeft: -300 }}
+            source={require("../../img/LogoGems.png")}
+          />
+        </View>
         <Text style={styles.title}>CREATE AN EVENT</Text>
         <View style={styles.container}>
           <TextInput
@@ -131,7 +131,9 @@ class CreateEventScreen extends Component {
             style={styles.input}
             placeholder="please insert event adress"
             label="adress"
-            onChangeText={firstLineOfAddress => this.setState({ firstLineOfAddress })}
+            onChangeText={firstLineOfAddress =>
+              this.setState({ firstLineOfAddress })
+            }
             value={this.state.firstLineOfAddress}
           />
           <TextInput
@@ -145,9 +147,7 @@ class CreateEventScreen extends Component {
             style={styles.input}
             placeholder="please insert event description"
             label="description"
-            onChangeText={description =>
-              this.setState({ description })
-            }
+            onChangeText={description => this.setState({ description })}
             value={this.state.description}
           />
           <TextInput
@@ -191,9 +191,7 @@ class CreateEventScreen extends Component {
             valueExtractor={({ value }) => value}
             label="Please choose number of volunteers"
             data={EventVolunteers}
-            onChangeText={value =>
-              this.setState({ noOfVolunteers: value })
-            }
+            onChangeText={value => this.setState({ noOfVolunteers: value })}
           />
           <Dropdown
             valueExtractor={({ value }) => value}
@@ -221,7 +219,7 @@ class CreateEventScreen extends Component {
                 this.state.noOfVolunteers,
                 this.state.timeScale,
                 this.state.creatorUsername,
-                this.state.creatorUid,
+                this.state.creatorUid
               ).then(() => this.props.navigation.navigate("EventsList"));
             }}
             style={styles.button}
