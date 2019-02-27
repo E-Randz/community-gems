@@ -136,11 +136,11 @@ export default class EventsList extends Component {
                 <ListItem
                   leftAvatar={{
                     source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      uri: event.userImage || 'https://bootdey.com/img/Content/avatar/avatar6.png'
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.timeScale}\n${event.town}\nOrganizer: ${
+                  subtitle={`🕒 ${event.timeScale}\n📍 ${event.town}\n👤 ${
                     event.creatorUsername
                   }`}
                   style={styles.reviewBox}
