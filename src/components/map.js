@@ -44,7 +44,16 @@ export default class Map extends Component {
           coordinate={{latitude: this.props.user.lat, longitude: this.props.user.long}}
           pinColor={"blue"}
         />
-        {this.renderMarkers()}
+        {this.props.events &&
+          this.renderMarkers()}
+
+        {this.props.event &&
+          <Marker
+          key={this.props.event.eventID}
+          title={this.props.event.name}
+          coordinate={{ latitude: this.props.event.lat, longitude: this.props.event.long }}
+      />
+        }
       </MapView>
     );
   }
