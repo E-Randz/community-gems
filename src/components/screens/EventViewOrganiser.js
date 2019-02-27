@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   Image,
   ScrollView,
   TouchableOpacity
-} from "react-native";
-import Map from "../map";
-import { ListItem, ButtonGroup } from "react-native-elements";
-import { getEventByID } from "../../db/events";
+} from 'react-native'
+import Map from '../map'
+import { ListItem, ButtonGroup } from 'react-native-elements'
+import { getEventByID, joinEvent } from '../../db/events'
 
-import firebase from "firebase";
+import firebase from 'firebase'
 
 //   componentDidMount () {
 //     // userRef.on("value", snapshot => {
@@ -28,52 +28,54 @@ class EventViewOrganiser extends Component {
   state = {
     volunteers: [
       {
-        name: "Sam",
-        prop1: "something",
-        prop2: "some info"
+        name: 'Sam',
+        prop1: 'something',
+        prop2: 'some info'
       },
       {
-        name: "Peter",
-        prop1: "another something",
-        prop2: "other info"
+        name: 'Peter',
+        prop1: 'another something',
+        prop2: 'other info'
       },
       {
-        name: "Mobutu Sese seko Nkuku Ngbendu Wa za banga",
-        prop1: "almost the same",
-        prop2: "same kind of info"
+        name: 'Mobutu Sese seko Nkuku Ngbendu Wa za banga',
+        prop1: 'almost the same',
+        prop2: 'same kind of info'
       }
     ],
 
     isVolunteer: true,
-    event: null
-  };
+    event: {}
+  }
 
-  async componentDidMount() {
-    let event;
+  async componentDidMount () {
+    let event
     if (this.props.navigation.state.params.event) {
-      event = this.props.navigation.state.params.event;
+      event = this.props.navigation.state.params.event
     } else {
-      const { eventID } = this.props.navigation.state.params;
-      event = await getEventByID(eventID);
+      const { eventID } = this.props.navigation.state.params
+      event = await getEventByID(eventID)
     }
     this.setState({
       event
-    });
+    })
   }
 
-  render() {
-    const { volunteers, isVolunteer, event } = this.state;
-    const { user, userID } = this.props.navigation.state.params;
+  render () {
+    const { volunteers, isVolunteer, event } = this.state
+    const { user, userID } = this.props.navigation.state.params
+    console.log(userID)
 
-    let gems = 0;
+    let gems = 0
 
-    if (event)
+    if (event) {
       gems =
-        event.timeScale === "0-1 hour"
+        event.timeScale === '0-1 hour'
           ? 1
-          : event.timeScale === "1-3 hours"
-          ? 2
-          : 3;
+          : event.timeScale === '1-3 hours'
+            ? 2
+            : 3
+    }
 
     return (
       event && (
@@ -81,8 +83,8 @@ class EventViewOrganiser extends Component {
           <View
             style={{
               paddingTop: 80,
-              backgroundColor: "#00BFFF",
-              alignItems: "center"
+              backgroundColor: '#00BFFF',
+              alignItems: 'center'
             }}
           />
           <Text style={styles.title}>{event.name}</Text>
@@ -91,24 +93,24 @@ class EventViewOrganiser extends Component {
             <Text style={styles.date}>{event.dateTime}</Text>
             <View style={styles.userText}>
               <Text style={styles.gem}>
-                💎 {gems} / {event.timeScale},{" "}
+                💎 {gems} / {event.timeScale},{' '}
               </Text>
               <Image
                 style={styles.userIcon}
-                source={require("../../../assets/users.png")}
+                source={require('../../../assets/users.png')}
               />
               <Text> x {event.noOfVolunteers}</Text>
             </View>
 
             <Text style={styles.eventDesc}>{event.description}</Text>
             <Text>
-              address:{" "}
+              address:{' '}
               {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
             </Text>
 
             <TouchableOpacity
               style={styles.location_buttons}
-              onPress={() => this.handleJoinEvent(event, userID)}
+              onPress={() => this.handleJoinEvent(event, userID, user.username)}
             >
               <Text>Join</Text>
             </TouchableOpacity>
@@ -125,7 +127,7 @@ class EventViewOrganiser extends Component {
                   key={i}
                   leftAvatar={{
                     source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
                     }
                   }}
                   title={volunteer.name}
@@ -144,26 +146,30 @@ class EventViewOrganiser extends Component {
           </View>
         </ScrollView>
       )
-    );
+    )
   }
 
   handleIsVolunteer = () => {
     this.setState({
       pastEvent: true
-    });
-  };
+    })
+  }
+
+  handleJoinEvent = (event, userID, username) => {
+    joinEvent(event, userID, username)
+  }
 }
 
-export default EventViewOrganiser;
+export default EventViewOrganiser
 
 const styles = StyleSheet.create({
   title: {
     fontSize: 30,
-    color: "white",
-    backgroundColor: "#00BFFF",
+    color: 'white',
+    backgroundColor: '#00BFFF',
     paddingBottom: 10,
-    //fontFamily: "Futura",
-    textAlign: "center",
+    // fontFamily: "Futura",
+    textAlign: 'center',
     marginBottom: 20
   },
 
@@ -176,51 +182,51 @@ const styles = StyleSheet.create({
   },
 
   eventBox: {
-    textAlign: "center",
+    textAlign: 'center',
     padding: 15,
     borderRadius: 15,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
 
   eventTitle: {
-    flexDirection: "column",
-    textAlign: "left"
+    flexDirection: 'column',
+    textAlign: 'left'
   },
 
   eventDesc: {
-    justifyContent: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    textAlign: 'center',
     padding: 15,
     fontSize: 14
   },
 
   eventTitleText: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
 
   date: {
     fontSize: 17,
-    justifyContent: "center",
-    textAlign: "center"
+    justifyContent: 'center',
+    textAlign: 'center'
   },
 
   infoParent: {
-    flexDirection: "row",
-    textAlign: "left"
+    flexDirection: 'row',
+    textAlign: 'left'
   },
   userText: {
-    flexDirection: "row",
-    justifyContent: "center",
-    textAlign: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    textAlign: 'center',
     fontSize: 17
   },
 
   reviewBox: {
     fontSize: 6,
-    backgroundColor: "#00BFFF",
-    fontWeight: "600",
-    borderColor: "#00BFFF",
+    backgroundColor: '#00BFFF',
+    fontWeight: '600',
+    borderColor: '#00BFFF',
     borderBottomWidth: 2,
     marginTop: 2
   },
@@ -230,13 +236,13 @@ const styles = StyleSheet.create({
     height: 20
   },
   userDataParent: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingTop: 20,
     marginRight: 20
   },
 
   buttonsBox: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderRadius: 16,
     // justifyContent: ,
     padding: 20,
@@ -244,35 +250,35 @@ const styles = StyleSheet.create({
   },
 
   location_buttons: {
-    backgroundColor: "#00BFFF",
+    backgroundColor: '#00BFFF',
     padding: 5,
     margin: 3,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 16,
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 1,
-    width: "40%",
-    alignSelf: "center"
+    width: '40%',
+    alignSelf: 'center'
   },
 
   isVolunteerTrue: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center"
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   isVolunteerFalse: {
-    width: "90%",
+    width: '90%',
     marginBottom: 15,
     borderBottomWidth: 2
   },
   isVolunteerFalseChild1: {
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   isVolunteerFalseChild2: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     fontSize: 18
   }
-});
+})
