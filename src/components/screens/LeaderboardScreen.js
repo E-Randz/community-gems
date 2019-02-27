@@ -19,7 +19,6 @@ export default class AvatarAndClickable extends Component {
   };
 
   render() {
-    console.log(this.state.allUsers);
     const props = {
       labelBy: "name",
       sortBy: "gems",
@@ -69,7 +68,6 @@ export default class AvatarAndClickable extends Component {
     const arr = [];
     const users = await getAllUsers();
     for (let user in users) {
-      // console.log(users[user])
       const newObj = {
         name: users[user].username,
         gems: users[user].gems,
@@ -82,7 +80,7 @@ export default class AvatarAndClickable extends Component {
 
     this.setState({
       allUsers: arr,
-      localData: findLocals(arr, this.props.user)
+      localData: findLocals(arr, this.props.navigation.state.params.user)
     });
   };
 

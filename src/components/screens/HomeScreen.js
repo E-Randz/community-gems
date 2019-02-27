@@ -112,8 +112,9 @@ class HomeScreen extends Component {
           <View style={styles.buttonsBox}>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
-              onPress={() =>
+              onPress={() => {
                 this.props.navigation.navigate("Leaderboard", { user })
+              }
               }
             >
               <Text>Leaderboard</Text>
