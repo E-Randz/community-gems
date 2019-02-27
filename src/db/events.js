@@ -35,22 +35,17 @@ export const postNewEvent = (
       creatorUid,
       attendees: { [creatorUid]: [creatorUsername] },
       lat,
-      long
+      long,
+      isClosed: false
     };
 
     const userEventData = {
       name,
-      firstLineOfAddress,
       town,
-      postcode,
       type,
       description,
       dateTime,
-      createdDate,
-      noOfVolunteers,
-      timeScale,
-      creatorUsername,
-      creatorUid
+      creatorUsername
     };
 
     const newPostKey = firebase
