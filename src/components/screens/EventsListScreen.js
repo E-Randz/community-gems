@@ -16,6 +16,7 @@ import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
 import { getEvents } from "../../db/events";
 import { getUserByID } from "../../db/users";
+import moment from 'moment';
 
 export default class EventsList extends Component {
   state = {
@@ -140,7 +141,9 @@ export default class EventsList extends Component {
                     }
                   }}
                   title={event.name}
-                  subtitle={`🕒 ${event.timeScale}\n📍 ${event.town}\n👤 ${
+                  subtitle={`📅 ${moment(event.dateTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}\n📍 ${event.town}\n👤 ${
                     event.creatorUsername
                   }`}
                   style={styles.reviewBox}
