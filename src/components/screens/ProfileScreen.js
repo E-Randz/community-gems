@@ -39,7 +39,7 @@ export default class Profile extends Component {
     this.setState(
       {
         img: image || "https://bootdey.com/img/Content/avatar/avatar6.png",
-        reviews: Object.entries(reviews)
+        reviews: reviews ? Object.entries(reviews) : []
       },
       () => this.setUserInputs()
     );
