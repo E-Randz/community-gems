@@ -11,6 +11,7 @@ import {
 import Map from '../map'
 import { ListItem, ButtonGroup } from 'react-native-elements'
 import { getEventByID, joinEvent } from '../../db/events'
+import moment from 'moment';
 
 import firebase from 'firebase'
 
@@ -69,12 +70,9 @@ class EventViewOrganiser extends Component {
     let gems = 0
 
     if (event) {
-      gems =
-        event.timeScale === '0-1 hour'
-          ? 1
-          : event.timeScale === '1-3 hours'
-            ? 2
-            : 3
+      gems =  event.timeScale === '0-1 hour'  ? 1
+            : event.timeScale === '1-3 hours' ? 2
+            : 3;
     }
 
     return (
@@ -90,7 +88,7 @@ class EventViewOrganiser extends Component {
           <Text style={styles.title}>{event.name}</Text>
           <Map event={event} user={user} />
           <View style={styles.eventBox}>
-            <Text style={styles.date}>{event.dateTime}</Text>
+            <Text style={styles.date}>{moment(event.dateTime).format("MMMM Do YYYY, h:mm a")}</Text>
             <View style={styles.userText}>
               <Text style={styles.gem}>
                 💎 {gems} / {event.timeScale},{' '}
@@ -103,11 +101,7 @@ class EventViewOrganiser extends Component {
             </View>
 
             <Text style={styles.eventDesc}>{event.description}</Text>
-            <Text>
-              address:{' '}
-              {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
-            </Text>
-
+            <Text style={styles.eventAddress}>📍 {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}</Text>
             <TouchableOpacity
               style={styles.location_buttons}
               onPress={() => this.handleJoinEvent(event, userID, user.username)}
@@ -198,6 +192,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 15,
     fontSize: 14
+  },
+  eventAddress: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: 'grey',
+    paddingBottom: 15
   },
 
   eventTitleText: {
