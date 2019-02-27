@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import PropTypes from "prop-types";
 
-const Input = ({
+const SignUpInput = ({
   label,
   value,
   onChangeText,
@@ -29,33 +29,33 @@ const Input = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
+    marginTop: 10,
     width: "100%",
-    borderColor: "#eee",
-    borderBottomWidth: 2
+    borderColor: "grey",
+    borderBottomWidth: 1
   },
   label: {
-    fontSize: 17,
+    fontSize: 20,
     padding: 10,
-    paddingBottom: 5,
-    color: "white",
-    fontWeight: "700",
+    paddingBottom: 25,
+    color: "grey",
+    fontWeight: "500",
     width: "100%"
   },
   input: {
     paddingRight: 5,
     paddingLeft: 5,
     paddingBottom: 1,
-    color: "white",
+    color: "grey",
     fontSize: 18,
     fontWeight: "700",
     width: "100%"
   }
 });
 
-export { Input };
+export { SignUpInput };
 
-Input.propTypes = {
+SignUpInput.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChangeText: PropTypes.func.isRequired,

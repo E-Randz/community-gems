@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     padding: 20,
-    backgroundColor: "red",
+    backgroundColor: "#00BFFF",
     borderRadius: 4,
     alignItems: "center"
   },
   text: {
     color: "white",
-    fontWeight: "700",
-    fontSize: 10
+    fontWeight: "500",
+    fontSize: 20
   }
 });
 

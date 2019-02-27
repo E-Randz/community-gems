@@ -60,7 +60,7 @@ class HomeScreen extends Component {
       };
     });
   };
- 
+
   navigateToEvent = (eventID, user) => {
     this.props.navigation.navigate("EventView", { eventID , user });
   };
@@ -90,11 +90,16 @@ class HomeScreen extends Component {
         <ScrollView>
           <View
             style={{
-              paddingTop: 80,
+              paddingTop: 10,
               backgroundColor: "#00BFFF",
               alignItems: "center"
             }}
-          />
+          >
+            <Image
+              style={{ height: 60, width: 60, marginLeft: -300 }}
+              source={require("../../img/LogoGems.png")}
+            />
+          </View>
           <Text style={styles.title}>HOME</Text>
           <View style={styles.userInfoBox}>
             <View style={styles.userData}>
