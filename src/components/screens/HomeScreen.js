@@ -62,7 +62,7 @@ class HomeScreen extends Component {
   };
 
   navigateToEvent = (eventID, user) => {
-    this.props.navigation.navigate("EventView", { eventID , user });
+    this.props.navigation.navigate("EventView", { eventID, user });
   };
 
   render() {
@@ -122,7 +122,9 @@ class HomeScreen extends Component {
               style={styles.userInfoBox_buttons}
               onPress={() => this.props.navigation.navigate("Leaderboard")}
             >
-              <Text>Leaderboard</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>
+                Leaderboard
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
@@ -135,7 +137,7 @@ class HomeScreen extends Component {
                 })
               }
             >
-              <Text>Profile</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>Profile</Text>
             </TouchableOpacity>
           </View>
 
@@ -251,16 +253,17 @@ const styles = StyleSheet.create({
   },
 
   userInfoBox_buttons: {
-    backgroundColor: "#00BFFF",
-    padding: 12,
-    marginTop: -40,
+    backgroundColor: "white",
+    padding: 5,
+    marginTop: -35,
+    marginBottom: 15,
     marginRight: 5,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "black",
-    width: "40%"
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#00BFFF",
+    width: "30%"
   },
 
   eventButtons: {
