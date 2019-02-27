@@ -1,7 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import { Input } from "../Input";
-import { Button } from "../Button";
 import * as firebase from "firebase";
 
 class LogInScreen extends Component {
@@ -28,12 +34,18 @@ class LogInScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image
+          style={{ height: 300, width: 300, marginTop: 10 }}
+          source={require("../../img/LogoGems.png")}
+        />
+        <Text style={styles.tag}>Volunteering Together</Text>
         <Input
           placeholder="Enter your email..."
           label="Email Address"
           onChangeText={email => this.setState({ email })}
           name="email"
           value={this.state.email}
+          style={{ colour: "white" }}
         />
         <Input
           placeholder="Enter your password..."
@@ -43,39 +55,44 @@ class LogInScreen extends Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => this.LogInUser(this.state.email, this.state.password)}
         >
-          {" "}
-          Log In{" "}
-        </Button>
-        <Button onPress={() => this.props.navigation.navigate("SignUp")}>
-          Sign Up
-        </Button>
-        <Button
-          onPress={() => this.props.navigation.navigate("ForgotPassword")}
+          <Text>Log In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.navigation.navigate("SignUp")}
         >
-          {" "}
-          Forgot Password{" "}
-        </Button>
+          <Text>Sign Up</Text>
+        </TouchableOpacity>
       </View>
     );
   }
-  // handleInput = (event) => {
-  //   // console.log(e);
-  //   const { name, value } = event.nativeEvent;
-  //   this.setState({
-  //     [name]: value,
-  //   })
-  // }
 }
 export default LogInScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#00BFFF",
     alignItems: "center",
     justifyContent: "center"
+  },
+  button: {
+    marginTop: 10,
+    height: 35,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+    width: "40%",
+    borderRadius: 30,
+    backgroundColor: "white"
+  },
+  tag: {
+    color: "white",
+    fontSize: 20
   }
 });

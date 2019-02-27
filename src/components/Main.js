@@ -3,13 +3,16 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  View
+  ScrollView,
+  View,
+  Image
 } from "react-native";
 import React, { Component } from "react";
 import firebase from "firebase";
 import { getUserByID } from "../db/users";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import Fire from "./Fire";
+import moment from "moment";
 
 class Main extends React.Component {
   state = {
@@ -62,8 +65,30 @@ class Main extends React.Component {
   render() {
     const { user, events } = this.state;
     return (
-      <View>
-        <Text style={styles.title}>Chats</Text>
+      <ScrollView>
+        <View
+          style={{
+            paddingTop: 10,
+            backgroundColor: "#00BFFF",
+            alignItems: "center"
+          }}
+        >
+          <Image
+            style={{ height: 60, width: 60, marginLeft: -300 }}
+            source={require("../img/LogoGems.png")}
+          />
+          <Text
+            style={{
+              fontSize: 30,
+              color: "white",
+              backgroundColor: "#00BFFF",
+              paddingBottom: 10
+              // fontFamily: "Futura"
+            }}
+          >
+            CHAT
+          </Text>
+        </View>
         {events &&
           events.map((event, i) => {
             return (
@@ -84,15 +109,15 @@ class Main extends React.Component {
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.town}\n${event.description}\n${
-                    event.dateTime
-                  }`}
+                  subtitle={`${event.town}\n${moment(event.dateTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>
             );
           })}
-      </View>
+      </ScrollView>
     );
   }
 }

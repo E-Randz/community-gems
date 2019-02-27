@@ -8,7 +8,9 @@ import { findLocals } from "../../utils";
 export default class AvatarAndClickable extends Component {
   state = {
     allUsers: [],
+
     localData: [],
+
     filter: 0
   };
 
@@ -34,11 +36,15 @@ export default class AvatarAndClickable extends Component {
       <ScrollView>
         <View
           style={{
-            paddingTop: 50,
+            paddingTop: 10,
             backgroundColor: "#00BFFF",
             alignItems: "center"
           }}
         >
+          <Image
+            style={{ height: 60, width: 60, marginLeft: -300 }}
+            source={require("../../img/LogoGems.png")}
+          />
           <Text
             style={{
               fontSize: 30,

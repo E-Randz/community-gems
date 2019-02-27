@@ -87,11 +87,16 @@ class HomeScreen extends Component {
         <ScrollView>
           <View
             style={{
-              paddingTop: 80,
+              paddingTop: 10,
               backgroundColor: "#00BFFF",
               alignItems: "center"
             }}
-          />
+          >
+            <Image
+              style={{ height: 60, width: 60, marginLeft: -300 }}
+              source={require("../../img/LogoGems.png")}
+            />
+          </View>
           <Text style={styles.title}>HOME</Text>
           <View style={styles.userInfoBox}>
             <View style={styles.userData}>
@@ -117,7 +122,9 @@ class HomeScreen extends Component {
               }
               }
             >
-              <Text>Leaderboard</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>
+                Leaderboard
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
@@ -130,7 +137,7 @@ class HomeScreen extends Component {
                 })
               }
             >
-              <Text>Profile</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>Profile</Text>
             </TouchableOpacity>
           </View>
 
@@ -246,16 +253,17 @@ const styles = StyleSheet.create({
   },
 
   userInfoBox_buttons: {
-    backgroundColor: "#00BFFF",
-    padding: 12,
-    marginTop: -40,
+    backgroundColor: "white",
+    padding: 5,
+    marginTop: -35,
+    marginBottom: 15,
     marginRight: 5,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "black",
-    width: "40%"
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#00BFFF",
+    width: "30%"
   },
 
   eventButtons: {

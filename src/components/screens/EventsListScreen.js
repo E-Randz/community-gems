@@ -31,37 +31,28 @@ export default class EventsList extends Component {
   };
 
   componentDidMount() {
-    this.retrieveUser()
-      .then(() => getEvents())
-      .then(results => {
-        const eventArr = Object.entries(results).map(event => {
-          return { eventID: event[0], ...event[1] };
-        });
-        const localEvents = findLocals(eventArr, this.state.user);
-        this.setState({
-          events: localEvents
-        });
-      });
+    this.retrieveUser();
+    this.getFutureEvents();
   }
 
   _onRefresh = () => {
-    this.setState({
-      refreshing: true
-    });
+    this.getFutureEvents(true);
+  };
+
+  getFutureEvents = (refreshing) => {
+    if (refreshing) this.setState({refreshing: true});
     getEvents().then(results => {
-      const eventArr = Object.entries(results).map(event => {
-        return {
-          eventID: event[0],
-          ...event[1]
-        };
-      });
-      const localEvents = findLocals(eventArr, this.state.user);
+      const events = Object.entries(results).reduce((acc, curr) => {
+        if (Date.now() < curr[1].dateTime) acc.push({ eventID: curr[0], ...curr[1] });
+        return acc
+      }, [])
+    const localEvents = findLocals(events, this.state.user);
       this.setState({
-        events: localEvents,
+        events: localEvents
         refreshing: false
       });
     });
-  };
+  }
 
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
