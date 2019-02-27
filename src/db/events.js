@@ -38,16 +38,35 @@ export const postNewEvent = (
       long
     };
 
+    const userEventData = {
+      name,
+      firstLineOfAddress,
+      town,
+      postcode,
+      type,
+      description,
+      dateTime,
+      createdDate,
+      noOfVolunteers,
+      timeScale,
+      creatorUsername,
+      creatorUid
+    };
+
     const newPostKey = firebase
       .database()
       .ref()
-      .child("posts")
+      .child("/Events")
       .push().key;
 
-    firebase
+    const updates = {};
+    updates["/Events/" + newPostKey] = postEventData;
+    updates["/Users/" + creatorUid + "/Events/" + newPostKey] = userEventData;
+
+    return firebase
       .database()
-      .ref("/Events")
-      .push(postEventData);
+      .ref()
+      .update(updates);
   });
 };
 
