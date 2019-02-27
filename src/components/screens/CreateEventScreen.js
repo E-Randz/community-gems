@@ -12,7 +12,70 @@ import {
 import firebase from "firebase";
 import { Dropdown } from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
-import { postNewEvent } from "../../db/events";
+import { postNewEvent } from '../../db/events'
+import moment from 'moment';
+
+const EventTypes = [
+  {
+    value: "clean the streets"
+  },
+  {
+    value: "gardening"
+  },
+  {
+    value: "Fundraising"
+  },
+  {
+    value: "Outdoor Activities"
+  },
+  {
+    value: "Housework"
+  }
+];
+const EventLengths = [
+  {
+    value: "0-1 hour"
+  },
+  {
+    value: "1-3 hours"
+  },
+  {
+    value: "3-6 hours"
+  }
+];
+const EventVolunteers = [
+  {
+    value: "1"
+  },
+  {
+    value: "2"
+  },
+  {
+    value: "3"
+  },
+  {
+    value: "4"
+  },
+  {
+    value: "5"
+  },
+  {
+    value: "6"
+  },
+  {
+    value: "7"
+  },
+  {
+    value: "8"
+  },
+  {
+    value: "9"
+  },
+  {
+    value: "10"
+  }
+]
+
 
 class CreateEventScreen extends Component {
   state = {
@@ -44,66 +107,6 @@ class CreateEventScreen extends Component {
   }
 
   render() {
-    const EventTypes = [
-      {
-        value: "clean the streets"
-      },
-      {
-        value: "gardening"
-      },
-      {
-        value: "Fundraising"
-      },
-      {
-        value: "Outdoor Activities"
-      },
-      {
-        value: "Housework"
-      }
-    ];
-    const EventLengths = [
-      {
-        value: "0-1 hour"
-      },
-      {
-        value: "1-3 hours"
-      },
-      {
-        value: "3-6 hours"
-      }
-    ];
-    const EventVolunteers = [
-      {
-        value: "1"
-      },
-      {
-        value: "2"
-      },
-      {
-        value: "3"
-      },
-      {
-        value: "4"
-      },
-      {
-        value: "5"
-      },
-      {
-        value: "6"
-      },
-      {
-        value: "7"
-      },
-      {
-        value: "8"
-      },
-      {
-        value: "9"
-      },
-      {
-        value: "10"
-      }
-    ];
     return (
       <ScrollView>
         <View
@@ -162,7 +165,6 @@ class CreateEventScreen extends Component {
             date={this.state.dateTime}
             mode="datetime"
             placeholder="select date"
-            format="YYYY-MM-DD hh:mm"
             minDate={Date.now()}
             maxDate="2023-01-01"
             confirmBtnText="Confirm"
@@ -214,7 +216,7 @@ class CreateEventScreen extends Component {
                 this.state.postcode,
                 this.state.type,
                 this.state.description,
-                this.state.dateTime,
+                moment(this.state.dateTime, "YYYY-MM-DD hh-mm").valueOf(),
                 this.state.createdDate,
                 this.state.noOfVolunteers,
                 this.state.timeScale,

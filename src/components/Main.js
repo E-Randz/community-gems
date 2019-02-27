@@ -108,7 +108,9 @@ class Main extends React.Component {
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.Town}\n${event.description}`}
+                  subtitle={`${event.town}\n${event.description}\n${
+                    event.dateTime
+                  }`}
                   style={styles.reviewBox}
                 />
               </TouchableOpacity>

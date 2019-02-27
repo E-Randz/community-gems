@@ -13,37 +13,56 @@ export const postNewEvent = (
   noOfVolunteers,
   timeScale,
   creatorUsername,
-  creatorUid,
+  creatorUid
 ) => {
   const address = `${firstLineOfAddress}+${town}+${postcode}`;
-  return getCoords(address).then(
-    res => {
-      const lat = res.data.results[0].geometry.location.lat;
-      const long = res.data.results[0].geometry.location.lng;
+  return getCoords(address).then(res => {
+    const lat = res.data.results[0].geometry.location.lat;
+    const long = res.data.results[0].geometry.location.lng;
 
-      const postEventData = {
-        name,
-        firstLineOfAddress,
-        town,
-        postcode,
-        type,
-        description,
-        dateTime,
-        createdDate,
-        noOfVolunteers,
-        timeScale,
-        creatorUsername,
-        creatorUid,
-        attendees: {[creatorUid]: [creatorUsername]},
-        lat,
-        long
-      };
-      firebase
+    const postEventData = {
+      name,
+      firstLineOfAddress,
+      town,
+      postcode,
+      type,
+      description,
+      dateTime,
+      createdDate,
+      noOfVolunteers,
+      timeScale,
+      creatorUsername,
+      creatorUid,
+      attendees: { [creatorUid]: [creatorUsername] },
+      lat,
+      long,
+      isClosed: false
+    };
+
+    const userEventData = {
+      name,
+      town,
+      type,
+      description,
+      dateTime,
+      creatorUsername
+    };
+
+    const newPostKey = firebase
       .database()
-      .ref("/Events")
-      .push(postEventData)
-    },   
-  );
+      .ref()
+      .child("/Events")
+      .push().key;
+
+    const updates = {};
+    updates["/Events/" + newPostKey] = postEventData;
+    updates["/Users/" + creatorUid + "/Events/" + newPostKey] = userEventData;
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates);
+  });
 };
 
 export const editEvent = (
@@ -98,12 +117,12 @@ export const getEventUsers = eventID => {
 
 export const addUserToEvent = (eventID, username, userID) => {
   const eventAttendee = {
-    [userID] : [username]
-  }
+    [userID]: [username]
+  };
   firebase
     .database()
     .ref(`/Events/${eventID}`)
-    .child('attendees')
+    .child("attendees")
     .update(eventAttendee)
     .catch(console.log);
 };
@@ -117,13 +136,18 @@ export const deleteUserFromEvent = (eventID, userID) => {
     .catch(console.log);
 };
 
-
 export const getEvents = async () => {
-  const snapshot = await firebase.database().ref('/Events').once('value')
+  const snapshot = await firebase
+    .database()
+    .ref("/Events")
+    .once("value");
   return snapshot.val();
-}
+};
 
-export const getEventByID = async (eventID) => {
-  const snapshot = await firebase.database().ref(`/Events/${eventID}`).once('value')
+export const getEventByID = async eventID => {
+  const snapshot = await firebase
+    .database()
+    .ref(`/Events/${eventID}`)
+    .once("value");
   return snapshot.val();
-}
+};

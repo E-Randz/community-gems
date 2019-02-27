@@ -32,33 +32,26 @@ export default class EventsList extends Component {
 
   componentDidMount() {
     this.retrieveUser();
-    getEvents().then(results => {
-      const eventArr = Object.entries(results).map(event => {
-        return { eventID: event[0], ...event[1] };
-      });
-      this.setState({
-        events: eventArr
-      });
-    });
+    this.getFutureEvents();
   }
 
   _onRefresh = () => {
-    this.setState({
-      refreshing: true
-    });
+    this.getFutureEvents(true);
+  };
+
+  getFutureEvents = (refreshing) => {
+    if (refreshing) this.setState({refreshing: true});
     getEvents().then(results => {
-      const eventArr = Object.entries(results).map(event => {
-        return {
-          eventID: event[0],
-          ...event[1]
-        };
-      });
+      const events = Object.entries(results).reduce((acc, curr) => {
+        if (Date.now() < curr[1].dateTime) acc.push({ eventID: curr[0], ...curr[1] });
+        return acc
+      }, [])
       this.setState({
-        events: eventArr,
+        events,
         refreshing: false
       });
     });
-  };
+  }
 
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
@@ -67,6 +60,7 @@ export default class EventsList extends Component {
       user,
       userID
     });
+    
   };
 
   updateIndex = selectedIndex => {
@@ -89,6 +83,7 @@ export default class EventsList extends Component {
     // console.log(arr)
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID, events, sort_by } = this.state;
+
     return (
       <ScrollView
         refreshControl={

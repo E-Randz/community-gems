@@ -61,8 +61,8 @@ class HomeScreen extends Component {
     });
   };
 
-  navigateToEvent = eventID => {
-    this.props.navigation.navigate("EventView", { eventID });
+  navigateToEvent = (eventID, user) => {
+    this.props.navigation.navigate("EventView", { eventID , user });
   };
 
   render() {
@@ -73,20 +73,18 @@ class HomeScreen extends Component {
     const attendedArr = [];
     const upcomingArr = [];
 
-    if (user) {
-      eventsArr = Object.entries(user.Events);
-      if (user && user.Events) {
-        const { Events } = user;
-        for (let event in Events) {
-          const eventObject = {
-            ...Events[event],
-            eventID: event
-          };
-          if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
-          else upcomingArr.push(eventObject);
-        }
+    if (user && user.Events) {
+      const { Events } = user;
+      for (let event in Events) {
+        const eventObject = {
+          ...Events[event],
+          eventID: event
+        };
+        if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
+        else upcomingArr.push(eventObject);
       }
     }
+
     return (
       user && (
         <ScrollView>
@@ -152,8 +150,9 @@ class HomeScreen extends Component {
             {selectedIndex
               ? attendedArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID)}
+                    onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
+                    user={user}
                   >
                     <ListItem
                       key={event.eventID}
