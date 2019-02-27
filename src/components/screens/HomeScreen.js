@@ -61,9 +61,9 @@ class HomeScreen extends Component {
     });
   };
 
-  navigateToEvent = (eventID) => {
-    this.props.navigation.navigate('EventView', {eventID});
-  }
+  navigateToEvent = eventID => {
+    this.props.navigation.navigate("EventView", { eventID });
+  };
 
   render() {
     const { upcoming, attended, pastEvent, events, user, userID } = this.state;
@@ -73,20 +73,18 @@ class HomeScreen extends Component {
     const attendedArr = [];
     const upcomingArr = [];
 
-    if (user) {
-      eventsArr = Object.entries(user.Events);
-      if (user && user.Events) {
-        const { Events } = user;
-        for (let event in Events) {
-          const eventObject = {
-            ...Events[event],
-            eventID: event
-          };
-          if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
-          else upcomingArr.push(eventObject);
-        }
+    if (user && user.Events) {
+      const { Events } = user;
+      for (let event in Events) {
+        const eventObject = {
+          ...Events[event],
+          eventID: event
+        };
+        if (Date.now() > eventObject.dateTime) attendedArr.push(eventObject);
+        else upcomingArr.push(eventObject);
       }
     }
+
     return (
       user && (
         <ScrollView>
@@ -146,7 +144,10 @@ class HomeScreen extends Component {
           <View>
             {selectedIndex
               ? attendedArr.map((event, i) => (
-                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
+                  <TouchableOpacity
+                    onPress={() => this.navigateToEvent(event.eventID)}
+                    key={i}
+                  >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
@@ -163,7 +164,10 @@ class HomeScreen extends Component {
                   </TouchableOpacity>
                 ))
               : upcomingArr.map((event, i) => (
-                  <TouchableOpacity onPress={() => this.navigateToEvent(event.eventID)} key={i}>
+                  <TouchableOpacity
+                    onPress={() => this.navigateToEvent(event.eventID)}
+                    key={i}
+                  >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
