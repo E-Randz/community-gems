@@ -162,13 +162,15 @@ class HomeScreen extends Component {
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: `${event.uri}`
+                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
                         }
                       }}
-                      title={event.title}
-                      subtitle={`${moment(event.dateTime).format(
-                        "MMMM Do YYYY, h:mm a"
-                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      title={event.name}
+                      subtitle={`📅 ${moment(event.dateTime).format(
+                      "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${
+                      event.creatorUsername
+                      }`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>
@@ -184,13 +186,15 @@ class HomeScreen extends Component {
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: `${event.uri}`
+                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
                         }
                       }}
-                      title={event.title}
-                      subtitle={`${moment(event.dateTime).format(
-                        "MMMM Do YYYY, h:mm a"
-                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      title={event.name}
+                      subtitle={`📅 ${moment(event.dateTime).format(
+                      "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${
+                      event.creatorUsername
+                      }`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>

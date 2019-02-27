@@ -16,6 +16,7 @@ import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
 import { getEvents } from "../../db/events";
 import { getUserByID } from "../../db/users";
+import moment from 'moment';
 import { findLocals } from "../../utils";
 
 export default class EventsList extends Component {
@@ -140,11 +141,13 @@ export default class EventsList extends Component {
                 <ListItem
                   leftAvatar={{
                     source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      uri: event.userImage || 'https://bootdey.com/img/Content/avatar/avatar6.png'
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.timeScale}\n${event.town}\nOrganizer: ${
+                  subtitle={`📅 ${moment(event.dateTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}\n📍 ${event.town}\n👤 ${
                     event.creatorUsername
                   }`}
                   style={styles.reviewBox}

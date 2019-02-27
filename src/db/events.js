@@ -13,7 +13,8 @@ export const postNewEvent = (
   noOfVolunteers,
   timeScale,
   creatorUsername,
-  creatorUid
+  creatorUid,
+  userImage
 ) => {
   const address = `${firstLineOfAddress}+${town}+${postcode}`
   return getCoords(address).then(res => {
@@ -23,6 +24,7 @@ export const postNewEvent = (
     const postEventData = {
       name,
       firstLineOfAddress,
+      userImage,
       town,
       postcode,
       type,
@@ -45,7 +47,8 @@ export const postNewEvent = (
       type,
       description,
       dateTime,
-      creatorUsername
+      creatorUsername,
+      userImage
     }
 
     const newPostKey = firebase

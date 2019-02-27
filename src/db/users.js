@@ -30,9 +30,10 @@ export const postNewUser = (
       postcode,
       long,
       lat,
-      gems: 0
-    });
-};
+      gems: 0,
+      image: 'https://bootdey.com/img/Content/avatar/avatar6.png'
+    })
+}
 
 export const editUser = (
   userID,
