@@ -9,7 +9,7 @@ import TabNavigator from './src/navigation/TabNavigator'
 import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen'
 import AuthNavigator from './src/navigation/AuthNavigator'
 import firebase from 'firebase'
-import { firebaseConfig } from '../community-gems/config'
+import { firebaseConfig } from './config'
 import {
   postNewEvent,
   getEventUsers,

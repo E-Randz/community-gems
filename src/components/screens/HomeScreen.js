@@ -60,9 +60,9 @@ class HomeScreen extends Component {
       };
     });
   };
-
-  navigateToEvent = eventID => {
-    this.props.navigation.navigate("EventView", { eventID });
+ 
+  navigateToEvent = (eventID, user) => {
+    this.props.navigation.navigate("EventView", { eventID , user });
   };
 
   render() {
@@ -145,8 +145,9 @@ class HomeScreen extends Component {
             {selectedIndex
               ? attendedArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID)}
+                    onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
+                    user={user}
                   >
                     <ListItem
                       key={event.eventID}

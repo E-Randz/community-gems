@@ -88,7 +88,7 @@ class EventViewOrganiser extends Component {
             }}
           />
           <Text style={styles.title}>{event.name}</Text>
-          {/* <Map events={event} user={user} /> */}
+          <Map event={event} user={user} />
           <View style={styles.eventBox}>
             <Text style={styles.date}>{event.dateTime}</Text>
             <View style={styles.userText}>
