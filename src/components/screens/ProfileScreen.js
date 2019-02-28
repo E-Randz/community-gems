@@ -15,7 +15,7 @@ import { Input } from "../Input";
 import { ImagePicker, Permissions } from "expo";
 import firebase from "firebase";
 import uuid from "uuid";
-import { editUser, editUserPhoto, addReview } from "../../db/users";
+import { editUser, editUserPhoto, addReview, giveGems } from "../../db/users";
 import ReviewModal from "../ReviewModal";
 
 export default class Profile extends Component {
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     height: 200
   },
   input: {
-    color: 'black'
+    color: "black"
   },
 
   buttonBox: {
