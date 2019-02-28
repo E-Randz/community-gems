@@ -43,10 +43,11 @@ export default class EventsList extends Component {
     this.getFutureEvents(true);
   };
 
-  getFutureEvents = (refreshing) => {
-    if (refreshing) this.setState({refreshing: true});
+  getFutureEvents = refreshing => {
+    if (refreshing) this.setState({ refreshing: true });
     getEvents().then(results => {
       const events = Object.entries(results).reduce((acc, curr) => {
+
         if (Date.now() < curr[1].dateTime) acc.push({ eventID: curr[0], ...curr[1] });
         return acc
       }, [])
@@ -56,7 +57,7 @@ export default class EventsList extends Component {
         refreshing: false
       });
     });
-  }
+  };
 
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
@@ -65,7 +66,6 @@ export default class EventsList extends Component {
       user,
       userID
     });
-    // console.log(this.state.user);
   };
 
   updateIndex = selectedIndex => {
@@ -85,9 +85,9 @@ export default class EventsList extends Component {
       }
     ];
     // const arr = this.state.events[0]
-    // console.log(arr)
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID, events, sort_by } = this.state;
+    // console.log(events);
 
     return (
       <ScrollView
@@ -129,13 +129,14 @@ export default class EventsList extends Component {
           ) : (
             events.map((event, i) => (
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
+                  // console.log(event);
                   this.props.navigation.navigate("EventView", {
                     event,
                     user,
                     userID
-                  })
-                }
+                  });
+                }}
                 key={i}
               >
                 <ListItem
