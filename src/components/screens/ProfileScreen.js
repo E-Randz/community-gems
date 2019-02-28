@@ -183,21 +183,25 @@ export default class Profile extends Component {
         />
         <Text>Change address</Text>
         <Input
+          style={styles.input}
           placeholder="House Number"
           onChangeText={houseNo => this.updateInput("houseNo", houseNo)}
           value={this.state.houseNo}
         />
         <Input
+          style={styles.input}
           placeholder="Street"
           onChangeText={street => this.updateInput("street", street)}
           value={this.state.street}
         />
         <Input
+          style={styles.input}
           placeholder="Town"
           onChangeText={town => this.updateInput("town", town)}
           value={this.state.town}
         />
         <Input
+          style={styles.input}
           placeholder="Postcode"
           onChangeText={postcode => this.updateInput("postcode", postcode)}
           value={this.state.postcode}
@@ -219,7 +223,6 @@ export default class Profile extends Component {
   render() {
     const { user } = this.props.navigation.state.params;
     const { reviews } = this.state;
-
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
@@ -276,6 +279,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#00BFFF",
     height: 200
   },
+  input: {
+    color: 'black'
+  },
 
   buttonBox: {
     flex: 1,
@@ -306,29 +312,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginTop: 2
   },
-  //   reviewHolder: {
-  //     backgroundColor: "#00BFFF"
-  //   },
-  reviewBox: {
-    fontSize: 6,
-    backgroundColor: "#00BFFF",
-    fontWeight: "600",
-    borderBottomColor: "#00BFFF",
-    borderBottomWidth: 1
-  },
   body: {
     marginTop: 70,
     alignItems: "center"
-    // borderColor: "#00BFFF",
-    // borderWidth: 2,
-    // borderRadius: 13
   },
 
-  name: {
-    fontSize: 30,
-    color: "black",
-    fontWeight: "600"
-  },
   info: {
     fontSize: 20,
 
