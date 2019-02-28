@@ -16,13 +16,14 @@ import { Dropdown } from "react-native-material-dropdown";
 import Map from "../map";
 import { getEvents } from "../../db/events";
 import { getUserByID } from "../../db/users";
+import moment from 'moment';
+import { findLocals } from "../../utils";
 
 export default class EventsList extends Component {
   state = {
     sort_by: null,
     selectedIndex: 0,
     sort_by: "",
-    user: null,
     userID: null,
     events: [],
     refreshing: false,
@@ -31,8 +32,11 @@ export default class EventsList extends Component {
   };
 
   componentDidMount() {
-    this.retrieveUser();
-    this.getFutureEvents();
+    this.retrieveUser()
+    .then(()=> {
+      this.getFutureEvents();
+    })
+    
   }
 
   _onRefresh = () => {
@@ -43,12 +47,13 @@ export default class EventsList extends Component {
     if (refreshing) this.setState({ refreshing: true });
     getEvents().then(results => {
       const events = Object.entries(results).reduce((acc, curr) => {
-        if (Date.now() < curr[1].dateTime)
-          acc.push({ eventID: curr[0], ...curr[1] });
-        return acc;
-      }, []);
+
+        if (Date.now() < curr[1].dateTime) acc.push({ eventID: curr[0], ...curr[1] });
+        return acc
+      }, [])
+    const localEvents = findLocals(events, this.state.user);
       this.setState({
-        events,
+        events: localEvents,
         refreshing: false
       });
     });
@@ -137,11 +142,13 @@ export default class EventsList extends Component {
                 <ListItem
                   leftAvatar={{
                     source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      uri: event.userImage || 'https://bootdey.com/img/Content/avatar/avatar6.png'
                     }
                   }}
                   title={event.name}
-                  subtitle={`${event.timeScale}\n${event.town}\nOrganizer: ${
+                  subtitle={`📅 ${moment(event.dateTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}\n📍 ${event.town}\n👤 ${
                     event.creatorUsername
                   }`}
                   style={styles.reviewBox}

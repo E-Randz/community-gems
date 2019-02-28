@@ -70,8 +70,9 @@ class EventViewOrganiser extends Component {
       this.setState({ eventIsActive: false });
     }
     console.log(eventDate);
-
+    
     if (event) {
+      // console.log('event:', event)
       gems =
         event.timeScale === "0-1 hour"
           ? 1
@@ -93,7 +94,9 @@ class EventViewOrganiser extends Component {
           <Text style={styles.title}>{event.name}</Text>
           <Map event={event} user={user} />
           <View style={styles.eventBox}>
-            <Text style={styles.date}>{event.dateTime}</Text>
+            <Text style={styles.date}>
+              {moment(event.dateTime).format("MMMM Do YYYY, h:mm a")}
+            </Text>
             <View style={styles.userText}>
               <Text style={styles.gem}>
                 💎 {gems} / {event.timeScale},{" "}
@@ -126,6 +129,7 @@ class EventViewOrganiser extends Component {
                 <Text>Join</Text>
               </TouchableOpacity>
             )}
+
             <TouchableOpacity style={styles.location_buttons}>
               <Text>Award Gems!</Text>
             </TouchableOpacity>
@@ -158,6 +162,7 @@ class EventViewOrganiser extends Component {
       )
     );
   }
+
 
   handleJoinEvent = async (event, userID, username) => {
     await joinEvent(event, userID, username);
@@ -202,6 +207,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 15,
     fontSize: 14
+  },
+  eventAddress: {
+    justifyContent: "center",
+    textAlign: "center",
+    color: "grey",
+    paddingBottom: 15
   },
 
   eventTitleText: {

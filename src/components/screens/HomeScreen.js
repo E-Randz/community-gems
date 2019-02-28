@@ -41,15 +41,12 @@ class HomeScreen extends Component {
   };
 
   updateUserState = userInfo => {
-    this.setState(
-      state => ({
-        user: {
-          ...state.user,
-          ...userInfo
-        }
-      }),
-      () => console.log(this.state.user)
-    );
+    this.setState(state => ({
+      user: {
+        ...state.user,
+        ...userInfo
+      }
+    }));
   };
 
   updateUserPhoto = uri => {
@@ -62,7 +59,8 @@ class HomeScreen extends Component {
   };
 
   navigateToEvent = (eventID, user) => {
-    this.props.navigation.navigate("EventView", { eventID , user });
+    console.log(user)
+    this.props.navigation.navigate("EventView", { eventID, user });
   };
 
   render() {
@@ -120,9 +118,14 @@ class HomeScreen extends Component {
           <View style={styles.buttonsBox}>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
-              onPress={() => this.props.navigation.navigate("Leaderboard")}
+              onPress={() => {
+                this.props.navigation.navigate("Leaderboard", { user })
+              }
+              }
             >
-              <Text>Leaderboard</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>
+                Leaderboard
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
@@ -135,7 +138,7 @@ class HomeScreen extends Component {
                 })
               }
             >
-              <Text>Profile</Text>
+              <Text style={{ color: "#00BFFF", fontSize: 12 }}>Profile</Text>
             </TouchableOpacity>
           </View>
 
@@ -150,7 +153,9 @@ class HomeScreen extends Component {
             {selectedIndex
               ? attendedArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID, user)}
+                    onPress={() =>
+                      this.navigateToEvent(event.eventID, user)
+                    }
                     key={i}
                     user={user}
                   >
@@ -158,33 +163,39 @@ class HomeScreen extends Component {
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: `${event.uri}`
+                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
                         }
                       }}
-                      title={event.title}
-                      subtitle={`${moment(event.dateTime).format(
-                        "MMMM Do YYYY, h:mm a"
-                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      title={event.name}
+                      subtitle={`📅 ${moment(event.dateTime).format(
+                      "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${
+                      event.creatorUsername
+                      }`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>
                 ))
               : upcomingArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() => this.navigateToEvent(event.eventID)}
+                    onPress={() =>
+                      this.navigateToEvent(event.eventID, user )
+                    }
                     key={i}
                   >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: `${event.uri}`
+                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
                         }
                       }}
-                      title={event.title}
-                      subtitle={`${moment(event.dateTime).format(
-                        "MMMM Do YYYY, h:mm a"
-                      )}\n${event.town}\nOrganizer :${event.creatorUsername}`}
+                      title={event.name}
+                      subtitle={`📅 ${moment(event.dateTime).format(
+                      "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${
+                      event.creatorUsername
+                      }`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>
@@ -251,16 +262,17 @@ const styles = StyleSheet.create({
   },
 
   userInfoBox_buttons: {
-    backgroundColor: "#00BFFF",
-    padding: 12,
-    marginTop: -40,
+    backgroundColor: "white",
+    padding: 5,
+    marginTop: -35,
+    marginBottom: 15,
     marginRight: 5,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: "black",
-    width: "40%"
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: "#00BFFF",
+    width: "30%"
   },
 
   eventButtons: {

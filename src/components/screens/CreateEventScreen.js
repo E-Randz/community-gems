@@ -95,10 +95,11 @@ class CreateEventScreen extends Component {
 
   setUser = () => {
     const { user, userID } = this.props.navigation.state.params;
-    const { username } = user;
+    const { username, image } = user;
     this.setState({
       creatorUid: userID,
-      creatorUsername: username
+      creatorUsername: username,
+      userImage: image 
     });
   };
 
@@ -107,6 +108,7 @@ class CreateEventScreen extends Component {
   }
 
   render() {
+    const { image } = this.props.navigation.state.params;
     return (
       <ScrollView>
         <View
@@ -221,7 +223,8 @@ class CreateEventScreen extends Component {
                 this.state.noOfVolunteers,
                 this.state.timeScale,
                 this.state.creatorUsername,
-                this.state.creatorUid
+                this.state.creatorUid,
+                this.state.userImage
               ).then(() => this.props.navigation.navigate("EventsList"));
             }}
             style={styles.button}

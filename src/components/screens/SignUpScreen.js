@@ -11,7 +11,7 @@ import { SignUpInput } from "../SignUpInput";
 import * as firebase from "firebase";
 import { Button } from "../Button";
 import { postNewUser } from "../../db/users";
-import getCoords from "../../utils";
+import { getCoords } from "../../utils";
 
 class SignUpScreen extends Component {
   state = {
