@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage
+  RefreshControl
 } from "react-native";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import moment from "moment";
@@ -20,12 +20,17 @@ class HomeScreen extends Component {
     selectedIndex: 0,
     pastEvent: false,
     user: null,
-    userID: null
+    userID: null,
+    refreshing: false
   };
 
   componentDidMount() {
     this.retrieveUser();
   }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+  };
 
   retrieveUser = async () => {
     const userID = await firebase.auth().currentUser.uid;
@@ -84,7 +89,14 @@ class HomeScreen extends Component {
 
     return (
       user && (
-        <ScrollView>
+        <ScrollView
+        // refreshControl={
+        //   <RefreshControl
+        //     refreshing={this.state.refreshing}
+        //     onRefresh={this._onRefresh}
+        //   />
+        // }
+        >
           <View
             style={{
               paddingTop: 10,
@@ -118,9 +130,8 @@ class HomeScreen extends Component {
             <TouchableOpacity
               style={styles.userInfoBox_buttons}
               onPress={() => {
-                this.props.navigation.navigate("Leaderboard", { user })
-              }
-              }
+                this.props.navigation.navigate("Leaderboard", { user });
+              }}
             >
               <Text style={{ color: "#00BFFF", fontSize: 12 }}>
                 Leaderboard
@@ -152,9 +163,7 @@ class HomeScreen extends Component {
             {selectedIndex
               ? attendedArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() =>
-                      this.navigateToEvent(event.eventID, user)
-                    }
+                    onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
                     user={user}
                   >
@@ -162,39 +171,37 @@ class HomeScreen extends Component {
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
+                          uri:
+                            event.userImage ||
+                            "https://bootdey.com/img/Content/avatar/avatar6.png"
                         }
                       }}
                       title={event.name}
                       subtitle={`📅 ${moment(event.dateTime).format(
-                      "MMMM Do YYYY, h:mm a"
-                      )}\n📍 ${event.town}\n👤 ${
-                      event.creatorUsername
-                      }`}
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${event.creatorUsername}`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>
                 ))
               : upcomingArr.map((event, i) => (
                   <TouchableOpacity
-                    onPress={() =>
-                      this.navigateToEvent(event.eventID, user )
-                    }
+                    onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
                   >
                     <ListItem
                       key={event.eventID}
                       leftAvatar={{
                         source: {
-                          uri: event.userImage ||'https://bootdey.com/img/Content/avatar/avatar6.png'
+                          uri:
+                            event.userImage ||
+                            "https://bootdey.com/img/Content/avatar/avatar6.png"
                         }
                       }}
                       title={event.name}
                       subtitle={`📅 ${moment(event.dateTime).format(
-                      "MMMM Do YYYY, h:mm a"
-                      )}\n📍 ${event.town}\n👤 ${
-                      event.creatorUsername
-                      }`}
+                        "MMMM Do YYYY, h:mm a"
+                      )}\n📍 ${event.town}\n👤 ${event.creatorUsername}`}
                       style={styles.reviewBox}
                     />
                   </TouchableOpacity>

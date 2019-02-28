@@ -4,12 +4,12 @@ import {
   createBottomTabNavigator,
   createAppContainer,
   createSwitchNavigator
-} from 'react-navigation'
-import TabNavigator from './src/navigation/TabNavigator'
-import AuthLoadingScreen from './src/components/screens/AuthLoadingScreen'
-import AuthNavigator from './src/navigation/AuthNavigator'
-import firebase from 'firebase'
-import { firebaseConfig } from './config'
+} from "react-navigation";
+import TabNavigator from "./src/navigation/TabNavigator";
+import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
+import AuthNavigator from "./src/navigation/AuthNavigator";
+import firebase from "firebase";
+import { firebaseConfig } from "./config";
 import {
   postNewEvent,
   getEventUsers,
@@ -17,7 +17,6 @@ import {
   deleteUserFromEvent
 } from "./src/db/events";
 import { getUserEvents } from "./src/db/users";
-import { addReview } from "./src/db/users";
 
 firebase.initializeApp(firebaseConfig);
 

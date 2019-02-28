@@ -25,7 +25,6 @@ class EventViewOrganiser extends Component {
     eventIsActive: true,
     eventDate: 1,
     visibleModal: null,
-
   };
 
   getVols = () => {
@@ -39,6 +38,7 @@ class EventViewOrganiser extends Component {
     });
     this.setState({ volunteers, isVolunteer: true }, () => this.checkCanJoin());
   };
+
 
   checkCanJoin = (joined) => {
     const { noOfVolunteers, volunteers, event } = this.state;
@@ -57,6 +57,16 @@ class EventViewOrganiser extends Component {
     }
     this.setState({ canJoin });
   }
+
+  awardGems = (volunteers, event) => {
+    volunteers.map((volunteer, i) => {
+      let time = event.timeScale;
+      let volID = volunteer.userID;
+      console.log(time);
+      console.log(volID);
+    });
+  };
+
 
   async componentDidMount() {
     let event;
@@ -132,10 +142,10 @@ class EventViewOrganiser extends Component {
               {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
             </Text>
 
-
             <TouchableOpacity
               style={styles.location_buttons}
-              onPress={() => this.setState({ visibleModal: 1 })}>
+              onPress={() => this.setState({ visibleModal: 1 })}
+            >
               <Text>View on Map</Text>
             </TouchableOpacity>
             {canJoin && eventIsActive && (
@@ -154,11 +164,14 @@ class EventViewOrganiser extends Component {
               </TouchableOpacity>
             )}
 
-            <TouchableOpacity style={styles.location_buttons}>
+            <TouchableOpacity
+              style={styles.location_buttons}
+              onPress={() => {
+                this.awardGems(this.state.volunteers, event);
+              }}
+            >
               <Text>Award Gems!</Text>
             </TouchableOpacity>
-
-
           </View>
 
           <Text style={styles.title}>volunteers</Text>
@@ -183,18 +196,17 @@ class EventViewOrganiser extends Component {
                 <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
               </View>
             )}
-          <Modal isVisible={this.state.visibleModal === 1}
-            onBackdropPress={() => this.setState({ visibleModal: 0 })}>
-          
-          <Map event={event} user={user} />
-        </Modal>
+            <Modal
+              isVisible={this.state.visibleModal === 1}
+              onBackdropPress={() => this.setState({ visibleModal: 0 })}
+            >
+              <Map event={event} user={user} />
+            </Modal>
           </View>
-          
         </ScrollView>
       )
     );
   }
-
 
   handleJoinEvent = async (event, userID, username) => {
     await joinEvent(event, userID, username);
