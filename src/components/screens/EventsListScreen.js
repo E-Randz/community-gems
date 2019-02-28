@@ -65,7 +65,6 @@ export default class EventsList extends Component {
       user,
       userID
     });
-    // console.log(this.state.user);
   };
 
   updateIndex = selectedIndex => {
@@ -84,8 +83,7 @@ export default class EventsList extends Component {
         value: "Type"
       }
     ];
-    // const arr = this.state.events[0]
-    // console.log(arr)
+
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID, events, sort_by } = this.state;
 
