@@ -138,7 +138,7 @@ export const getAllUsers = async () => {
   return snapshot.val();
 };
 
-export const giveGems = async (userID, timeScale) => {
+export const giveGems = async (userID, timeScale, eventID) => {
   let gems;
   if (timeScale === "0-1 hour") gems = 1;
   if (timeScale === "1-3 hours") gems = 2;
@@ -159,5 +159,7 @@ export const giveGems = async (userID, timeScale) => {
         .ref(`/Users/${userID}`)
         .child("gems")
         .set(gemsAdded);
-    });
+    })
 };
+
+

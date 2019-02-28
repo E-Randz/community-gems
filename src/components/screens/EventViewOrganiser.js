@@ -6,11 +6,12 @@ import {
   Button,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
-import { getEventByID, joinEvent } from "../../db/events";
+import { getEventByID, joinEvent, closeEvent } from "../../db/events";
 import { giveGems } from "../../db/users";
 import moment from "moment";
 import firebase from "firebase";
@@ -23,9 +24,9 @@ class EventViewOrganiser extends Component {
     event: {},
     noOfVolunteers: null,
     canJoin: true,
-    eventIsActive: true,
+    eventIsActive: false,
     eventDate: 1,
-    visibleModal: null
+    visibleModal: null,
   };
 
   getVols = () => {
@@ -59,11 +60,16 @@ class EventViewOrganiser extends Component {
   };
 
   awardGems = (volunteers, event) => {
-    volunteers.map((volunteer, i) => {
+    const { eventID } = this.props.navigation.state.params
+    closeEvent(eventID)
+      volunteers.map((volunteer, i) => {
       let time = event.timeScale;
       let volID = volunteer.userID;
       giveGems(volID, time);
     });
+    this.setState({
+      eventIsActive: false
+    })
   };
 
   async componentDidMount() {
@@ -78,7 +84,8 @@ class EventViewOrganiser extends Component {
       {
         event,
         noOfVolunteers: event.noOfVolunteers,
-        eventDate: event.dateTime
+        eventDate: event.dateTime,
+        eventIsActive: !event.isClosed,
       },
       () => this.getVols()
     );
@@ -144,8 +151,9 @@ class EventViewOrganiser extends Component {
               onPress={() => this.setState({ visibleModal: 1 })}
             >
               <Text>View on Map</Text>
-            </TouchableOpacity>
-            {canJoin && eventIsActive && (
+          </TouchableOpacity>
+          
+            {event && canJoin && eventIsActive && (
               <TouchableOpacity
                 // disabled={canJoin}
                 style={styles.location_buttons}
@@ -161,19 +169,22 @@ class EventViewOrganiser extends Component {
               </TouchableOpacity>
             )}
 
-            <TouchableOpacity
+            {event && eventIsActive && this.state.eventDate < Date.now() && ( < TouchableOpacity
               style={styles.location_buttons}
               onPress={() => {
                 this.awardGems(this.state.volunteers, event);
               }}
             >
               <Text>Award Gems!</Text>
-            </TouchableOpacity>
+              </TouchableOpacity>)}
+            
+
+
           </View>
 
           <Text style={styles.title}>volunteers</Text>
           <View style={styles.isVolunteer}>
-            {isVolunteer ? (
+            {isVolunteer && (
               volunteers.map((volunteer, i) => (
                 <TouchableOpacity
                   key={i}
@@ -204,6 +215,7 @@ class EventViewOrganiser extends Component {
                 <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
               </View>
             )}
+
             <Modal
               isVisible={this.state.visibleModal === 1}
               onBackdropPress={() => this.setState({ visibleModal: 0 })}
