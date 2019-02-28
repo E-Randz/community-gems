@@ -72,7 +72,6 @@ class EventViewOrganiser extends Component {
     console.log(eventDate);
     
     if (event) {
-      // console.log('event:', event)
       gems =
         event.timeScale === "0-1 hour"
           ? 1

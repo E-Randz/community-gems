@@ -84,10 +84,9 @@ export default class EventsList extends Component {
         value: "Type"
       }
     ];
-    // const arr = this.state.events[0]
+
     const buttons = ["List", "Map"];
     const { selectedIndex, user, userID, events, sort_by } = this.state;
-    // console.log(events);
 
     return (
       <ScrollView
@@ -130,7 +129,6 @@ export default class EventsList extends Component {
             events.map((event, i) => (
               <TouchableOpacity
                 onPress={() => {
-                  // console.log(event);
                   this.props.navigation.navigate("EventView", {
                     event,
                     user,

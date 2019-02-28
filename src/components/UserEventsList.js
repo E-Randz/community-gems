@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity, ListItem, View, StyleSheet } from 'react-native';
 
 const UserEventsList = ({ events }) => {
-  console.log('here!!2')
   return ( 
          events.map((event, i) => (
           <TouchableOpacity key={i}>

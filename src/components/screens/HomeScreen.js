@@ -59,7 +59,6 @@ class HomeScreen extends Component {
   };
 
   navigateToEvent = (eventID, user) => {
-    console.log(user)
     this.props.navigation.navigate("EventView", { eventID, user });
   };
 
