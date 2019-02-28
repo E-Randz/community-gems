@@ -11,7 +11,9 @@ import {
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { getEventByID, joinEvent } from "../../db/events";
-import moment from 'moment';
+import moment from "moment";
+import firebase from "firebase";
+import Modal from "react-native-modal";
 
 class EventViewOrganiser extends Component {
   state = {
@@ -21,7 +23,9 @@ class EventViewOrganiser extends Component {
     noOfVolunteers: null,
     canJoin: true,
     eventIsActive: true,
-    eventDate: 1
+    eventDate: 1,
+        visibleModal: null,
+
   };
 
   getVols = () => {
@@ -95,7 +99,7 @@ class EventViewOrganiser extends Component {
             }}
           />
           <Text style={styles.title}>{event.name}</Text>
-          <Map event={event} user={user} />
+          {/* <Map event={event} user={user} /> */}
           <View style={styles.eventBox}>
             <Text style={styles.date}>
               {moment(event.dateTime).format("MMMM Do YYYY, h:mm a")}
@@ -117,6 +121,12 @@ class EventViewOrganiser extends Component {
               {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
             </Text>
 
+
+            <TouchableOpacity
+              style={styles.location_buttons}
+              onPress={() => this.setState({ visibleModal: 1 })}>
+              <Text>View on Map</Text>
+            </TouchableOpacity>
             {canJoin && eventIsActive && (
               <TouchableOpacity
                 // disabled={canJoin}
@@ -136,6 +146,8 @@ class EventViewOrganiser extends Component {
             <TouchableOpacity style={styles.location_buttons}>
               <Text>Award Gems!</Text>
             </TouchableOpacity>
+
+
           </View>
 
           <Text style={styles.title}>volunteers</Text>
@@ -160,7 +172,13 @@ class EventViewOrganiser extends Component {
                 <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
               </View>
             )}
+          <Modal isVisible={this.state.visibleModal === 1}
+            onBackdropPress={() => this.setState({ visibleModal: 0 })}>
+          
+          <Map event={event} user={user} />
+        </Modal>
           </View>
+          
         </ScrollView>
       )
     );
