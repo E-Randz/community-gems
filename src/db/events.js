@@ -178,3 +178,11 @@ export const getEventByID = async eventID => {
     .once("value");
   return snapshot.val();
 };
+
+export const closeEvent = (eventID) => {
+  firebase
+    .database()
+    .ref(`/Events/${eventID}`)
+    .child('isClosed')
+    .set(true)
+}
