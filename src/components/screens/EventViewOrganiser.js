@@ -64,6 +64,9 @@ class EventViewOrganiser extends Component {
       let time = event.timeScale;
       let volID = volunteer.userID;
       giveGems(volID, time);
+      this.setState({ 
+        eventIsActive : false
+        })
     });
   };
 
@@ -84,6 +87,9 @@ class EventViewOrganiser extends Component {
       },
       () => this.getVols()
     );
+    console.log(this.state.eventDate);
+    console.log(Date.now())
+    console.log(this.state.eventDate < Date.now())
   }
 
   render() {
@@ -163,14 +169,15 @@ class EventViewOrganiser extends Component {
               </TouchableOpacity>
             )}
 
-            <TouchableOpacity
+            {
+              eventIsActive && this.state.eventDate < Date.now() && < TouchableOpacity
               style={styles.location_buttons}
               onPress={() => {
                 this.awardGems(this.state.volunteers, event);
               }}
             >
               <Text>Award Gems!</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </View>
 
           <Text style={styles.title}>volunteers</Text>
