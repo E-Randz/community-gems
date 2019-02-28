@@ -24,7 +24,7 @@ class EventViewOrganiser extends Component {
     canJoin: true,
     eventIsActive: true,
     eventDate: 1,
-        visibleModal: null,
+    visibleModal: null,
 
   };
 
@@ -37,8 +37,26 @@ class EventViewOrganiser extends Component {
         username: user.username
       }
     });
-    this.setState({ volunteers, isVolunteer: true });
+    this.setState({ volunteers, isVolunteer: true }, () => this.checkCanJoin());
   };
+
+  checkCanJoin = (joined) => {
+    const { noOfVolunteers, volunteers, event } = this.state;
+    const lengthExceeded = +noOfVolunteers === volunteers.length;
+    const timeExceeded = Date.now() > event.dateTime;
+    let canJoin = true;
+
+    if (joined || lengthExceeded || timeExceeded) canJoin = false;
+    else {
+      const { user } = this.props.navigation.state.params;
+      for(let volunteer in volunteers) {
+        if (volunteers[volunteer].username === user.username) {
+          canJoin = false;
+        }
+      }
+    }
+    this.setState({ canJoin });
+  }
 
   async componentDidMount() {
     let event;
@@ -71,13 +89,6 @@ class EventViewOrganiser extends Component {
 
     const { user, userID } = this.props.navigation.state.params;
     let gems = 0;
-    if (noOfVolunteers === volunteers.length) {
-      this.setState({ canJoin: false });
-    }
-    // if (eventDate < Date.now()) {
-    //   this.setState({ eventIsActive: false });
-    // }
-    // console.log(eventDate);
     
     if (event) {
       gems =
@@ -187,9 +198,7 @@ class EventViewOrganiser extends Component {
 
   handleJoinEvent = async (event, userID, username) => {
     await joinEvent(event, userID, username);
-    if (noOfVolunteers === volunteers.length) {
-      this.setState({ canJoin: false });
-    }
+    this.checkCanJoin(true);
   };
 }
 
