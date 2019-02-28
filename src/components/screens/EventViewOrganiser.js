@@ -154,7 +154,7 @@ class EventViewOrganiser extends Component {
                 onPress={() => {
                   this.handleJoinEvent(event, userID, user.username).then(
                     this.setState({
-                      volunteers: [...this.state.volunteers, user.username]
+                      volunteers: [...this.state.volunteers, {userID: user.userID, username: user.username }]
                     })
                   );
                 }}
