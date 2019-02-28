@@ -134,7 +134,14 @@ class CreateEventScreen extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder="please insert event adress"
+            placeholder="please insert event description"
+            label="description"
+            onChangeText={description => this.setState({ description })}
+            value={this.state.description}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="please insert event address"
             label="adress"
             onChangeText={firstLineOfAddress =>
               this.setState({ firstLineOfAddress })
@@ -147,13 +154,6 @@ class CreateEventScreen extends Component {
             label="town"
             onChangeText={town => this.setState({ town })}
             value={this.state.town}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="please insert event description"
-            label="description"
-            onChangeText={description => this.setState({ description })}
-            value={this.state.description}
           />
           <TextInput
             style={styles.input}
