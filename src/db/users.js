@@ -31,9 +31,9 @@ export const postNewUser = (
       long,
       lat,
       gems: 0,
-      image: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-    })
-}
+      image: "https://bootdey.com/img/Content/avatar/avatar6.png"
+    });
+};
 
 export const editUser = (
   userID,
@@ -136,4 +136,16 @@ export const getAllUsers = async () => {
     .ref(`/Users`)
     .once("value");
   return snapshot.val();
+};
+
+export const giveGems = async (userID, timeScale) => {
+  let gems;
+  if (timeScale === "0-1 hour") gems = 1;
+  if (timeScale === "1-3 hours") gems = 2;
+  if (timeScale === "3-6 hours") gems = 3;
+
+  firebase
+    .database()
+    .ref(`/Users/${userID}`)
+    .update(gems);
 };
