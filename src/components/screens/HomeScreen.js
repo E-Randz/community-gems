@@ -30,6 +30,8 @@ class HomeScreen extends Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
+    this.retrieveUser();
+    this.setState({ refreshing: false });
   };
 
   retrieveUser = async () => {
@@ -91,12 +93,12 @@ class HomeScreen extends Component {
     return (
       user && (
         <ScrollView
-        // refreshControl={
-        //   <RefreshControl
-        //     refreshing={this.state.refreshing}
-        //     onRefresh={this._onRefresh}
-        //   />
-        // }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
         >
           <View
             style={{
