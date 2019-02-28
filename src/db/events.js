@@ -69,7 +69,7 @@ export const postNewEvent = (
 };
 
 export const joinEvent = (event, userID, username) => {
-  const addEventAttendee = { username, userID };
+  const addEventAttendee = { username };
   const { name, town, type, description, dateTime, creatorUsername } = event;
   const userEventData = {
     name,

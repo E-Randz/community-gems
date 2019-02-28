@@ -11,11 +11,12 @@ import {
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { getEventByID, joinEvent } from "../../db/events";
+import moment from 'moment';
 
 class EventViewOrganiser extends Component {
   state = {
     volunteers: [],
-    isVolunteer: true,
+    isVolunteer: false,
     event: {},
     noOfVolunteers: null,
     canJoin: true,
@@ -24,27 +25,30 @@ class EventViewOrganiser extends Component {
   };
 
   getVols = () => {
-    const { attendees } = this.props.navigation.state.params.event;
-    let array = [];
-
-    for (let attender in attendees) {
-      array.push(attendees[attender]);
-    }
-
-    const newArray = array.reduce((acc, curr) => {
-      const volunteer = curr.username;
-      acc.push(volunteer);
-      return acc;
-    }, []);
-    this.setState({ volunteers: newArray });
+    const { attendees } = this.state.event;
+    
+    const volunteers = Object.entries(attendees).map(([userID, user]) => {
+      return {
+        userID,
+        username: user.username
+      }
+    });
+    this.setState({ volunteers, isVolunteer: true });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    let event;
+    if(this.props.navigation.state.params.event) {
+      event = this.props.navigation.state.params.event;
+    } else {
+      const { eventID } = this.props.navigation.state.params;
+      event = await getEventByID(eventID);
+    }
     this.setState(
       {
-        event: this.props.navigation.state.params.event,
-        noOfVolunteers: this.props.navigation.state.params.event.noOfVolunteers,
-        eventDate: this.props.navigation.state.params.event.dateTime
+        event,
+        noOfVolunteers: event.noOfVolunteers,
+        eventDate: event.dateTime
       },
       () => this.getVols()
     );
@@ -66,10 +70,10 @@ class EventViewOrganiser extends Component {
     if (noOfVolunteers === volunteers.length) {
       this.setState({ canJoin: false });
     }
-    if (eventDate < Date.now()) {
-      this.setState({ eventIsActive: false });
-    }
-    console.log(eventDate);
+    // if (eventDate < Date.now()) {
+    //   this.setState({ eventIsActive: false });
+    // }
+    // console.log(eventDate);
     
     if (event) {
       gems =
@@ -145,7 +149,7 @@ class EventViewOrganiser extends Component {
                       uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
                     }
                   }}
-                  title={volunteer}
+                  title={volunteer.username}
                 />
               ))
             ) : (
@@ -165,6 +169,9 @@ class EventViewOrganiser extends Component {
 
   handleJoinEvent = async (event, userID, username) => {
     await joinEvent(event, userID, username);
+    if (noOfVolunteers === volunteers.length) {
+      this.setState({ canJoin: false });
+    }
   };
 }
 
