@@ -28,6 +28,7 @@ export default class Map extends Component {
   }
 
   render() {
+    console.log(this.props, 'here');
     console.log({latitude: this.props.user.lat, longitude: this.props.user.long});
     const { region, primary, places } = this.state;
 
