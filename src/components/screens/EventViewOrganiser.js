@@ -27,7 +27,6 @@ class EventViewOrganiser extends Component {
     eventIsActive: false,
     eventDate: 1,
     visibleModal: null,
-
   };
 
   getVols = () => {
@@ -42,8 +41,7 @@ class EventViewOrganiser extends Component {
     this.setState({ volunteers, isVolunteer: true }, () => this.checkCanJoin());
   };
 
-
-  checkCanJoin = (joined) => {
+  checkCanJoin = joined => {
     const { noOfVolunteers, volunteers, event } = this.state;
     const lengthExceeded = +noOfVolunteers === volunteers.length;
     const timeExceeded = Date.now() > event.dateTime;
@@ -52,14 +50,14 @@ class EventViewOrganiser extends Component {
     if (joined || lengthExceeded || timeExceeded) canJoin = false;
     else {
       const { user } = this.props.navigation.state.params;
-      for(let volunteer in volunteers) {
+      for (let volunteer in volunteers) {
         if (volunteers[volunteer].username === user.username) {
           canJoin = false;
         }
       }
     }
     this.setState({ canJoin });
-  }
+  };
 
   awardGems = (volunteers, event) => {
     const { eventID } = this.props.navigation.state.params
@@ -73,7 +71,6 @@ class EventViewOrganiser extends Component {
       eventIsActive: false
     })
   };
-
 
   async componentDidMount() {
     let event;
@@ -163,7 +160,7 @@ class EventViewOrganiser extends Component {
                 onPress={() => {
                   this.handleJoinEvent(event, userID, user.username).then(
                     this.setState({
-                      volunteers: [...this.state.volunteers, user.username]
+                      volunteers: [...this.state.volunteers, {userID: user.userID, username: user.username }]
                     })
                   );
                 }}
@@ -189,17 +186,36 @@ class EventViewOrganiser extends Component {
           <View style={styles.isVolunteer}>
             {isVolunteer && (
               volunteers.map((volunteer, i) => (
-                <ListItem
-                  key={volunteer.userID}
-                  leftAvatar={{
-                    source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                    }
-                  }}
-                  title={volunteer.username}
-                />
-              )))}
-            
+                <TouchableOpacity
+                  key={i}
+                  onPress={() =>
+                    this.props.navigation.navigate("OtherProfile", {
+                      userID: volunteer.userID
+                    })
+                  }
+                >
+                  <ListItem
+                    key={i}
+                    style={styles.reviewBox}
+                    leftAvatar={{
+                      source: {
+                        uri:
+                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }
+                    }}
+                    title={volunteer.username}
+                  />
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.isVolunteerFalse}>
+                <Text style={styles.isVolunteerFalseChild1}>
+                  There are no volunteers for this event.
+                </Text>
+                <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
+              </View>
+            )}
+
             <Modal
               isVisible={this.state.visibleModal === 1}
               onBackdropPress={() => this.setState({ visibleModal: 0 })}

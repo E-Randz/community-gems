@@ -30,6 +30,8 @@ class HomeScreen extends Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
+    this.retrieveUser();
+    this.setState({ refreshing: false });
   };
 
   retrieveUser = async () => {
@@ -86,16 +88,17 @@ class HomeScreen extends Component {
         else upcomingArr.push(eventObject);
       }
     }
+    const upcomingLength = upcomingArr.length;
 
     return (
       user && (
         <ScrollView
-        // refreshControl={
-        //   <RefreshControl
-        //     refreshing={this.state.refreshing}
-        //     onRefresh={this._onRefresh}
-        //   />
-        // }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
         >
           <View
             style={{
@@ -184,7 +187,8 @@ class HomeScreen extends Component {
                     />
                   </TouchableOpacity>
                 ))
-              : upcomingArr.map((event, i) => (
+              : !upcomingLength ? <Text>You have no upcoming events!</Text> :
+                  upcomingArr.map((event, i) => (
                   <TouchableOpacity
                     onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
