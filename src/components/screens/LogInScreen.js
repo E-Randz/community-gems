@@ -23,7 +23,6 @@ class LogInScreen extends Component {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(function(user) {
-          console.log(user);
           navigate("App");
         });
     } catch (err) {
