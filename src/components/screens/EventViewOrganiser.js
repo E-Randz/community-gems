@@ -11,63 +11,66 @@ import {
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { getEventByID, joinEvent } from "../../db/events";
-import moment from "moment";
-
-import firebase from "firebase";
-
-//   componentDidMount () {
-//     // userRef.on("value", snapshot => {
-//     //   let data = snapshot.val();
-//     //   let users = Object.values(data);
-//     //   this.setState({
-//     //     users
-//     //   });
-//     // });
-//   }
 
 class EventViewOrganiser extends Component {
   state = {
-    volunteers: [
-      {
-        name: "Sam",
-        prop1: "something",
-        prop2: "some info"
-      },
-      {
-        name: "Peter",
-        prop1: "another something",
-        prop2: "other info"
-      },
-      {
-        name: "Mobutu Sese seko Nkuku Ngbendu Wa za banga",
-        prop1: "almost the same",
-        prop2: "same kind of info"
-      }
-    ],
-
+    volunteers: [],
     isVolunteer: true,
-    event: null
+    event: {},
+    noOfVolunteers: null,
+    canJoin: true,
+    eventIsActive: true,
+    eventDate: 1
   };
 
-  async componentDidMount() {
-    let event 
-    if (this.props.navigation.state.params.event) {
-      event = this.props.navigation.state.params.event;
-    } else {
-      const { eventID } = this.props.navigation.state.params;
-      event = await getEventByID(eventID);
+  getVols = () => {
+    const { attendees } = this.props.navigation.state.params.event;
+    let array = [];
+
+    for (let attender in attendees) {
+      array.push(attendees[attender]);
     }
-    this.setState({
-      event
-    });
+
+    const newArray = array.reduce((acc, curr) => {
+      const volunteer = curr.username;
+      acc.push(volunteer);
+      return acc;
+    }, []);
+    this.setState({ volunteers: newArray });
+  };
+
+  componentDidMount() {
+    this.setState(
+      {
+        event: this.props.navigation.state.params.event,
+        noOfVolunteers: this.props.navigation.state.params.event.noOfVolunteers,
+        eventDate: this.props.navigation.state.params.event.dateTime
+      },
+      () => this.getVols()
+    );
   }
 
   render() {
-    const { volunteers, isVolunteer, event } = this.state;
+    const {
+      volunteers,
+      isVolunteer,
+      event,
+      noOfVolunteers,
+      canJoin,
+      eventIsActive,
+      eventDate
+    } = this.state;
+
     const { user, userID } = this.props.navigation.state.params;
-
     let gems = 0;
-
+    if (noOfVolunteers === volunteers.length) {
+      this.setState({ canJoin: false });
+    }
+    if (eventDate < Date.now()) {
+      this.setState({ eventIsActive: false });
+    }
+    console.log(eventDate);
+    
     if (event) {
       gems =
         event.timeScale === "0-1 hour"
@@ -105,16 +108,27 @@ class EventViewOrganiser extends Component {
             </View>
 
             <Text style={styles.eventDesc}>{event.description}</Text>
-            <Text style={styles.eventAddress}>
-              📍{" "}
+            <Text>
+              address:{" "}
               {`${event.firstLineOfAddress}, ${event.town}, ${event.postcode}`}
             </Text>
-            <TouchableOpacity
-              style={styles.location_buttons}
-              onPress={() => this.handleJoinEvent(event, userID, user.username)}
-            >
-              <Text>Join</Text>
-            </TouchableOpacity>
+
+            {canJoin && eventIsActive && (
+              <TouchableOpacity
+                // disabled={canJoin}
+                style={styles.location_buttons}
+                onPress={() => {
+                  this.handleJoinEvent(event, userID, user.username).then(
+                    this.setState({
+                      volunteers: [...this.state.volunteers, user.username]
+                    })
+                  );
+                }}
+              >
+                <Text>Join</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.location_buttons}>
               <Text>Award Gems!</Text>
             </TouchableOpacity>
@@ -131,9 +145,7 @@ class EventViewOrganiser extends Component {
                       uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
                     }
                   }}
-                  title={volunteer.name}
-                  subtitle={`${volunteer.prop1}\n${volunteer.prop2}`}
-                  style={styles.reviewBox}
+                  title={volunteer}
                 />
               ))
             ) : (
@@ -150,14 +162,9 @@ class EventViewOrganiser extends Component {
     );
   }
 
-  handleIsVolunteer = () => {
-    this.setState({
-      pastEvent: true
-    });
-  };
 
-  handleJoinEvent = (event, userID, username) => {
-    joinEvent(event, userID, username);
+  handleJoinEvent = async (event, userID, username) => {
+    await joinEvent(event, userID, username);
   };
 }
 
