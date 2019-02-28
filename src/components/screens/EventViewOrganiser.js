@@ -25,7 +25,7 @@ class EventViewOrganiser extends Component {
     canJoin: true,
     eventIsActive: true,
     eventDate: 1,
-    visibleModal: null,
+    visibleModal: null
   };
 
   getVols = () => {
@@ -40,8 +40,7 @@ class EventViewOrganiser extends Component {
     this.setState({ volunteers, isVolunteer: true }, () => this.checkCanJoin());
   };
 
-
-  checkCanJoin = (joined) => {
+  checkCanJoin = joined => {
     const { noOfVolunteers, volunteers, event } = this.state;
     const lengthExceeded = +noOfVolunteers === volunteers.length;
     const timeExceeded = Date.now() > event.dateTime;
@@ -50,14 +49,14 @@ class EventViewOrganiser extends Component {
     if (joined || lengthExceeded || timeExceeded) canJoin = false;
     else {
       const { user } = this.props.navigation.state.params;
-      for(let volunteer in volunteers) {
+      for (let volunteer in volunteers) {
         if (volunteers[volunteer].username === user.username) {
           canJoin = false;
         }
       }
     }
     this.setState({ canJoin });
-  }
+  };
 
   awardGems = (volunteers, event) => {
     volunteers.map((volunteer, i) => {
@@ -66,7 +65,6 @@ class EventViewOrganiser extends Component {
       giveGems(volID, time);
     });
   };
-
 
   async componentDidMount() {
     let event;
@@ -177,15 +175,26 @@ class EventViewOrganiser extends Component {
           <View style={styles.isVolunteer}>
             {isVolunteer ? (
               volunteers.map((volunteer, i) => (
-                <ListItem
+                <TouchableOpacity
                   key={i}
-                  leftAvatar={{
-                    source: {
-                      uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
-                    }
-                  }}
-                  title={volunteer.username}
-                />
+                  onPress={() =>
+                    this.props.navigation.navigate("OtherProfile", {
+                      userID: volunteer.userID
+                    })
+                  }
+                >
+                  <ListItem
+                    key={i}
+                    style={styles.reviewBox}
+                    leftAvatar={{
+                      source: {
+                        uri:
+                          "https://bootdey.com/img/Content/avatar/avatar6.png"
+                      }
+                    }}
+                    title={volunteer.username}
+                  />
+                </TouchableOpacity>
               ))
             ) : (
               <View style={styles.isVolunteerFalse}>

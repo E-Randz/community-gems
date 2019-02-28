@@ -55,12 +55,13 @@ export default class Profile extends Component {
   setUserProfile = otherUser => {
     const { userID } = this.props.navigation.state.params;
     const { description, username, image, reviews, gems } = otherUser;
+    const isReview = reviews ? Object.entries(reviews) : [];
     this.setState({
       userID,
       description,
       username,
       uri: image || "https://bootdey.com/img/Content/avatar/avatar6.png",
-      reviews: Object.entries(reviews),
+      reviews: isReview,
       gems,
       visibleModal: null
     });
@@ -105,6 +106,7 @@ export default class Profile extends Component {
       currentUser,
       currentUserID
     } = this.state;
+    console.log(this.state);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
