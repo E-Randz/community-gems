@@ -17,6 +17,7 @@ import {
   deleteUserFromEvent
 } from "./src/db/events";
 import { getUserEvents } from "./src/db/users";
+console.disableYellowBox = true;
 
 firebase.initializeApp(firebaseConfig);
 
