@@ -65,7 +65,7 @@ class EventViewOrganiser extends Component {
   render() {
     const { volunteers, isVolunteer, event } = this.state;
     const { user, userID } = this.props.navigation.state.params;
-    console.log(userID);
+    console.log(this.props);
 
     let gems = 0;
 
