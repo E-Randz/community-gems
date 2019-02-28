@@ -147,5 +147,17 @@ export const giveGems = async (userID, timeScale) => {
   firebase
     .database()
     .ref(`/Users/${userID}`)
-    .update(gems);
+    .child("gems")
+    .once("value")
+    .then(value => {
+      return (currGems = value.val());
+    })
+    .then(currGem => {
+      let gemsAdded = currGem + gems;
+      firebase
+        .database()
+        .ref(`/Users/${userID}`)
+        .child("gems")
+        .set(gemsAdded);
+    });
 };

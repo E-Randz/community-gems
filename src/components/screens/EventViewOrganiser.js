@@ -11,6 +11,7 @@ import {
 import Map from "../map";
 import { ListItem, ButtonGroup } from "react-native-elements";
 import { getEventByID, joinEvent } from "../../db/events";
+import { giveGems } from "../../db/users";
 import moment from "moment";
 import firebase from "firebase";
 import Modal from "react-native-modal";
@@ -29,12 +30,12 @@ class EventViewOrganiser extends Component {
 
   getVols = () => {
     const { attendees } = this.state.event;
-    
+
     const volunteers = Object.entries(attendees).map(([userID, user]) => {
       return {
         userID,
         username: user.username
-      }
+      };
     });
     this.setState({ volunteers, isVolunteer: true }, () => this.checkCanJoin());
   };
@@ -62,15 +63,14 @@ class EventViewOrganiser extends Component {
     volunteers.map((volunteer, i) => {
       let time = event.timeScale;
       let volID = volunteer.userID;
-      console.log(time);
-      console.log(volID);
+      giveGems(volID, time);
     });
   };
 
 
   async componentDidMount() {
     let event;
-    if(this.props.navigation.state.params.event) {
+    if (this.props.navigation.state.params.event) {
       event = this.props.navigation.state.params.event;
     } else {
       const { eventID } = this.props.navigation.state.params;
@@ -99,7 +99,6 @@ class EventViewOrganiser extends Component {
 
     const { user, userID } = this.props.navigation.state.params;
     let gems = 0;
-    
     if (event) {
       gems =
         event.timeScale === "0-1 hour"
