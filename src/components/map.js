@@ -11,19 +11,18 @@ export default class Map extends Component {
       longitude: this.props.user.long,
       latitudeDelta: 0.0422,
       longitudeDelta: 0.0221
-    },
-
+    }
   };
-
-  
 
   renderMarkers() {
     return this.props.events.map(event => {
-      return <Marker
-        key={event.eventID}
-        title={event.name}
-        coordinate={{ latitude: event.lat, longitude: event.long }}
-      />;
+      return (
+        <Marker
+          key={event.eventID}
+          title={event.name}
+          coordinate={{ latitude: event.lat, longitude: event.long }}
+        />
+      );
     });
   }
 
@@ -38,21 +37,26 @@ export default class Map extends Component {
         ShowsMyLocationButton
       >
         <Marker
-          key={'Home'}
+          key={"Home"}
           title={"Home"}
-          coordinate={{latitude: this.props.user.lat, longitude: this.props.user.long}}
+          coordinate={{
+            latitude: this.props.user.lat,
+            longitude: this.props.user.long
+          }}
           pinColor={"blue"}
         />
-        {this.props.events &&
-          this.renderMarkers()}
+        {this.props.events && this.renderMarkers()}
 
-        {this.props.event &&
+        {this.props.event && (
           <Marker
-          key={this.props.event.eventID}
-          title={this.props.event.name}
-          coordinate={{ latitude: this.props.event.lat, longitude: this.props.event.long }}
-      />
-        }
+            key={this.props.event.eventID}
+            title={this.props.event.name}
+            coordinate={{
+              latitude: this.props.event.lat,
+              longitude: this.props.event.long
+            }}
+          />
+        )}
       </MapView>
     );
   }

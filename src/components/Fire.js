@@ -44,7 +44,6 @@ class Fire {
   }
 
   send = messages => {
-    console.log("got here");
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
       const message = {
