@@ -86,6 +86,7 @@ class HomeScreen extends Component {
         else upcomingArr.push(eventObject);
       }
     }
+    const upcomingLength = upcomingArr.length;
 
     return (
       user && (
@@ -184,7 +185,8 @@ class HomeScreen extends Component {
                     />
                   </TouchableOpacity>
                 ))
-              : upcomingArr.map((event, i) => (
+              : !upcomingLength ? <Text>You have no upcoming events!</Text> :
+                  upcomingArr.map((event, i) => (
                   <TouchableOpacity
                     onPress={() => this.navigateToEvent(event.eventID, user)}
                     key={i}
