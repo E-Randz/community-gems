@@ -112,6 +112,7 @@ class EventViewOrganiser extends Component {
           ? 2
           : 3;
     }
+    const isOrganiser = event.creatorUsername === user.username;
 
     return (
       event && (
@@ -169,7 +170,7 @@ class EventViewOrganiser extends Component {
               </TouchableOpacity>
             )}
 
-            {event && eventIsActive && this.state.eventDate < Date.now() && ( < TouchableOpacity
+            {event && eventIsActive && this.state.eventDate < Date.now() && isOrganiser &&  ( < TouchableOpacity
               style={styles.location_buttons}
               onPress={() => {
                 this.awardGems(this.state.volunteers, event);
@@ -207,15 +208,7 @@ class EventViewOrganiser extends Component {
                   />
                 </TouchableOpacity>
               ))
-            ) : (
-              <View style={styles.isVolunteerFalse}>
-                <Text style={styles.isVolunteerFalseChild1}>
-                  There are no volunteers for this event.
-                </Text>
-                <Text style={styles.isVolunteerFalseChild2}>Yet!</Text>
-              </View>
             )}
-
             <Modal
               isVisible={this.state.visibleModal === 1}
               onBackdropPress={() => this.setState({ visibleModal: 0 })}
