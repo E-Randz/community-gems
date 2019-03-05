@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
 import {
-  createBottomTabNavigator,
   createAppContainer,
   createSwitchNavigator
 } from "react-navigation";
@@ -10,13 +8,6 @@ import AuthLoadingScreen from "./src/components/screens/AuthLoadingScreen";
 import AuthNavigator from "./src/navigation/AuthNavigator";
 import firebase from "firebase";
 import { firebaseConfig } from "./config";
-import {
-  postNewEvent,
-  getEventUsers,
-  addUserToEvent,
-  deleteUserFromEvent
-} from "./src/db/events";
-import { getUserEvents } from "./src/db/users";
 console.disableYellowBox = true;
 
 firebase.initializeApp(firebaseConfig);
