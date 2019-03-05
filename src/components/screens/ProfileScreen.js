@@ -17,6 +17,7 @@ import firebase from "firebase";
 import uuid from "uuid";
 import { editUser, editUserPhoto, addReview, giveGems } from "../../db/users";
 import ReviewModal from "../ReviewModal";
+import ProfileModal from "../ProfileModal";
 
 export default class Profile extends Component {
   state = {
@@ -147,82 +148,27 @@ export default class Profile extends Component {
     }
   };
 
-  leaveReview = review_body => {
-    const { userID, user } = this.state;
-  };
-
   closeModal = () => {
     this.setState({
       visibleModal: 0
     });
   };
 
-  _renderModalContent = () => (
-    <ScrollView>
-      <View style={styles.modalContent}>
-        <Text>Profile Form</Text>
-        <Text>Change profile image</Text>
-
-        <TouchableOpacity onPress={() => this.onChangeImagePress("take")}>
-          <View style={styles.button2}>
-            <Text>Take New Image</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onChangeImagePress("")}>
-          <View style={styles.button2}>
-            <Text>Choose From Gallery</Text>
-          </View>
-        </TouchableOpacity>
-        <Text>Edit Description</Text>
-        <Input
-          placeholder="Write something about your self...."
-          onChangeText={description =>
-            this.updateInput("description", description)
-          }
-          value={this.state.description}
-        />
-        <Text>Change address</Text>
-        <Input
-          style={styles.input}
-          placeholder="House Number"
-          onChangeText={houseNo => this.updateInput("houseNo", houseNo)}
-          value={this.state.houseNo}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Street"
-          onChangeText={street => this.updateInput("street", street)}
-          value={this.state.street}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Town"
-          onChangeText={town => this.updateInput("town", town)}
-          value={this.state.town}
-        />
-        <Input
-          style={styles.input}
-          placeholder="Postcode"
-          onChangeText={postcode => this.updateInput("postcode", postcode)}
-          value={this.state.postcode}
-        />
-        <TouchableOpacity onPress={this.saveProfileChanges}>
-          <View style={styles.button}>
-            <Text>Submit</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.setUserInputs}>
-          <View style={styles.button}>
-            <Text>Close</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-
   render() {
     const { user } = this.props.navigation.state.params;
-    const { reviews } = this.state;
+    const { reviews, description, houseNo, street, town, postcode } = this.state;
+    const { onChangeImagePress, updateInput, saveProfileChanges, setUserInputs } = this;
+    const editProfileProps = { 
+                              onChangeImagePress, 
+                              updateInput,
+                              saveProfileChanges,
+                              setUserInputs,
+                              description, 
+                              houseNo, 
+                              street, 
+                              town, 
+                              postcode
+                            }
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header} />
@@ -242,7 +188,7 @@ export default class Profile extends Component {
           </TouchableOpacity>
         </View>
         <Modal isVisible={this.state.visibleModal === 1}>
-          {this._renderModalContent()}
+          <ProfileModal props={editProfileProps} />
         </Modal>
         <View style={styles.reviewHolder}>
           {reviews.map(([reviewID, review], i) => (
@@ -364,8 +310,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#00BFFF",
     height: 50,
     width: 200,
-    // padding: 15,
-    // fontSize: 50,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",

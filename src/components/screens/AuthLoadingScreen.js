@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 import * as firebase from "firebase";
+import logo from '../../img/LogoGems.png';
+import PropTypes from 'prop-types';
 
 export default class CreateEventScreen extends Component {
   componentDidMount() {
@@ -13,17 +15,20 @@ export default class CreateEventScreen extends Component {
     return (
       <View style={styles.container}>
         <Image
-          style={{ height: 200, width: 200, marginBottom: 30 }}
-          source={require("../../img/LogoGems.png")}
+          style={styles.image}
+          source={logo}
         />
-        <Text style={{ color: "white", fontSize: 20 }}>
+        <Text style={styles.authText}>
           Welcome to Community Gems
         </Text>
-
         <ActivityIndicator size="large" style={styles.indicator} />
       </View>
     );
   }
+}
+
+CreateEventScreen.propTypes = {
+  navigation: PropTypes.func.isRequired,
 }
 
 const styles = StyleSheet.create({
@@ -35,5 +40,14 @@ const styles = StyleSheet.create({
   },
   indicator: {
     color: "red"
+  },
+  image: {
+    height: 200,
+    width: 200,
+    marginBottom: 30
+  },
+  authText: {
+    color: "white", 
+    fontSize: 20
   }
 });
