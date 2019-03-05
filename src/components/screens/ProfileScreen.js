@@ -148,10 +148,6 @@ export default class Profile extends Component {
     }
   };
 
-  leaveReview = review_body => {
-    const { userID, user } = this.state;
-  };
-
   closeModal = () => {
     this.setState({
       visibleModal: 0
@@ -314,8 +310,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#00BFFF",
     height: 50,
     width: 200,
-    // padding: 15,
-    // fontSize: 50,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
