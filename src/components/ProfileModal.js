@@ -1,75 +1,83 @@
 import React from 'react';
-import { TouchableOpacity, Text, ScrollView, View, Input, Alert } from 'react-native'
+import { TouchableOpacity, Text, ScrollView, View, StyleSheet } from 'react-native';
+import { Input } from './Input';
 
-const ProfileModal = (props) => {
 
+
+const ProfileModal = ({ props }) => {
+  const { 
+          onChangeImagePress, 
+          updateInput,
+          saveProfileChanges,
+          setUserInputs,
+          description, 
+          houseNo, 
+          street, 
+          town, 
+          postcode
+        } = props;
+
+        console.log(props, 'here');
   return (
-  <ScrollView>
-    <View style={styles.modalContent}>
-      <Text>Profile Form</Text>
-      <Text>Change profile image</Text>
+    <ScrollView>
+      <View style={styles.modalContent}>
+        <Text>Profile Form</Text>
+        <Text>Change profile image</Text>
 
-      <TouchableOpacity onPress={() => this.onChangeImagePress("take")}>
-        <View style={styles.button2}>
-          <Text>Take New Image</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.onChangeImagePress("")}>
-        <View style={styles.button2}>
-          <Text>Choose From Gallery</Text>
-        </View>
-      </TouchableOpacity>
-      <Text>Edit Description</Text>
-      <Input
-        placeholder="Write something about your self...."
-        onChangeText={description => this.setState({ description })}
-        value={this.state.description}
-      />
-      <TouchableOpacity
-        onPress={() =>
-          this.setState({ defaultDescription: this.state.description }, () =>
-            Alert.alert("Done")
-          )
-        }
-      >
-        <View style={styles.button}>
-          <Text>Submit</Text>
-        </View>
-      </TouchableOpacity>
-      <Text>Change address</Text>
-      <Input
-        placeholder="House Number"
-        onChangeText={house => this.setState({ house })}
-        value={this.state.house}
-      />
-      <Input
-        placeholder="Street"
-        onChangeText={street => this.setState({ street })}
-        value={this.state.street}
-      />
-      <Input
-        placeholder="Town"
-        onChangeText={town => this.setState({ town })}
-        value={this.state.town}
-      />
-      <Input
-        placeholder="Postcode"
-        onChangeText={postcode => this.setState({ postcode })}
-        value={this.state.postcode}
-      />
-      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
-        <View style={styles.button}>
-          <Text>Submit address</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.setState({ visibleModal: null })}>
-        <View style={styles.button}>
-          <Text>Close</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  </ScrollView>
-  )
+        <TouchableOpacity onPress={() => onChangeImagePress("take")}>
+          <View style={styles.button2}>
+            <Text>Take New Image</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onChangeImagePress("")}>
+          <View style={styles.button2}>
+            <Text>Choose From Gallery</Text>
+          </View>
+        </TouchableOpacity>
+        <Text>Edit Description</Text>
+        <Input
+          placeholder="Write something about your self...."
+          onChangeText={description => updateInput("description", description)}
+          value={description}
+        />
+        <Text>Change address</Text>
+        <Input
+          style={styles.input}
+          placeholder="House Number"
+          onChangeText={houseNo => updateInput("houseNo", houseNo)}
+          value={houseNo}
+        />
+        <Input
+          style={styles.input}
+          placeholder="Street"
+          onChangeText={street => updateInput("street", street)}
+          value={street}
+        />
+        <Input
+          style={styles.input}
+          placeholder="Town"
+          onChangeText={town => updateInput("town", town)}
+          value={town}
+        />
+        <Input
+          style={styles.input}
+          placeholder="Postcode"
+          onChangeText={postcode => updateInput("postcode", postcode)}
+          value={postcode}
+        />
+        <TouchableOpacity onPress={saveProfileChanges}>
+          <View style={styles.button}>
+            <Text>Submit</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={setUserInputs}>
+          <View style={styles.button}>
+            <Text>Close</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
 }
 
 export default ProfileModal;
@@ -112,13 +120,7 @@ const styles = StyleSheet.create({
   //   reviewHolder: {
   //     backgroundColor: "#00BFFF"
   //   },
-  reviewBox: {
-    fontSize: 6,
-    backgroundColor: "#00BFFF",
-    fontWeight: "600",
-    borderBottomColor: "#00BFFF",
-    borderBottomWidth: 1
-  },
+
   body: {
     marginTop: 70,
     alignItems: "center"
@@ -127,11 +129,6 @@ const styles = StyleSheet.create({
     // borderRadius: 13
   },
 
-  name: {
-    fontSize: 30,
-    color: "black",
-    fontWeight: "600"
-  },
   info: {
     fontSize: 20,
 
