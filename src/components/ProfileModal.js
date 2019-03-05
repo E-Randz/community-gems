@@ -76,7 +76,8 @@ const ProfileModal = ({ props }) => {
 
 export default ProfileModal;
 
-ProfileModal.PropTypes = {
+ProfileModal.propTypes = {
+  props: PropTypes.object.isRequired,
   onChangeImagePress: PropTypes.func.isRequired, 
   updateInput: PropTypes.func.isRequired,
   saveProfileChanges: PropTypes.func.isRequired,
