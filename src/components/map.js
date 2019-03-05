@@ -28,6 +28,7 @@ export default class Map extends Component {
 
   render() {
     const { region, primary, places } = this.state;
+    const { lat, long, eventID, name } = this.props.event
 
     return (
       <MapView
@@ -40,8 +41,8 @@ export default class Map extends Component {
           key={"Home"}
           title={"Home"}
           coordinate={{
-            latitude: this.props.user.lat,
-            longitude: this.props.user.long
+            latitude: lat,
+            longitude: long
           }}
           pinColor={"blue"}
         />
@@ -49,11 +50,11 @@ export default class Map extends Component {
 
         {this.props.event && (
           <Marker
-            key={this.props.event.eventID}
-            title={this.props.event.name}
+            key={eventID}
+            title={name}
             coordinate={{
-              latitude: this.props.event.lat,
-              longitude: this.props.event.long
+              latitude: lat,
+              longitude: long
             }}
           />
         )}

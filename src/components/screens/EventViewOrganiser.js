@@ -27,6 +27,7 @@ class EventViewOrganiser extends Component {
     eventIsActive: false,
     eventDate: 1,
     visibleModal: null,
+
   };
 
   getVols = () => {

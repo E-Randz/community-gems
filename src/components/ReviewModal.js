@@ -85,15 +85,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginTop: 2
   },
-  //   reviewHolder: {
-  //     backgroundColor: "#00BFFF"
-  //   },
   body: {
     marginTop: 70,
     alignItems: "center"
-    // borderColor: "#00BFFF",
-    // borderWidth: 2,
-    // borderRadius: 13
   },
 
   info: {
