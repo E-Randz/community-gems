@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Alert, Text, ScrollView } from "react-native";
+import { View, Alert, Text, ScrollView, Image } from "react-native";
 import { ButtonGroup } from "react-native-elements";
 import { getAllUsers } from "../../db/users";
 import Leaderboard from "react-native-leaderboard";
@@ -51,7 +51,6 @@ export default class AvatarAndClickable extends Component {
               color: "white",
               backgroundColor: "#00BFFF",
               paddingBottom: 10
-              // fontFamily: "Futura"
             }}
           >
             Gem Leaderboard 💎

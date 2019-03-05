@@ -5,7 +5,8 @@ import {
   TextInput,
   ScrollView,
   View,
-  Image
+  Image,
+  RefreshControl
 } from "react-native";
 import React, { Component } from "react";
 import firebase from "firebase";
@@ -20,7 +21,8 @@ class Main extends React.Component {
     userID: null,
     name: "",
     events: [],
-    messagePath: ""
+    messagePath: "",
+    refreshing: false
   };
 
   onChangeText = name => this.setState({ name });
@@ -62,10 +64,23 @@ class Main extends React.Component {
     }
   };
 
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getEvents();
+    this.setState({ refreshing: false });
+  };
+
   render() {
     const { user, events } = this.state;
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
         <View
           style={{
             paddingTop: 10,
